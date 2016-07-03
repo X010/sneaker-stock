@@ -1,3 +1,12 @@
+/**
+* @Author: jeffrey
+* @Date:   2016-06-27T19:05:08+08:00
+* @Last modified by:   jeffrey
+* @Last modified time: 2016-07-03T14:01:35+08:00
+*/
+
+
+
 //常量配置模块
 var VERSION_TYPE = 1; //1:平台版本 2:售卖版本
 var VERSION_MODE = 'B2B'; //B2B or B2C 当B2C时,客户将成为会员
