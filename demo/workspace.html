@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <title>我的工作台</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <!--组件部分 End -->
+
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script  language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="javascript" src="/js/compents/Chart.js"></script>
+</head>
+<script>
+    $().ready(function () {
+        var dataLine = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#H1B16C",
+                    data: [65, 59, 90, 81, 56, 55, 40]
+                },
+                {
+                    fillColor: "rgba(151,187,205,0.5)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#H1B16C",
+                    data: [28, 48, 40, 19, 96, 27, 100]
+                }
+            ]
+        };
+
+        var dataBar = {
+            labels : ["January","February","March","April","May","June","July"],
+            datasets : [
+                {
+                    fillColor : "rgba(220,220,220,0.5)",
+                    strokeColor : "rgba(220,220,220,1)",
+                    data : [65,59,90,81,56,55,40]
+                },
+                {
+                    fillColor : "rgba(151,187,205,0.5)",
+                    strokeColor : "rgba(151,187,205,1)",
+                    data : [28,48,40,19,96,27,100]
+                }
+            ]
+        };
+
+        var dataPie = [
+            {
+                value: 30,
+                color:"#F38630"
+            },
+            {
+                value : 50,
+                color : "#E0E4CC"
+            },
+            {
+                value : 100,
+                color : "#69D2E7"
+            }
+        ];
+
+        var defaults = {
+
+            //Boolean - If we show the scale above the chart data
+            scaleOverlay: false,
+
+            //Boolean - If we want to override with a hard coded scale
+            scaleOverride: false,
+
+            //** Required if scaleOverride is true **
+            //Number - The number of steps in a hard coded scale
+            scaleSteps: null,
+            //Number - The value jump in the hard coded scale
+            scaleStepWidth: null,
+            //Number - The scale starting value
+            scaleStartValue: null,
+
+            //String - Colour of the scale line
+            scaleLineColor: "rgba(0,0,0,.1)",
+
+            //Number - Pixel width of the scale line
+            scaleLineWidth: 1,
+
+            //Boolean - Whether to show labels on the scale
+            scaleShowLabels: false,
+
+            //Interpolated JS string - can access value
+            scaleLabel: "<%=value%>",
+
+            //String - Scale label font declaration for the scale label
+            scaleFontFamily: "'Arial'",
+
+            //Number - Scale label font size in pixels
+            scaleFontSize: 12,
+
+            //String - Scale label font weight style
+            scaleFontStyle: "normal",
+
+            //String - Scale label font colour
+            scaleFontColor: "#666",
+
+            ///Boolean - Whether grid lines are shown across the chart
+            scaleShowGridLines: true,
+
+            //String - Colour of the grid lines
+            scaleGridLineColor: "rgba(0,0,0,.05)",
+
+            //Number - Width of the grid lines
+            scaleGridLineWidth: 1,
+
+            //Boolean - Whether the line is curved between points
+            bezierCurve: true,
+
+            //Boolean - Whether to show a dot for each point
+            pointDot: true,
+
+            //Number - Radius of each point dot in pixels
+            pointDotRadius: 3,
+
+            //Number - Pixel width of point dot stroke
+            pointDotStrokeWidth: 1,
+
+            //Boolean - Whether to show a stroke for datasets
+            datasetStroke: true,
+
+            //Number - Pixel width of dataset stroke
+            datasetStrokeWidth: 2,
+
+            //Boolean - Whether to fill the dataset with a colour
+            datasetFill: true,
+
+            //Boolean - Whether to animate the chart
+            animation: true,
+
+            //Number - Number of animation steps
+            animationSteps: 60,
+
+            //String - Animation easing effect
+            animationEasing: "easeOutQuart",
+
+            //Function - Fires when the animation is complete
+            onAnimationComplete: function () {
+            }
+        };
+
+         //Get context with jQuery - using jQuery's .get() method.
+        var ctx = $("#myChartLine").get(0).getContext("2d");
+
+        //This will get the first returned node in the jQuery collection.
+        var myNewChart = new Chart(ctx).Line(dataLine, defaults);
+
+        var ctx = $("#myChartBar").get(0).getContext("2d");
+        new Chart(ctx).Bar(dataBar,defaults);
+
+        var ctx = $("#myChartPie").get(0).getContext("2d");
+        new Chart(ctx).Pie(dataPie,defaults);
+    });
+</script>
+<body>
+
+<div class="framepage">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                <div class="panel panel-default report-list">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">本月销售趋势</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="myChartLine" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                <div class="panel panel-default report-list">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">本月销售日报</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="myChartBar" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                <div class="panel panel-default report-list">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">本月销售类别比例</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="myChartPie" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>新建商品</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery-barcode.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!-- 组件JS部分 End -->
+
+    <!--业务JS部分 Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language='JavaScript' src='/js/repository/goods-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/store-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/createGoodsController.js"></script>
+    <script language="JavaScript" src="/js/repository/goods-type-repository.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/metroStyle/metroStyle.css"/>
+    <script language="JavaScript" src="/js/compents/jquery.ztree.all-3.5.min.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertreegoods.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!--业务JS部分 End -->
+</head>
+<body>
+<div class="framepage">
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">新建商品</span>
+        </div>
+    </div>
+    <input type="hidden" id="currentGid" value="0"/>
+    <ul class="form-body">
+        <!--<li class="item">
+            <label class="item-name" for="code"><span class="name">商品编码</span><em class="help" data-help="系统自动生成的内部编码"></em></label>
+
+            <div class="item-fields"><input disabled id="code" name="code" class="form-control w3" type="text"></div>
+        </li>-->
+        <li class="item">
+            <label class="item-name" for="name"><span class="name">商品名称</span></label>
+
+            <div class="item-fields">
+                <!--<input id="name" name="name" class="form-control w3" type="text" placeholder="例如：双沟小青花浓香型42°480ml">--->
+                <input type="text" class="form-control w3" id="name" placeholder="例如：双沟小青花浓香型42°480ml" value=""/><input type="hidden" id="goods_id" value="" />
+                <span class="error" id="name_error"></span>
+            </div>
+        </li>
+        <li class="item">
+            <label class="item-name" for="barcode"><span class="name">商品条码</span></label>
+
+            <div class="item-fields"><input id="barcode" name="barcode" class="form-control w2" type="text" placeholder="例如：6901573030200"></div>
+        </li>
+        <li class="item-separator"></li>
+        <!--<li class="item">
+            <label class="item-name"><span class="name">供应商</span></label>
+
+            <div class="item-fields">
+                <table class="list" cellpadding="0" cellspacing="0" width="100%" id="goodsSupplier">
+                    <tbody></tbody>
+                </table>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-addSupplier" onclick="addSupplierForGoods();">添加供应商</button>
+            </div>
+        </li>-->
+        <li class="item">
+            <label class="item-name" for="supplier"><span class="name">供应商</span></label>
+
+            <div class="item-fields"><input id="supplierName" name="supplierName" class="form-control w3" type="text" placeholder="请输入供应商名称"><input id="supplier" name="supplier" class="form-control w3" type="hidden"></div>
+        </li>
+        <li class="item">
+            <label class="item-name"><span class="name">经营方式</span></label>
+            <div class="item-fields form-inline">
+                <span class="">
+                    <select class="form-control w1" id="business">
+                    </select>
+                </span>
+                <!--<button type="button" class="btn btn-primary" id="btn-weight" onclick="saveGoodsBusiness();">保存</button>-->
+            </div>
+        </li>
+        <li class="item">
+            <label class="item-name" for="weight"><span class="name">箱重</span></label>
+            <div class="item-fields form-inline">
+                <div class="input-group w2">
+                    <input id="weight" name="weight" class="form-control" type="text" maxlength="6" data-rule-required="true" value="" placeholder="例如：1.5">
+                    <div class="input-group-addon">Kg（公斤）</div>
+                </div>
+                <!--<button type="button" class="btn btn-primary" id="btn-weight" onclick="saveGoodsWeight();">保存</button>--->
+            </div>
+        </li>
+        <li class="item">
+            <label class="item-name" for="tname"><span class="name">分类</span></label>
+            <div class="item-fields">
+                <input disabled id="tname" class="form-control w2" type="text">
+                <input disabled id="gtid" class="form-control w2" type="hidden" value="">
+                <ul id="goodsCateTree" class="ztree"></ul>
+            </div>
+        </li>
+        <li class="item-separator"></li>
+        <li class="item">
+            <label class="item-name" for="tax_rate"><span class="name">税率</span></label>
+
+            <div class="item-fields"><input id="tax_rate" name="tax_rate" class="form-control w1" type="text" placeholder="例如：0.17"></div>
+        </li>
+        <li class="item">
+            <label class="item-name" for="unit"><span class="name">单位</span></label>
+
+            <div class="item-fields"><input id="unit" name="unit" class="form-control w1" type="text" placeholder="例如：瓶"></div>
+        </li>
+        <li class="item">
+            <label class="item-name" for="spec"><span class="name">规格</span></label>
+
+            <div class="item-fields"><input id="spec" name="spec" class="form-control w1" type="text" placeholder="例如：6"></div>
+        </li>
+        <li class="item">
+            <label class="item-name" for="bid"><span class="name">品牌</span></label>
+
+            <!--<div class="item-fields form-inline">
+                <span class="">
+                    <select class="form-control w1" id="bid">
+                    </select>
+                </span>
+            </div>-->
+            <div class="item-fields">
+                <input type="text" class="form-control w2" id="bname" placeholder="例如：洋河" value=""/><input type="hidden" id="bid" value="" />
+            </div>
+        </li>
+        <!--<li class="item">
+            <label class="item-name" for="pkgspec"><span class="name">包装规格</span></label>
+
+            <div class="item-fields"><input id="pkgspec" name="pkgspec" class="form-control w1" type="text" placeholder="例如：1*6"></div>
+        </li>
+        <li class="item">
+            <label class="item-name" for="validperiod"><span class="name">保质期</span></label>
+
+            <div class="item-fields"><input disabled id="validperiod" name="validperiod" class="form-control w1" type="text"></div>
+        </li>-->
+        <li class="item">
+            <label class="item-name" for="factory"><span class="name">厂商</span></label>
+
+            <div class="item-fields"><input id="factory" name="factory" class="form-control w2" type="text" placeholder="例如：洋河"></div>
+        </li>
+        <li class="item">
+            <label class="item-name" for="place"><span class="name">产地</span></label>
+
+            <div class="item-fields"><input id="place" name="place" class="form-control w2" type="text" placeholder="例如：江苏"></div>
+        </li>
+        <!--<li class="item">
+            <label class="item-name" for="trademark"><span class="name">商标</span></label>
+
+            <div class="item-fields"><input id="trademark" name="trademark" class="form-control w2" type="text" placeholder="例如：小青花"></div>
+        </li>
+        <li class="item">
+            <label class="item-name"><span class="name">是否捆绑</span></label>
+
+            <div class="item-fields">
+                <span class="">
+                    <select class="form-control w1" disabled id="isbind">
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </span>
+                <label class="error"></label>
+            </div>
+        </li>-->
+        <li class="item-separator"></li>
+        <li class="item">
+            <label class="item-name" for="in_price"><span class="name">进货价</span></label>
+
+            <div class="item-fields"><input id="in_price" name="in_price" class="form-control w2" type="text" placeholder=""></div>
+        </li>
+
+        <li class="item" name="li-b2b">
+            <label class="item-name" for="out_price1"><span class="name">经销价</span></label>
+
+            <div class="item-fields"><input id="out_price1" name="in_price" class="form-control w2" type="text" placeholder="经销商价格"></div>
+        </li>
+        <li class="item" name="li-b2b">
+            <label class="item-name" for="out_price2"><span class="name">酒店价</span></label>
+
+            <div class="item-fields"><input id="out_price2" name="in_price" class="form-control w2" type="text" placeholder="酒店饭店价格"></div>
+        </li>
+        <li class="item" name="li-b2b">
+            <label class="item-name" for="out_price3"><span class="name">商超价</span></label>
+
+            <div class="item-fields"><input id="out_price3" name="in_price" class="form-control w2" type="text" placeholder="大型商超价格"></div>
+        </li>
+        <li class="item" name="li-b2b">
+            <label class="item-name" for="out_price4"><span class="name">便利店价</span></label>
+
+            <div class="item-fields"><input id="out_price4" name="in_price" class="form-control w2" type="text" placeholder="流通价格"></div>
+        </li>
+
+        <li class="item" name="li-b2c" style="display:none;">
+            <label class="item-name" for="out_price1"><span class="name">非会员价</span></label>
+
+            <div class="item-fields"><input id="out_price1" name="in_price" class="form-control w2" type="text" placeholder=""></div>
+        </li>
+        <li class="item" name="li-b2c" style="display:none;">
+            <label class="item-name" for="out_price2"><span class="name">计价会员价</span></label>
+
+            <div class="item-fields"><input id="out_price2" name="in_price" class="form-control w2" type="text" placeholder=""></div>
+        </li>
+        <li class="item" name="li-b2c" style="display:none;">
+            <label class="item-name" for="out_price3"><span class="name">包年会员价</span></label>
+
+            <div class="item-fields"><input id="out_price3" name="in_price" class="form-control w2" type="text" placeholder=""></div>
+        </li>
+        <li class="item" name="li-b2c" style="display:none;">
+            <label class="item-name" for="out_price4"><span class="name">合伙会员价</span></label>
+
+            <div class="item-fields"><input id="out_price4" name="in_price" class="form-control w2" type="text" placeholder=""></div>
+        </li>
+
+    </ul>
+    <div class="form-footer">
+        <div class="group-r">
+            <button type="button" onclick="save();" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-default" onclick="closeParentForFrame();">关闭</button>
+        </div>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

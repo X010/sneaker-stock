@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>车辆管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/smartMenu.css" />
+    <script type="text/javascript" src="/js/compents/jquery.smartMenu.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- --业务 js start-->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/jquery.tablesorter.js"></script>
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/car-repository.js'></script>
+    <script language="JavaScript" src="/js/carController.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">车辆管理</span>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-plus" id="btn-create"> 新建</button>
+            <button type="button" class="btn-tool fa fa-refresh" onClick="refrush();"> 刷新</button>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <!-- 条件过滤 Start-->
+    <div class="filter-data form-inline">
+        <div class="filter-data-group clearfix">
+            <div class="group-l">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" id="search" placeholder="请输入车辆信息" />
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-info" onClick="refrush();">查询</button>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="form-group">
+                    <label for="statusNumber" class="">状态:</label>
+                    <div class="input-group input-group-sm">
+                        <select id="statusNumber" class="form-control" onchange="refrush();">
+                            <option value="">- 全部 -</option>
+                            <option value="1" selected>正常</option>
+                            <option value="0">停用</option>
+                        </select>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+    <!-- 条件过滤 End-->
+
+    <div class="table-body">
+        <div class="table-body-inner">
+        <table cellpadding="0" cellspacing="0" width="" id="user">
+		<thead>
+            <tr>
+                <th class="w120">车牌号</th>
+                <th class="w120">车辆类型</th>
+                <th class="w100">车辆载重(吨)</th>
+                <th class="w100">品牌型号</th>
+                <th class="w140">创建时间</th>
+            </tr>
+		</thead>
+		<tbody></tbody>
+        </table>
+        <div id="table-empty"></div>
+        </div>
+    </div>
+    <div class="table-footer">
+        <div class="group-r">
+            <div class="pagination" id="split"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

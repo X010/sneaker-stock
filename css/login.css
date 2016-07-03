@@ -1,0 +1,62 @@
+* {margin:0; padding:0; font-size:12px; font-family:Microsoft YaHei, SimHei, SimSun, Verdana, Geneva, sans-serif; font-weight:normal;}
+html, body{ width: 100%; height: 100%; overflow: hidden; }
+a { text-decoration: none;}
+ul,li {list-style:none;}
+
+/*清除浮动*/
+.clearfix:after { content: "."; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.clearfix{ zoom:1; } /*for IE6\7*/
+
+body { position: relative;}
+.bg { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
+
+.login-page {  height: 100%; width: 100%; position: absolute; left: 0; top: 0; z-index: 10; padding-top: 50px; }
+
+.login-header { height:28px; padding-left: 60px; padding-right: 60px;}
+.login-header .logo { float: left; width: 170px; height: 46px;}
+.login-header .logo img { width: 100%;}
+.login-header .nav { float: right; }
+.login-header .nav a { color: #FFFFFF; font-size: 14px; margin-left: 5px; margin-right: 5px;}
+.login-header .nav a.separator:after { content: "          |"; color: #FFFFFF; }
+.login-header .nav a.joinus { padding: 10px 20px; background: #3F67C0; -webkit-border-radius:5px;  -moz-border-radius:5px;  border-radius:5px;}
+
+.login-body { width: 800px; min-width: 800px; min-height: 600px; position: absolute; top:45%; margin-top: -200px; left: 50%; margin-left: -400px;}
+
+.login-theme { float: left; margin-top: 50px; width: 350px;}
+.login-theme img { width: 100%;}
+
+.panel-login { float: right; width: 380px; background: #FFFFFF; -webkit-border-radius:5px;  -moz-border-radius:5px;  border-radius:5px; -webkit-box-shadow:1px 1px 4px #999999;  -moz-box-shadow:1px 1px 4px #999999;  box-shadow:1px 1px 4px #999999;}
+.panel-wrap { padding: 30px 40px;}
+.panel-login h1 { height: 24px; line-height: 24px; font-size: 20px; margin-bottom: 10px; color: #4A4A4A; }
+
+.login-error { display: none; height: 20px; line-height: 20px; overflow: hidden; margin-bottom: 10px; font-size: 13px; color: #E15F63; }
+
+.login-form { margin-bottom: 15px;}
+.login-form li.item { height: 46px; border: 1px solid #E3E8ED; margin-top: -1px; }
+.login-form li.item label.item-name { float: left; height: 46px; width: 46px; }
+.login-form li.item label.icon-user { background: url("../images/icon_login_user.png") 50% 50% no-repeat;}
+.login-form li.item label.icon-password { background: url("../images/icon_login_password.png") 50% 50% no-repeat;}
+.login-form li.item .f-input { float: left; border:0 none; outline: none; margin-top: 5px; text-indent: 5px; padding: 10px 0; color: #535353; font-size: 14px; width: 245px;}
+.login-form li.item .f-input:focus { color: #333333; }
+.login-form li.item-ext { height: 48px; margin-top: 10px; border: 1px solid #E3E8ED;}
+.login-form li.item-ext label.icon-vcode { float: left; height: 46px; width: 46px;  background: url("../images/login_icon_vcode.svg") 50% 50% no-repeat;}
+.login-form li.item-ext .f-vcode { float: left; height: 46px; }
+.login-form li.item-ext .f-input { float: left; border:0 none; outline: none; margin-top: 5px; text-indent: 5px; padding: 10px 0; color: #535353; font-size: 14px; width: 100px;}
+.login-form li.item-ext .btn-vcode-refresh { cursor: pointer; float: right; margin-top: 11px; height: 24px; width: 24px; background: url("../images/btn_vcode_refresh.png") 0 0 no-repeat;}
+.login-form li.item-ext .f-btn { float: right; width: 120px; margin-top: 6px; margin-right: 5px; height: 36px; line-height: 36px; text-align: center; color: #666666; border: 1px solid #CCCCCC; background: #EFEFEF; cursor: pointer; -webkit-border-radius:3px;  -moz-border-radius:3px;  border-radius:3px;}
+.login-form li.item-ext .f-btn:focus { outline: none; border: 1px solid #C1C1C1;}
+.login-form li.item-ext .f-btn:disabled { color: #CCCCCC; border: 1px solid #EFEFEF; cursor: not-allowed;}
+
+.login-tool { height: 20px; line-height: 20px; margin-bottom: 15px; font-size: 12px;}
+.login-tool .group-l { float: left; height: 20px;}
+.login-tool .group-r { float: right; height: 20px;}
+.login-tool input { margin-right: 3px;}
+.login-tool a { color: #ABB1B6; }
+
+.login-btn { height: 42px;}
+.login-btn .btn-login { cursor: pointer; border: 0 none; height: 42px; width: 100%; background: #408BDA; color: #FEFBFF; text-align: center; font-size: 18px; -webkit-border-radius:3px;  -moz-border-radius:3px;  border-radius:3px;}
+.login-btn .btn-login:hover { background: #3B99FC;}
+
+.login-footer { position: absolute; width: 800px; z-index: 2; bottom:100px; left: 50%; margin-left: -400px;}
+.login-footer .copyright { text-align: center; font-size: 13px; color: #E1E7F4;}
+.login-footer .copyright a{ color: #E1E7F4;}

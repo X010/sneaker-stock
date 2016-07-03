@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>个人设置</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <!-- 组件JS END -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/userprofileController.js"></script>
+
+    <!-- 业务JS ENd -->
+</head>
+<body>
+<form id="userProfileForm" method="get" action="">
+    <div id='test' class="framepage">
+        <div class="page-title clearfix">
+            <div class="group-l">
+                <span class="name">个人资料</span>
+            </div>
+        </div>
+        <ul class="form-body">
+            <li class="item">
+                <label class="item-name" for="username"><span class="name">用户账号</span></label>
+
+                <div class="item-fields"><input disabled id="username" name="username" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="name"><span class="name">真实姓名</span></label>
+
+                <div class="item-fields"><input disabled id="name" name="name" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="idcard"><span class="name">身份证号码</span></label>
+
+                <div class="item-fields"><input id="idcard" name="idcard" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="worktype"><span class="name">工种</span></label>
+
+                <div class="item-fields"><input disabled id="worktype" name="worktype" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="email"><span class="name">邮件地址</span></label>
+
+                <div class="item-fields"><input id="email" name="email" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="phone"><span class="name">手机号码</span></label>
+
+                <div class="item-fields"><input id="phone" name="phone" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item-separator"></li>
+            <li class="item">
+                <label class="item-name" for="memo"><span class="name">备注</span></label>
+
+                <div class="item-fields">
+                    <textarea class="form-control w4" id="memo" name="memo" rows="6" cols="60"></textarea>
+                    <label class="error"></label>
+                </div>
+            </li>
+        </ul>
+        <div class="form-footer">
+            <div class="group-r">
+                <!--<button class="btn btn-primary" type="button" onclick="editUserProfile();" id="useredit">编辑</button>--->
+                <button class="btn btn-primary" type="submit" id="usersave">确认修改</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</form>
+</body>
+</html>

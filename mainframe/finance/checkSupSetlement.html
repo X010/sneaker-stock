@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>新建供应商结算单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/financeRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/config-repository.js"></script>
+    <script language="JavaScript" src="/js/checkSupSetlementController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<script language="JavaScript" src="/js/compents/jquery.datepicker.js"></script>
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">供应商结算单</span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">填单时间: </label><span class="text" id="createtime"></span></div>
+                <div class="item"><label class="item-name">供应商结算单号: </label><span class="text" id="setlementId"></span></div>
+                <div class="item" style="display:none;"><label class="item-name">负单单号: </label><span class="text" id="negative_id"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-book" id="btn-help" onclick="startHelpIntro();"> 帮助</button>
+            <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
+            <button type="button" class="btn-tool fa fa-file-text-o" id="btn-goods-list"> 清单</button>
+        </div>
+    </div>
+    <!-- 头部 End -->
+
+    <!-- 主体 Start -->
+    <div id="printContent">
+        <div class="order-hd container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">填单人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="fullperson"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="cuname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核时间：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="checktime"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="item" data-step="1" data-intro="选择进行结算的仓库" data-position='bottom'>
+                        <label class="item-name">结算仓库：</label>
+                        <div class="item-fields" id="stores">
+                            <span class="store-check-list"><label><input type="checkbox" id="checkall" value="" /> 全选</label></span>
+                            <span class="store-check-list" id="sids"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" data-step="2" data-intro="选择需要结算的供应商" data-position='buttom'>
+                    <div class="item">
+                        <label class="item-name">供应商：</label>
+
+                        <!--<div class="item-fields"><span class="">
+                        <select class="form-control input-sm" disabled id="supplier" onchange="resetDiscount()"></select>
+                        </span></div>-->
+
+                        <div class="item-fields">
+                            <span id="iSupplier"></span>
+                            <span id="sSupplier" style="display: none;" class="">
+                                <select class="form-control input-sm" style="width: 130px;" onchange="changeSupplierId();" id="supplierLists"></select>
+                                <input id="supplierName" style="display: none;" type="text" class="form-control input-sm" placeholder="请输入供应商信息"/>
+                                <input id="supplierId"  type="hidden" value="" />
+                                <button type="button" class="btn-small btn-default" style="float: none;" id="inputHand" onclick="inputForHand();">输入</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" data-step="2" data-intro="选择进行结算的仓库" data-position='buttom'>
+                    <div class="item">
+                        <label class="item-name">结算仓库：</label>
+
+                        <div class="item-fields"><span class="">
+                        <select class="form-control input-sm" disabled id="store">
+                        </select>
+                    </span></div>
+                    </div>
+                </div>
+                -->
+                <script src="/js/compents/jquery.datepicker.js"></script>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" id="divCreate1" data-step="3" data-intro="选择开始日期进行筛选" data-position='buttom'>
+                    <div class="item">
+                        <label class="item-name">开始日期：</label>
+
+                        <div class="item-fields">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <input class="form-control input-sm" type="text" onchange="changeQueryParam();" id="startTime"/>
+                            </div>
+                        </div>
+                        <script>
+                            $("#startTime").datepicker();
+                        </script>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" id="divCreate2" data-step="4" data-intro="选择结束日期进行筛选" data-position='buttom'>
+                    <div class="item">
+                        <label class="item-name">结束日期：</label>
+
+                        <div class="item-fields">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <input class="form-control input-sm" type="text" onchange="changeQueryParam();" id="endTime"/></div>
+                        </div>
+                        <script>
+                            $("#endTime").datepicker();
+                        </script>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" data-step="5" data-intro="选择结算的基准日" data-position='buttom' id="div-baseDate">
+                    <div class="item">
+                        <label class="item-name">基准日：</label>
+
+                        <div class="item-fields">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <input class="form-control input-sm" type="text" onchange="changeQueryParam();" id="baseDate"/>
+                            </div>
+                            <script>
+                                $("#baseDate").datepicker();
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" data-step="6" data-intro="确认该供应商的结算折扣" data-position='buttom'>
+                    <div class="item">
+                        <label class="item-name">结算折扣：</label>
+
+                        <div class="item-fields">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control" type="text" onkeyup="computeAmountOnFinance();" id="discount" maxlength="5"/>
+                                <div class="input-group-addon">%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="7" data-intro="该供应商结算的支付方式" data-position='buttom'>
+                        <label class="item-name">支付方式：</label>
+                        <div class="item-fields"><span class="">
+                            <select class="form-control input-sm" id="pay_type"></select>
+                        </span></div>
+                    </div>
+                </div>
+                <!--<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">结算方式：</label>
+                        <div class="item-fields"><span class="">
+                            <select class="form-control input-sm" id="settle_type" disabled="disabled">
+                                <option value="1" selected>线下</option>
+                                <option value="2">线上</option>
+                            </select>
+                        </span></div>
+                    </div>
+                </div>-->
+
+            </div>
+        </div>
+        <div class="table-container">
+            <div class="table-form" data-step="8" data-intro="选择需要结算的单据" data-position='top'>
+            <table cellpadding="0" cellspacing="0" width="" id="supSetlement">
+                <thead>
+                <tr>
+                    <th class="op"></th>
+                    <th>订单单号</th>
+                    <th>出入库单号</th>
+                    <th>单据类型</th>
+                    <th>采购员</th>
+                    <th>审核人</th>
+                    <th>审核时间</th>
+                    <th>所属仓库</th>
+                    <th>结算日</th>
+                    <th>应结金额</th>
+                    <th>税额</th>
+                    <!--<th width="80">操作</th>-->
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            </div>
+            <div class="table-empty" style="display: none;">您还没有添加任何单据</div>
+            <div class="form-order-ext" id="subTotal" data-step="9" data-intro="核对单据分税率总金额" data-position='top'>
+            </div>
+        </div>
+        <div class="table-footer">
+            <div class="group-l" data-step="9" data-intro="备注需要注意的信息" data-position='top'>
+                <div class="form-memo">
+                    <div class="item-fields form-inline">
+                        <div class="input-group">
+                            <div class="input-group-addon">备注</div>
+                            <input type="text" class="form-control" style="width: 400px;" id="memo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="group-l"><a href="javascript:" class="btn btn-default" id="goods-list">查看商品清单</a></div>-->
+            <div class="stamp" id="stamp"></div>
+        </div>
+    </div>
+    <!-- 主体 End -->
+
+    <!-- 尾部 Start -->
+    <div class="form-footer">
+        <div class="group-l">
+            <div class="form-order-total" data-step="10" data-intro="核对单据总金额" data-position='top'>
+                <div class="item-name">
+                    <span class="name">应结金额：<strong id="amountTobe" ></strong> 元</span>
+                    <span class="name">优惠金额：<strong id="amountCut" ></strong> 元</span>
+                    <span class="name">实结金额：<strong id="amountReal" ></strong> 元</span>
+                    <span class="name">税额：<strong id="amountTax" ></strong> 元</span>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div class="group-l">
+            <div class="form-memo">
+                <label class="item-name" for="memo">单据状态:</label>
+            </div>
+            <div class="form-memo">
+                <label class="item-name" for="memo" id="statusText"></label>
+            </div>
+        </div>
+        -->
+        <div class="group-r" data-step="11" data-intro="保存信息" data-position='top'>
+            <div id="createSupSetlement">
+                <button class="btn btn-primary" id="power-12301" type="submit" onclick="disableBtn(this);createSupSetlement();">保存</button>
+                <button class="btn btn-primary" id="power-12302" type="submit" onclick="disableBtn(this);checkSupSetlement(1);">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="chSupSetlement" style="display: none">
+                <button class="btn btn-primary" id="power-12303" type="submit" onclick="disableBtn(this);checkSupSetlement();">审核</button>
+                <button class="btn btn-danger" id="power-12304" type="submit" onclick="disableBtn(this);delSupSetlement();">作废</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="xdSupSetlement" style="display: none">
+                <button class="btn btn-primary" id="power-12305" type="submit" onclick="disableBtn(this);xdSupSetlement();">冲单</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="vwSupSetlement" style="display: none">
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- 尾部 End -->
+</div>
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

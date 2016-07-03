@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>我的工作台</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language="JavaScript" src="/js/SyncAjax.js"></script>
+    <script language="JavaScript" src="/js/UrlList.js"></script>
+    <script language="JavaScript" src="/js/CookieUtil.js"></script>
+
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/console.js"></script>
+    <!--组件部分 End -->
+
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+</head>
+<body>
+
+<div class="framepage">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-default report-list">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">基础工作</h3>
+                    </div>
+                    <div class="panel-body" id="map_base">
+                        <!-- 引导图:基础工作 -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-default report-list">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">采购流程</h3>
+                    </div>
+                    <div class="panel-body" id="map_buy">
+                        <!-- 引导图:采购流程 -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-default report-list">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">销售流程</h3>
+                    </div>
+                    <div class="panel-body" id="map_sale">
+                        <!-- 引导图:销售流程 -->
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix visible-md-block visible-lg-block"></div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-default report-list">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">采购退货流程</h3>
+                    </div>
+                    <div class="panel-body" id="map_return_out">
+                        <!-- 引导图:采购退货流程 -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-default report-list">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">客户退货流程</h3>
+                    </div>
+                    <div class="panel-body" id="map_return_in">
+                        <!-- 引导图:销售退回流程 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $().ready(function () {
+        if (!power){
+            $('.container-fluid').remove();
+        }
+        var map; //引导图数据
+
+        //引导图数据 - 基础工作
+        map = [
+            [41, {'btn': '完善公司信息'}],
+            [46, {'btn': '录入仓库信息'}],
+            [52, {'btn': '配置权限组'}],
+            [45, {'btn': '录入员工信息'}],
+            [42, {'btn': '新建供应商'}],
+            [43, {'btn': '新建客户'}],
+            [44, {'btn': '录入商品信息'}],
+            [62, {'btn': '针对不同仓库调整进货价格'}],
+            [63, {'btn': '针对不同仓库调整出货价格'}],
+        ];
+        map2button('#map_base', map);
+
+
+        //引导图数据 - 采购流程
+        map = [
+            [12, {'btn': '创建采购订单'}],
+            [121, {'btn': '审核采购订单'}],
+            [16, {'btn': '创建入库单'}],
+            [161, {'btn': '审核入库单'}],
+            [82, {'btn': '供应商结算'}],
+        ];
+        map2button('#map_buy', map);
+
+        //引导图数据 - 销售流程
+        map = [
+            [22, {'btn': '查看客户订单'}],
+            [26, {'btn': '创建出货单'}],
+            [261, {'btn': '审核出货单'}],
+            [81, {'btn': '客户结算'}],
+        ];
+        map2button('#map_sale', map);
+
+        //引导图数据 - 采购退货流程
+        map = [
+            [18, {'btn': '创建采购退货单'}],
+            [181, {'btn': '审核采购退货单'}],
+            [82, {'btn': '供应商结算'}],
+        ];
+        map2button('#map_return_out', map);
+
+        //引导图数据 - 销售退回流程
+        map = [
+            [24, {'btn': '查看客户退货申请单'}],
+            [28, {'btn': '创建客户退货单'}],
+            [281, {'btn': '审核客户退货单'}],
+            [81, {'btn': '客户结算'}],
+        ];
+        map2button('#map_return_in', map);
+
+
+        /* -------------------------------------------- 下面是函数 -------------------------------------------- */
+
+        /**
+         * 根据引导图向页面添加按钮
+         */
+        function map2button(container, map){
+            map = formatMap(map);
+            for (var i=0; i<map.length; i++) {
+                var item = map[i];
+                var id = item[0];
+                var btn = item[1]['btn'];
+                var name = item[1]['name'];
+                var url = item[1]['url'];
+                var fun = "openParentForFrame('" + name + "', '" + url + "', " + id + ");";
+                var html = '<span style="float: left; margin-bottom: 10px;">';
+                html += '<button type="button" class="btn btn-default" onclick="' + fun + '">' + btn + '</button>';
+                html += '<span class="fa fa-arrow-right" style="margin-left: 5px; margin-right: 5px; color: #999999;"></span>';
+                html += '</span>';
+                $(container).append(html);
+            }
+            $(container).find('.fa-arrow-right:last').remove();
+        }
+
+
+        /**
+         * 将菜单中NAME和URL填充到引导图数据
+         */
+        function formatMap(map){
+            for (var i=0; i<map.length; i++){
+                if (VERSION_MODE == 'B2C'){
+                    if (map[i][0] == 43){
+                        map[i][0] = 411;
+                        map[i][1]['btn'] = '新建会员';
+                    } else if (map[i][0] == 81){
+                        map[i][0] = 87;
+                        map[i][1]['btn'] = '会员收款';
+                    }
+                }
+                var info = getInfo(map[i][0]);
+                map[i][1].url = info['url'];
+                map[i][1].name = info['name'];
+            }
+            return map;
+        }
+
+        /**
+         * 根据ID获取页面信息
+         * @param id
+         * @returns {*}
+         */
+        function getInfo(id){
+            //console.log(menu);
+            var ret = {'name':'未知菜单', 'url':''};
+            for (var i=0; i<menu.length; i++){
+                for (var j=0; j<menu[i].secondMenu[0].subList.length; j++){
+                    if (menu[i].secondMenu[0].subList[j].id == id){
+                        ret['name'] = menu[i].secondMenu[0].subList[j].name;
+                        ret['url'] = menu[i].secondMenu[0].subList[j].url;
+                        return ret;
+                    } else if (typeof(menu[i].secondMenu[0].subList[j]['listUrl'])!='undefined' && menu[i].secondMenu[0].subList[j]['listUrl'].id == id){
+                        ret['name'] = menu[i].secondMenu[0].subList[j]['listUrl'].name;
+                        ret['url'] = menu[i].secondMenu[0].subList[j]['listUrl'].url;
+                        return ret;
+                    }
+                }
+            }
+            return ret;
+        }
+    });
+</script>
+</body>
+</html>

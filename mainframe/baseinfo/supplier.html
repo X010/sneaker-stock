@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>供应商管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.cxselect.min.js"></script>
+    <script language="JavaScript" src="/js/jquery.tablesorter.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/smartMenu.css" />
+    <script type="text/javascript" src="/js/compents/jquery.smartMenu.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+    
+    <script language="JavaScript" src="/js/repository/company-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/supplierController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务JS End -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">供应商管理</span>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-plus" id="btn-create"> 新建</button>
+            <!--<button type="button" class="btn-tool fa fa-sign-in" id="power-10301" data-toggle="modal" data-backdrop="static" data-target="#modalImport"> 导入</button>-->
+            <button type="button" class="btn-tool fa fa-refresh" onClick="refrush();"> 刷新</button>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <!-- 条件过滤 Start-->
+    <div class="filter-data form-inline">
+        <div class="filter-data-group clearfix">
+            <div class="group-l">
+                <div class="form-group">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" id="search" placeholder="请输入供应商信息" />
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-info" onClick="refrush();">查询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 条件过滤 End-->
+
+    <div class="table-body">
+        <div class="table-body-inner">
+        <table cellpadding="0" cellspacing="0" width="" id="supplier">
+            <thead>
+            <tr>
+                <th class="w200">供应商名称</th>
+                <th class="w80">供应商账期</th>
+                <th class="w80">供应商折扣</th>
+                <th class="w80">订单有效期</th>
+                <th class="w140">创建时间</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="table-empty"></div>
+        </div>
+    </div>
+    <div class="table-footer">
+        <div class="group-l"></div>
+        <div class="group-r">
+            <div class="pagination" id="split"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 导入供应商 -->
+<div class="modal fade" id="modalImport">
+    <div class="modal-dialog">
+        <!--第一步-->
+        <div class="modal-content" id="modalStep1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">查找并选择要导入的供应商</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="search form-inline">供应商地域:
+                            <div class="input-group" id="region" data-url="/js/compents/city.json">
+                                <span class="area-item"><select class="form-control input-sm province" id="areapro"></select></span>
+                                <span class="area-item"><select class="form-control input-sm city" id="areacity"></select></span>
+                                <span class="area-item"><select class="form-control input-sm area" id="areazone"></select></span>
+                            </div>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="esSearch" placeholder="输入公司名称或编码" value=""/>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-info" id="searchButton">查询</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                        <div class="search-list">
+                            <table style="display:none;" cellpadding="0" class="table table-condensed table-hover" cellspacing="0" width="100%" id="pupupContent">
+                                <thead>
+                                    <tr>
+                                        <th width="30"></th>
+                                        <th width="80">公司编码</th>
+                                        <th>供应商公司</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                        <div class="selected-list">
+                            <ul id="selectedList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="saveSelected();openPupupNext('modalStep1','modalStep2',true,'请选择相应供应商!');loadSupplierTwo();">下一步</button>
+            </div>
+        </div>
+        <!--第一步 结束-->
+        <!--第二步-->
+        <div class="modal-content"  id="modalStep2" style="display: none;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">完善供应商信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="detail-list table-form">
+                    <table cellpadding="0"  cellspacing="0" width="100%" id="supplier2">
+                        <thead>
+                            <tr>
+                                <th>供应商公司名称</th>
+                                <th width="100">联系人</th>
+                                <th width="100">联系人电话</th>
+                                <th width="100">供应商账期（天）</th>
+                                <th width="100">供应商折扣（%）</th>
+                                <th width="100">订单有效期（天）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="preSetup('modalStep1','modalStep2')">上一步</button>
+                <button type="button" class="btn btn-primary" onclick="saveSupplierSelected()">保存</button>
+            </div>
+        </div>
+        <!--第二步 结束-->
+    </div>
+</div>
+
+
+
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

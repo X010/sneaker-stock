@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>订单或入库单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!--组件部分 End -->
+
+    <!-- 业务处理部分 Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/createOrderController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务处理部分 end -->
+</head>
+<body>
+
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name" id="pageName"></span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">填单时间: </label><span class="text" id="iOrderDate"></span></div>
+                <div class="item"><label class="item-name">订单号: </label><span class="text" id="iOrderId"></span></div>
+                <div class="item"><label class="item-name">入库单号: </label><span class="text" id="iStockId"></span></div>
+                <div class="item" style="display:none;"><label class="item-name">负单单号: </label><span class="text" id="negative_id"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-sign-in" id="importBill" style="display: none;" data-toggle="modal" data-backdrop="static" data-target="#modalImportOrder"> 导入</button>
+            <button type="button" class="btn-tool fa fa-print" id="btn-print"> 打印</button>
+            <button type="button" class="btn-tool fa fa-book" id="btn-help" onclick="startHelpIntro();"> 帮助</button>
+            <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <!-- 单据或订单主体 START -->
+    <div id="printContent">
+        <div class="order-hd container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">填单人：</label>
+                        <div class="item-fields"><span id="fullperson"  disabled class="form-control input-sm"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核人：</label>
+                        <div class="item-fields"><span id="cuname" disabled class="form-control input-sm"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">紧急度：</label>
+                        <div class="item-fields"><span class="">
+                        <select id="rank" class="form-control input-sm" data-step="" data-intro="要货的紧急程度" data-position='bottom'></select>
+                    </span></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="1" data-intro="从这个公司进货" data-position='bottom'>
+                        <label class="item-name">供应商：</label>
+                        <div class="item-fields">
+                            <span class="form-control input-sm" disabled id="iSupplier"></span>
+                            <span class="" disabled id="sSupplier"  style="display: none;">
+                                <select class="form-control input-sm"  onchange="changeSupplierId();" id="supplier"></select>
+                                <input id="supplierName" style="display: none;" type="text" class="form-control input-sm" placeholder="请输入供应商信息"/>
+                                <input id="supplierId"  type="hidden" value="" />
+                                <button type="button" class="btn-small btn-op" style="float: none;" id="inputHand" onclick="inputForHand();">输入</button>
+                            </span>
+                        </div>
+                        <!--<div class="item-fields"><span class="f-select">
+                            <select id="supplier"></select>
+                        </span></div>-->
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="2" data-intro="需要进货的仓库" data-position='bottom'>
+                        <label class="item-name">进货仓库：</label>
+                        <div class="item-fields"><span class="">
+                        <select id="stockInStore" class="form-control input-sm"></select>
+                    </span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="3" data-intro="本单的采购负责人" data-position='bottom'>
+                        <label class="item-name">采购员：</label>
+                        <div class="item-fields">
+                            <div class="input-group input-group-sm">
+                                <!--<select id="buid" class="form-control"></select>-->
+                                <input id="buname" type="text" class="form-control input-sm" placeholder="请输入员工姓名或手机号"/><input id="buid" type="hidden" value="" />
+                                <div class="input-group-btn" id="btnMdyBuyerWrap">
+                                    <button type="button" disabled class="btn btn-sm btn-primary" id="btnMdyBuyer"  onclick="modifyBuyer();">保存修改</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="4" data-intro="进货商品的经营方式" data-position='bottom'>
+                        <label class="item-name">经营方式：</label>
+                        <div class="item-fields"><span class="">
+                        <select id="business" class="form-control input-sm"></select>
+                    </span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/compents/jquery.datepicker.js"></script>
+        <div class="table-container">
+            <div class="table-form">
+            <table cellpadding="0" cellspacing="0" width="" id="goodsListId" data-step="5" data-intro="选择需要采购的商品" data-position='top'>
+                <thead>
+                <tr>
+                    <th class="op">操作</th>
+                    <th>商品编码</th>
+                    <th>商品名称<a href="javascript:" onclick="switchWidth(this, '-');">－</a><a href="javascript:" onclick="switchWidth(this, '+');">＋</a></th>
+                    <th>商品条码</th>
+                    <th>规格</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>单位</th>
+                    <th>箱单价</th>
+                    <th>箱数</th>
+                    <th id="th_prodate">生产日期<a class="fill" name="datetime" href="javascript:" title="用首行值填充其余行">填充</a></th>
+                    <th id="th_expdate">到效日期<a class="fill" name="datetime" href="javascript:" title="用首行值填充其余行">填充</a></th>
+                    <th>含税金额</th>
+                    <th>税率(％)</th>
+                    <th>去税金额</th>
+                    <th>税额</th>
+                    <th>当前库存</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+            <div class="table-empty" style="display: none;">您还没有添加任何商品</div>
+            <div class="form-order-ext" id="mall_info" style=" display: none; padding-top:18px;">
+                <span style="margin-right:10px;"><span style="font-weight:800;">联系人：</span><span id="contacts"></span></span>
+                <span style="margin-right:10px;"><span style="font-weight:800;">联系方式：</span><span id="phone"></span></span>
+                <span style="margin-right:10px;"><span style="font-weight:800;">收货地址：</span><span id="recept"></span></span>
+            </div>
+            <!--
+            <div class="form-order-total" id="formOrderTotal" data-step="5" data-intro="核对单据总金额" data-position='top'>
+                <div class="item-name">
+                    <span class="name">合计数量：<strong id="sumTotal" type="text" disabled="disabled"></strong></span>
+                    <span class="name">税额：<strong id="sumTaxPrice" type="text" disabled="disabled"></strong> 元</span>
+                    <span class="name">含税金额：<strong id="sumAmountPrice" type="text" disabled="disabled"></strong> 元</span>
+                </div>
+            </div>
+            -->
+        </div>
+    </div>
+    <!-- 单据或订单主体 END -->
+
+
+    <div class="table-footer">
+        <div class="group-l" data-step="7" data-intro="备注需要注意的信息" data-position='top'>
+            <div class="form-memo">
+                <div class="item-fields form-inline">
+                    <div class="input-group">
+                        <div class="input-group-addon">备注</div>
+                        <input type="text" class="form-control" style="width: 700px;" id="memo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stamp" id="stamp"></div>
+    </div>
+
+    <!-- 操作区域 Start -->
+    <div class="form-footer">
+        <div class="group-l">
+            <div class="form-order-total" id="formOrderTotal" data-step="6" data-intro="核对单据总金额" data-position='top'>
+                <div class="item-name">
+                    <span class="name">合计数量：<strong id="sumTotal" type="text" disabled="disabled"></strong></span>
+                    <span class="name">税额：<strong id="sumTaxPrice" type="text" disabled="disabled"></strong> 元</span>
+                    <span class="name">含税金额：<strong id="sumAmountPrice" type="text" disabled="disabled"></strong> 元</span>
+                </div>
+            </div>
+        </div>
+        <!--<div class="group-l">
+            <div class="form-memo">
+                <label class="item-name" for="memo">单据状态:</label>
+            </div>
+            <div class="form-memo">
+                <label class="item-name" for="memo" id="statusText"></label>
+            </div>
+        </div>
+
+        <div class="group-l" id="modify_buyer" style="display:none;">
+            <div class="form-memo">
+                <button class="btn btn-primary" onclick="modifyBuyer();" type="button">修改采购员</button>
+            </div>
+        </div>
+        -->
+        <div class="group-r" data-step="8" data-intro="保存信息" data-position='top'>
+
+            <div id="newOrder">
+                <button class="btn btn-primary" id="power-11002" type="submit" onclick="disableBtn(this);createOrder();">保存</button>
+                <button class="btn btn-primary" id="power-11003" type="submit" onclick="disableBtn(this);checkAndPassOrder(1);">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div style="display: none;" id="dirStockIn">
+                <button class="btn btn-primary" id="power-11102" type="submit" onclick="disableBtn(this);createStorage();">保存</button>
+                <button class="btn btn-primary" id="power-11103" onclick="disableBtn(this);checkAndPassStockIn();">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="checkOrderInfo" style="display: none;">
+                <button class="btn btn-danger" id="power-11005-1" type="button" onclick="disableBtn(this);checkNoPassOrder();">作废</button>
+                <button class="btn btn-primary" id="power-11001" type="submit" onclick="disableBtn(this);createOrder(1);">保存</button>
+                <button class="btn btn-primary" id="power-11004" type="submit" onclick="disableBtn(this);checkAndPassOrder();">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="createStockIn" style="display: none;">
+                <button class="btn btn-danger" id="power-11005-2" type="button" onclick="disableBtn(this);checkNoPassOrder();">作废</button>
+                <button class="btn btn-primary" id="power-11006-1" onclick="disableBtn(this);createStorageForOrderId(1);">生成入库单</button>
+                <button class="btn btn-primary" id="power-11007-1" onclick="disableBtn(this);checkAndPassStockIn(1);">生成并审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="createExportStockIn" style="display: none;">
+                <button class="btn btn-primary" id="power-11006-2" onclick="disableBtn(this);createStorageForOrderId(2);">生成入库单</button>
+                <button class="btn btn-primary" id="power-11007-2" onclick="disableBtn(this);checkAndPassStockIn(1);">生成并审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="checkStockIn" style="display: none;">
+                <button class="btn btn-danger" id="power-11105" type="submit" onclick="disableBtn(this);checkAndNoPassStockIn();">作废</button>
+                <button class="btn btn-primary" id="power-11101" type="submit" onclick="disableBtn(this);createStorage(1);">保存</button>
+                <button class="btn btn-primary" id="power-11104" type="submit" onclick="disableBtn(this);checkStockIn();">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <!--<div id="cdStockIn" style="display: none;">
+                <button class="btn btn-primary" type="submit" onclick="disableBtn(this);cdStockIn();">冲单</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="xdStockIn" style="display: none;">
+                <button class="btn btn-primary" type="submit" onclick="disableBtn(this);xdStockIn();">确认修正</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>-->
+            <div id="cxdStockIn" style="display: none;">
+                <button class="btn btn-primary" id="power-11106" type="submit" onclick="disableBtn(this);xdStockIn();">修正</button>
+                <button class="btn btn-primary" id="power-11107" type="submit" onclick="disableBtn(this);cdStockIn();">冲单</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="divbtn-cancel" style="display: none;">
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="customCreate" style="display: none;">
+            </div>
+        </div>
+
+
+
+    </div>
+    <!-- 操作区域 END -->
+</div>
+
+<!-- 导入订单 -->
+<div class="modal fade" id="modalImportOrder">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="title_import">导入订单</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-order-list table-body">
+                    <table cellpadding="0" class="table table-hover" cellspacing="0" width="100%" id="pupupContent">
+                        <thead>
+                        <tr>
+                            <th>订单号</th>
+                            <th>供应商</th>
+                            <th>金额</th>
+                            <th>采购员</th>
+                            <th>填单时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearBillStatus('pupupContent');">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

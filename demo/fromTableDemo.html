@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+    <!-- 组件JS Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.autocomplete.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <!-- 组件JS End -->
+</head>
+<body>
+<table cellpadding="0" cellspacing="0" width="100%" id="goodsListId">
+    <thead>
+    <tr>
+        <th>操作</th>
+        <th>商品编码</th>
+        <th>商品条码</th>
+        <th>商品名称</th>
+        <th>类别</th>
+        <!--<th>品牌</th>-->
+        <th>商品规格</th>
+        <th>含税单价</th>
+        <th>数量</th>
+        <th>含税金额</th>
+        <th>税率(％)</th>
+        <th>去税金额</th>
+        <th>税额</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+<br/>
+<br/>
+<table cellpadding="0" cellspacing="0" width="100%" id="goodsListId2">
+    <thead>
+    <tr>
+        <th>操作</th>
+        <th>商品编码</th>
+        <th>商品条码</th>
+        <th>商品名称</th>
+        <th>类别</th>
+        <!--<th>品牌</th>-->
+        <th>商品规格</th>
+        <th>含税单价</th>
+        <th>数量</th>
+        <th>含税金额</th>
+        <th>税率(％)</th>
+        <th>去税金额</th>
+        <th>税额</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+<script language="JavaScript">
+    var opt = {
+        "rows": 10,
+        "template": [
+            {
+                "name": "id",
+                "type": true,
+                "template": "<a href='javascript:removeItem(#{index});'>移出</a>",
+                "dattr": []
+            },
+            {
+                "name": "gcode",
+                "type": false,
+                "template": "",
+                "dattr": []
+            },
+            {
+                "name": "barcode",
+                "type": false,
+                "template": "",
+                "dattr": []
+            },
+            {
+                "name": "name",
+                "type": true,
+                "template": "<input id='rtname_#{index}' type='text' value='#{name}' size='10' />",
+                "fill": []
+            },
+            {
+                "name": "tname",
+                "type": false,
+                "template": "",
+                "dattr": []
+            },
+            {
+                "name": "spec",
+                "type": false,
+                "template": "",
+                "dattr": []
+            },
+            {
+                "name": "price",
+                "type": true,
+                "template": "<input id='rtprice_#{index}' value='#{price}' type='text' size='5' />",
+                "dattr": []
+            },
+            {
+                "name": "total",
+                "type": true,
+                "template": "<input id='rttotal_#{index}' value='#{total}' type='text' size='5' />",
+                "dattr": []
+            },
+            {
+                "name": "amount_price",
+                "type": true,
+                "template": "<input id='rtamount_price_#{index}' value='#{amount_price}' disabled type='text' size='5' />",
+                "dattr": []
+            },
+            {
+                "name": "tax_price",
+                "type": true,
+                "template": "<input id='rttax_price_#{index}' value='#{tax_price}' disabled type='text' size='5' />",
+                "dattr": []
+            },
+            {
+                "name": "outtax_price",
+                "type": true,
+                "template": "<input id='rtouttax_price_#{index}'  value='#{outtax_price}' disabled type='text' size='5' />",
+                "dattr": []
+            },
+            {
+                "name": "tax_rate",
+                "type": true,
+                "template": "<input id='rttax_rate_#{index}' value='#{tax_rate}' disabled type='text' size='5' />",
+                "dattr": []
+            }
+        ]
+    };
+
+    var initData = [{
+        "id": 1,
+        "name": "五粮液",
+        "gcode": "11111",
+        "barcode": "11111",
+        "tname": "HAHA",
+        "spec": "12",
+        "price": "2.00",
+        "total": 0,
+        "amount_price": 0,
+        "tax_price": 0,
+        "outtax_price": 0,
+        "tax_rate": 0
+    }];
+
+    var initData2 = {
+        "id": 1,
+        "name": "五粮液",
+        "gcode": "11111",
+        "barcode": "11111",
+        "tname": "HAHA",
+        "spec": "12",
+        "price": "2.00",
+        "total": 0,
+        "amount_price": 0,
+        "tax_price": 0,
+        "outtax_price": 0,
+        "tax_rate": 0
+    };
+
+    var states = [
+        'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+        'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
+        'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+        'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+        'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+        'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+        'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
+        'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+        'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+    ];
+
+    $(function () {
+        $("#goodsListId").runnerTableOnStart(opt, null);
+        $("#goodsListId2").runnerTableOnStart(opt, initData);
+        $("#goodsListId2").runnerTableAppend(11, initData2);
+        $("#goodsListId2").runnerTableAppend(12, initData2);
+        $("#goodsListId2").runnerTableAppend(13, initData2);
+        $("#goodsListId2").runnerTableRemove(13);
+
+        $('input[id*="rtname_"]').each(function () {
+            var inputAutoComplete = $(this).attr("id");
+            $("#" + inputAutoComplete).autocomplete({
+                source: [states]
+            });
+        });
+    })
+
+
+    /**
+     * 移动
+     * @param id
+     */
+    function removeItem(id) {
+        alert(id);
+        $("#goodsListId2").runnerTableRemove(id);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>报表索引页</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language="JavaScript" src="/js/SyncAjax.js"></script>
+    <script language="JavaScript" src="/js/UrlList.js"></script>
+    <script language="JavaScript" src="/js/CookieUtil.js"></script>
+
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <!-- 业务JS End -->
+
+
+</head>
+<body>
+<form id="companyForm" method="get" action="">
+    <div class="framepage">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" id="baseinfo" style="display:none;">
+                    <div class="panel panel-default report-list">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">资料档案</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li class="list-item"><a id="9001" href="javascript:openParentForFrame('商品档案', '/mainframe/reports/goodsReports.html?iframeid=9001&iframename=商品档案', 9001);">商品档案</a></li>
+                                <li class="list-item"><a id="9006" href="javascript:openParentForFrame('商品价格', '/mainframe/reports/viewPrice.html?iframeid=9006&iframename=商品价格', 9006);">商品价格</a></li>
+                                <hr />
+                                <li class="list-item"><a id="9002" href="javascript:openParentForFrame('客户档案', '/mainframe/reports/customReports.html?iframeid=9002&iframename=客户档案', 9002);">客户档案</a></li>
+                                <li class="list-item"><a id="9007" href="javascript:openParentForFrame('客户业务员排行', '/mainframe/reports/salesmanTopCustom.html?iframeid=9007&iframename=客户业务员排行', 9007);">客户业务员排行</a></li>
+                                <hr />
+                                <li class="list-item"><a id="9003" href="javascript:openParentForFrame('供应商档案', '/mainframe/reports/supplierReports.html?iframeid=9003&iframename=供应商档案', 9003);">供应商档案</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" id="inventory" style="display:none;">
+                    <div class="panel panel-default report-list">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">库存报表</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li class="list-item"><a id="9104" href="javascript:openParentForFrame('进销存日报表', '/mainframe/reports/erpReportsDay.html?iframeid=9104&iframename=进销存日报表', 9104);">进销存日报表</a></li>
+                                <hr />
+                                <li class="list-item"><a id="9101" href="javascript:openParentForFrame('库存日报表', '/mainframe/reports/inventoryReportsDay.html?iframeid=9101&iframename=库存日报表', 9101);">库存日报表</a></li>
+                                <li class="list-item"><a id="9102" href="javascript:openParentForFrame('实时库存查询', '/mainframe/reports/inventoryReports.html?iframeid=9102&iframename=实时库存查询', 9102);">实时库存查询</a></li>
+                                <li class="list-item"><a id="9103" href="javascript:openParentForFrame('台帐查询', '/mainframe/reports/bookReports.html?iframeid=9103&iframename=台帐查询');">台帐查询</a></li>
+                                <hr />
+                                <li class="list-item"><a id="9108" href="javascript:openParentForFrame('出货单汇总', '/mainframe/reports/stockOutReports.html?iframeid=9108&iframename=出货单汇总', 9108);">出货单汇总</a></li>
+                                <li class="list-item"><a id="9109" href="javascript:openParentForFrame('入库单汇总', '/mainframe/reports/stockInReports.html?iframeid=9109&iframename=入库单汇总', 9109);">入库单汇总</a></li>
+                                <hr />
+                                <li class="list-item"><a id="9105" href="javascript:openParentForFrame('盘点预盈亏查询', '/mainframe/reports/accountSetReports.html?action=pre&iframeid=9105&iframename=盘点预盈亏查询', 9105);">盘点预盈亏查询</a></li>
+                                <li class="list-item"><a id="9106" href="javascript:openParentForFrame('盘点实盈亏查询', '/mainframe/reports/accountSetReports.html?action=real&iframeid=9106&iframename=盘点实盈亏查询', 9106);">盘点实盈亏查询</a></li>
+                                <hr />
+                                <li class="list-item"><a id="9107" href="javascript:openParentForFrame('保质期预警', '/mainframe/reports/inventoryWarningExp.html?iframeid=9107&iframename=保质期预警', 9107);">保质期预警</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" id="sales" style="display:none;">
+                    <div class="panel panel-default report-list">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">销售报表</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li class="list-item"><a id="9201" href="javascript:openParentForFrame('日对账报表', '/mainframe/reports/balanceReportsDay.html?iframeid=9201&iframename=日对账报表', 9201);">日对账报表</a></li>
+                                <li class="list-item"><a id="9202" href="javascript:openParentForFrame('业务员业绩查询', '/mainframe/reports/salesmanTopReports.html?iframeid=9202&iframename=业务员业绩查询', 9202);">业务员业绩查询</a></li>
+                                <li class="list-item"><a id="9210" href="javascript:openParentForFrame('业务员单品铺货查询', '/mainframe/reports/salesmanSingleGoodsSale.html?iframeid=9210&iframename=业务员单品铺货查询', 9210);">业务员单品铺货查询</a></li>
+                                <hr />
+                                <!--<li class="list-item"><a id="9203" href="javascript:openParentForFrame('商品销量查询', '/mainframe/reports/goodsTopReports.html?iframeid=9203&iframename=商品销量查询', 9203);">商品销量查询</a></li>-->
+                                <li class="list-item"><a id="9205" href="javascript:openParentForFrame('商品销量报表', '/mainframe/reports/goodsTopFormReports.html?iframeid=9205&iframename=商品销量报表', 9205);">商品销量报表</a></li>
+                                <li class="list-item"><a id="9208" href="javascript:openParentForFrame('供应商商品销量报表', '/mainframe/reports/goodsTopSupplierFormReports.html?iframeid=9208&iframename=供应商商品销量报表', 9208);">供应商商品销量报表</a></li>
+                                <li class="list-item"><a id="9209" href="javascript:openParentForFrame('客户商品销量报表', '/mainframe/reports/goodsTopCustomFormReports.html?iframeid=9209&iframename=客户商品销量报表', 9209);">客户商品销量报表</a></li>
+                                <hr />
+                                <!--<li class="list-item"><a id="9204" href="javascript:openParentForFrame('客户销量查询', '/mainframe/reports/customTopReports.html?iframeid=9204&iframename=客户销量查询', 9204);">客户销量查询</a></li>-->
+                                <li class="list-item"><a id="9206" href="javascript:openParentForFrame('客户销量报表', '/mainframe/reports/customTopFormReports.html?iframeid=9206&iframename=客户销量报表', 9206);">客户销量报表</a></li>
+                                <hr />
+                                <li class="list-item"><a id="9207" href="javascript:openParentForFrame('供应商销量报表', '/mainframe/reports/supplierTopFormReports.html?iframeid=9207&iframename=供应商销量报表', 9207);">供应商销量报表</a></li>
+                                <!--<li class="list-item"><a id="9206" href="javascript:openParentForFrame('销售分析', '/mainframe/reports/xxxxxxx.html?iframeid=9206&iframename=销售分析');">销售分析 [缺]</a></li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" id="finance" style="display:none;">
+                    <div class="panel panel-default report-list">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">财务报表</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li class="list-item"><a id="9301" href="javascript:openParentForFrame('应付款查询', '/mainframe/reports/financePaymentReports.html?iframeid=9301&iframename=应付款查询', 9301);">应付款查询</a></li>
+                                <li class="list-item"><a id="9302" href="javascript:openParentForFrame('应收款查询', '/mainframe/reports/financeDebitReports.html?iframeid=9302&iframename=应收款查询', 9302);">应收款查询</a></li>
+                                <!--<li class="list-item"><a href="javascript:openParentForFrame('预应付款报表', '/mainframe/reports/financePrePaymentReports.html?iframeid=9303&iframename=预应付款报表');">预应付款报表</a></li>
+                                <li class="list-item"><a href="javascript:openParentForFrame('预应收款报表', '/mainframe/reports/financePreDebitReports.html?iframeid=9304&iframename=预应收款报表');">预应收款报表</a></li>-->
+                                <li class="list-item"><a id="9305" href="javascript:openParentForFrame('结算日对账查询', '/mainframe/reports/financeSettlementReconciliation.html?iframeid=9305&iframename=结算日对账查询', 9305);">结算日对账查询</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="wg-tooltip">
+        <div class="inner"></div>
+    </div>
+
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</form>
+
+<script>
+$().ready(function () {
+    var type = getUrlParam("type");
+    $('.row').children().hide();
+    $('#'+type).show();
+
+    //权限判断
+    $('#'+type+' li').each(function(){
+        if (!checkPower($(this).find('a').attr('id'))){
+            $(this).html($(this).find('a').html());
+        }
+    });
+
+});
+</script>
+</body>
+</html>

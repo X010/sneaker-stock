@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>我的工作台</title>
+    <link rel="stylesheet" href="../css/app.css" type="text/css" media="screen"/>
+    <script type="text/javascript" src="../js/head.js"></script>
+    <script type="text/javascript">
+        var jsROOT = "js/";
+        head.load(jsROOT + "jquery.2.1.1.min.js",function() {
+
+
+            function tooltip(selector,target,data){
+                $(selector).mouseover(function(){
+                    var offset = $(this).offset();
+                    $(target+" .inner").empty().append($(this).attr(data));
+                    $(target).css({"left":offset.left + 15,"top":offset.top - 5}).fadeIn(200)
+                });
+
+                $(selector).mouseout(function(){
+                    $(target).fadeOut(0);
+                });
+
+            }
+
+            tooltip("em.help","#wg-tooltip","data-help");
+            
+        });
+    </script>
+</head>
+<body>
+
+<div class="form">
+    <ul class="form-body">
+        <!--INPUT TEXT-->
+        <li class="item">
+            <label class="item-name"><span class="name">用户</span><em class="help" data-help="asdfasdfas"></em></label>
+            <div class="item-fields w3"><input class="f-input" type="text" ><label class="error">这里是错误信息位置</label></div>
+        </li>
+        <!--INPUT TEXT ERROR-->
+        <li class="item">
+            <label class="item-name"><span class="name">用户</span><em class="help" data-help="asdfasdfas"></em></label>
+            <div class="item-fields w3"><input class="f-input error" type="text" ><label class="error">这里是错误信息位置</label></div>
+        </li>
+        <!--SELECT-->
+        <li class="item">
+            <label class="item-name"><span class="name">表单名</span><em class="help" data-help="aaaaaaaa"></em></label>
+            <div class="item-fields w3">
+                <span class="f-select">
+                <select>
+                    <option value="1" selected>1</option>
+                    <option value="2">1</option>
+                </select>
+                </span>
+                <label class="error">这里是错误信息位置</label>
+            </div>
+        </li>
+        <!--分割线-->
+        <li class="item-separator"></li>
+        <!--CHECKBOX-->
+        <li class="item">
+            <label class="item-name"><span class="name">表单名</span><em class="help" data-help="tyertyert"></em></label>
+            <div class="item-fields w6">
+                <ul class="f-checkbox">
+                    <li><input type="checkbox" name="" checked><span>选项1</span></li>
+                    <li><input type="checkbox" name=""><span>选项2</span></li>
+                    <li><input type="checkbox" name=""><span>选项3</span></li>
+                    <li><input type="checkbox" name=""><span>选项2</span></li>
+                    <li><input type="checkbox" name=""><span>选项3</span></li>
+                    <li><input type="checkbox" name=""><span>选项2</span></li>
+                    <li><input type="checkbox" name=""><span>选项3</span></li>
+                    <li><input type="checkbox" name=""><span>选项2</span></li>
+                    <li><input type="checkbox" name=""><span>选项3</span></li>
+                </ul>
+                <ul class="f-checkbox">
+                    <li class="w2"><input type="checkbox" name="" checked><span>选项1</span></li>
+                    <li><input type="checkbox" name=""><span>选项2</span></li>
+                    <li><input type="checkbox" name=""><span>选项3</span></li>
+                    <li><input type="checkbox" name=""><span>选项2</span></li>
+                    <li><input type="checkbox" name=""><span>选项3</span></li>
+                    <li><input type="checkbox" name=""><span>选项2</span></li>
+                    <li><input type="checkbox" name=""><span>选项3</span></li>
+                    <li><input type="checkbox" name=""><span>选项2</span></li>
+                    <li><input type="checkbox" name=""><span>选项3</span></li>
+                </ul>
+                <label class="error">这里是错误信息位置</label>
+            </div>
+        </li>
+        <!--TEXTAREA-->
+        <li class="item">
+            <label class="item-name"><span class="name">表单名</span><em class="help" data-help="bvnvbnmvbm"></em></label>
+            <div class="item-fields">
+                <div class="f-textarea w6"><textarea rows="3" cols="30"></textarea></div>
+                <label class="error">这里是错误信息位置</label>
+            </div>
+        </li>
+    </ul>
+    <div class="form-footer">
+        <div class="group-l">
+            <button type="submit" class="btn btn-save">保存</button>
+            <button type="reset" class="btn btn-reset">重置</button>
+            <button type="button" class="btn btn-cancel">取消</button>
+        </div>
+        <div class="group-r">
+            <button type="submit" class="btn btn-save">保存</button>
+            <button type="reset" class="btn btn-reset">重置</button>
+            <button type="button" class="btn btn-cancel">取消</button>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

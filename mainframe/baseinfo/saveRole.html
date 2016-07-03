@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>编辑角色</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/module-repository.js"></script>
+    <script language='JavaScript' src='/js/repository/role-repository.js'></script>
+    <script language="JavaScript" src="/js/saveRoleController.js"></script>
+    <!-- 业务JS End -->
+</head>
+<body>
+<div class="framepage">
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">角色设置</span>
+        </div>
+    </div>
+    <div class="form">
+    <form id="roleAddForm" method="get" action="">
+    <ul class="form-body">
+        <li class="item">
+            <label class="item-name"><span class="name">角色名称</span></label>
+            <div class="item-fields"><input class="form-control w2" id="name" name="name" type="text" ></div>
+        </li>
+        <li class="item">
+            <label class="item-name"><span class="name">角色权限</span></label>
+            <div class="item-fields">
+                <div id="moduleList">
+
+                </div>
+                <label class="error" id="addRoleError"></label>
+            </div>
+        </li>
+    </ul>
+    <div class="form-footer">
+        <div class="group-l" id="btndiv-Off" style="display:none;">
+            <button type="button" onClick="disableRole();" class="btn btn-danger">停用角色</button>
+        </div>
+        <div class="group-l" id="btndiv-On" style="display:none;">
+            <button type="button" onClick="enableRole();" class="btn btn-danger">启用角色</button>
+        </div>
+        <div class="group-l" id="btndiv-load">
+            <button type="button" class="btn btn-default" id="importRoles" data-toggle="modal" data-backdrop="static" data-target="#modalImport">导入推荐角色权限</button>
+            <button type="button" onClick="refrush();" class="btn btn-default">还原该角色</button>
+        </div>
+        <div class="group-r">
+            <input type="submit" class="btn btn-primary" value="保存">
+            <!--<button type="button" onClick="history.go(-1);location.reload()" class="btn btn-default">关闭</button>-->
+            <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+        </div>
+    </div>
+    </form>
+    </div>
+</div>
+
+<!-- 导入订单 -->
+<div class="modal fade" id="modalImport">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="title_import">选择要导入的权限角色</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-order-list table-body">
+                    <table cellpadding="0" class="table table-hover" cellspacing="0" width="100%" id="pupupContent">
+                        <thead>
+                        <tr>
+                            <th>角色ID</th>
+                            <th>角色名称</th>
+                            <th>拥有权限数量</th>
+                            <th>创建时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

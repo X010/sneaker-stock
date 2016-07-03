@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>客户订单列表(分配)</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/smartMenu.css" />
+    <script type="text/javascript" src="/js/compents/jquery.smartMenu.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务部分 Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/customRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language='JavaScript' src='/js/repository/goods-repository.js'></script>
+    <script language="JavaScript" src="/js/outOrderThelibraryModifyController.js"></script>
+    <!-- 业务部分 END -->
+</head>
+<body>
+
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">客户订单分配</span>
+            <span class="subname">客户订单来源于客户发起的采购订单</span>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-refresh" onClick="refrush();"> 刷新</button>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <!-- 条件过滤 Start-->
+    <div class="filter-data form-inline">
+        <div class="filter-data-group clearfix">
+            <div class="group-l">
+                <div class="form-group">
+                    <script src="/js/compents/jquery.datepicker.js"></script>
+                    <label for="begin_date" class="">时间:</label>
+                    <div class="input-group input-group-sm" style="width: 140px;">
+                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                        <input type="text" class="form-control" id="begin_date" placeholder="选择开始日期" />
+                    </div>
+                    <label for="end_date" class="">至</label>
+                    <div class="input-group input-group-sm" style="width: 140px;">
+                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                        <input type="text" class="form-control" id="end_date" placeholder="选择结束日期" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="statusNumber" class="">状态:</label>
+                    <div class="input-group input-group-sm">
+                        <select id="statusNumber" class="form-control" onchange="refrush();">
+                            <!--<option value="">- 全部 -</option>-->
+                            <option value="2" selected>正常</option>
+                            <option value="9">已取消</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="store" class="">出库仓库:</label>
+                    <div class="input-group input-group-sm">
+                        <select id="store" class="form-control" onchange="refrush();"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="rank" class="">紧急度:</label>
+                    <div class="input-group input-group-sm">
+                        <select id="rank" class="form-control" onchange="refrush();">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="search_goods" class="">商品:</label>
+                    <input type="text" class="form-control input-sm" id="search_goods" placeholder="请输入商品关键字" value=""/><input type="hidden" id="search_goods_id" value="" />
+                </div>
+                <div class="form-group">
+                    <label for="custom" class="">客户:</label>
+                    <input id="customName" type="text" class="form-control input-sm" placeholder="请输入客户名称或手机号"/><input id="custom" type="hidden" value="" />
+                </div>
+                <!--<div class="form-group">
+                    <label for="suid" class="">业务员:</label>
+                    <input id="suname" type="text" class="form-control input-sm" placeholder="请输入员工姓名或手机号"/><input id="suid" type="hidden" value="" />
+                </div>-->
+                <div class="form-group">
+                    <label for="sorderid" class="">单号:</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" id="sorderid" placeholder="请输入单号" value=""/>
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-info" onClick="refrush();">查询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 条件过滤 End-->
+
+    <div class="table-body">
+        <div class="table-body-inner">
+        <table cellpadding="0" cellspacing="0" width="" id="outOrderList">
+            <thead>
+            <tr>
+                <th class="w100">订单号</th>
+                <th class="w180">商城订单号</th>
+                <th class="w200">客户</th>
+                <th class="w100">出库仓库</th>
+                <th class="w80">业务员</th>
+                <th class="w100">总金额</th>
+                <th class="w80">紧急度</th>
+                <th class="w140">填单时间</th>
+                <th class="w80">订单来源</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="table-empty"></div>
+        </div>
+    </div>
+    <div class="table-footer">
+        <div class="group-r">
+            <div class="pagination" id="split"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>进价促销调价单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!-- 组件JS部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/priceRepository.js"></script>
+    <script language="JavaScript" src="/js/createSalesPromotionPriceController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">进价促销调价单</span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">填单时间: </label><span class="text" id="iOrderDate"></span></div>
+                <div class="item"><label class="item-name">进价促销调价单号: </label><span class="text" id="priceId"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-book" id="btn-help" onclick="startHelpIntro();"> 帮助</button>
+            <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <div id="printContent">
+        <!-- 表头部头 Start -->
+        <div class="order-hd container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                    <div class="item">
+                        <label class="item-name">填单人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="fullperson"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                    <div class="item">
+                        <label class="item-name">审核人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="cuname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                    <div class="item">
+                        <label class="item-name">审核时间：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="checktime"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="item" data-step="1" data-intro="先确认本次调价的范围" data-position='bottom'>
+                        <label class="item-name">调价范围：</label>
+
+                        <div class="item-fields" id="stores">
+                            <span class="store-check-list"><label><input type="checkbox" id="checkall" value="" /> 公司</label></span>
+                            <span class="store-check-list" id="stockInStore"></span>
+                            <!--<span class="f-select" id="stockInStore">
+                                <select id="stockInStore"></select>
+                            </span>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <!--
+                <div class="item" data-step="2" data-intro="本次促销调价将在这个时间开始" data-position='right'>
+                    <label class="item-name">开始日期：</label>
+                    <div class="item-fields">
+                        <script src="/js/compents/jquery.datepicker.js"></script>
+                        <div class="item-fields">
+                            <input type="text" class="f-input-date" id="startEffectTime"/>
+                            <input type="text" class="f-input-date" id="startEffectHour" size="15" value="00:00:00"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="item" data-step="3" data-intro="本次促销调价将在这个时间结束" data-position='top'>
+                    <label class="item-name">结束时间：</label>
+                    <div class="item-fields">
+                        <input type="text" class="f-input-date" id="endEffectTime"/>
+                        <input type="text" class="f-input-date" id="endEffectHour" size="15" value="23:59:59"/>
+                    </div>
+                </div>
+                -->
+
+        </div>
+        <!-- 表头部分  End -->
+
+        <!--  主体部分 Start -->
+        <script src="/js/compents/jquery.datepicker.js"></script>
+        <div class="table-container" data-step="2" data-intro="选择本次促销的商品,并进行价格和生效时间设置" data-position='top'>
+            <div class="table-form">
+            <table cellpadding="0" cellspacing="0" width="" id="stockinSalePriceList">
+                <thead>
+                <tr>
+                    <th class="op">操作</th>
+                    <th>商品编码</th>
+                    <th>商品名称<a href="javascript:" onclick="switchWidth(this, '-');">－</a><a href="javascript:" onclick="switchWidth(this, '+');">＋</a></th>
+                    <th>商品条码</th>
+                    <th>规格</th>
+                    <th>单位</th>
+                    <th>开始日期<a name="datetime" class="fill" href="javascript:" title="用首行值填充其余行">填充</a></th>
+                    <th>开始时间<a name="datetime" class="fill" href="javascript:" title="用首行值填充其余行">填充</a></th>
+                    <th>结束日期<a name="datetime" class="fill" href="javascript:" title="用首行值填充其余行">填充</a></th>
+                    <th>结束时间<a name="datetime" class="fill" href="javascript:" title="用首行值填充其余行">填充</a></th>
+                    <th>原进价</th>
+                    <th>促销进价</th>
+                    <th>调价差额</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        <!-- 主体部分 END -->
+
+
+    </div>
+
+
+    <div class="table-footer">
+        <div class="group-l" data-step="3" data-intro="备注需要注意的信息" data-position='top'>
+            <div class="form-memo">
+                <div class="item-fields form-inline">
+                    <div class="input-group">
+                        <div class="input-group-addon">备注</div>
+                        <input type="text" class="form-control" style="width: 700px;" id="memo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stamp" id="stamp"></div>
+    </div>
+
+    <!-- 表尾部分 Start -->
+    <div class="form-footer">
+        <!--<div class="group-l">
+            <div class="form-memo">
+                <label class="item-name" for="memo">单据状态:</label>
+            </div>
+            <div class="form-memo">
+                <label class="item-name" for="memo" id="statusText"></label>
+            </div>
+        </div>-->
+        <div class="group-r" data-step="4" data-intro="保存信息" data-position='top'>
+            <div id="newStockinSalesPrice">
+                <button class="btn btn-primary" id="power-12001" type="submit" onclick="disableBtn(this);saveSalesPromotionPrice('create');">保存</button>
+                <button class="btn btn-primary" id="power-12002" type="submit" onclick="disableBtn(this);saveSalesPromotionPrice('create_and_check');">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="checkStockinSalesPrice" style="display: none;">
+                <button class="btn btn-primary" id="power-12003" type="submit" onclick="disableBtn(this);saveSalesPromotionPrice('check');">审核</button>
+                <button class="btn btn-danger" id="power-12004" type="submit" onclick="disableBtn(this);saveSalesPromotionPrice('delete');">作废</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="divbtn-cancel" style="display: none;">
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 表尾结整 End -->
+
+    <!-- 弹窗 -->
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+
+    <!-- 原价格提示 -->
+    <table id="tips_price" class="tips-table dm-shadow" cellpadding="0" cellspacing="0" width="250"></table>
+</div>
+</body>
+</html>

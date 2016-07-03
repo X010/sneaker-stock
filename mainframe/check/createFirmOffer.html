@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>新建实盘单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <script language="javascript" src="/js/compents/bootstrap.file-input.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/checkRepository.js"></script>
+    <script language="JavaScript" src="/js/createFrimOfferController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start -->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">实盘单</span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">实盘单号: </label><span class="text" id="checkId"></span></div>
+                <div class="item"><label class="item-name">帐盘单号: </label><span class="text" id="sys_id"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <!--<button type="button" class="btn-tool" id="btn-print" onclick="printBill('printContent')">打印</button>-->
+            <button type="button" class="btn-tool" onclick="startHelpIntro();">帮助</button>
+            <button type="button" class="btn-tool" id="btn-list">历史</button>
+        </div>
+    </div>
+    <!-- 头部 End -->
+
+    <!-- 主体 Start -->
+    <div id="printContent">
+        <div class="order-hd container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="1" data-intro="选择要盘点的仓库" data-position='buttom'>
+                        <label class="item-name">盘点仓库：</label>
+                        <div class="item-fields"><span class="">
+                        <select id="store" class="form-control input-sm" onchange="checkStoreIsForAccountSet();"></select>
+                    </span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">实盘人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="fullperson"></span></div>
+                    </div>
+                </div>
+                <!--<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="cuname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核时间：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="checktime"></span></div>
+                    </div>
+                </div>-->
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">实盘时间：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="createtime"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-container" data-step="2" data-intro="选择盘点的商品以及实际数量" data-position='top'>
+            <div class="table-form">
+            <table cellpadding="0" cellspacing="0" width="" id="frimOfferList">
+                <thead>
+                <tr>
+                    <th class="op">操作</th>
+                    <th>商品编码</th>
+                    <th>商品名称<a href="javascript:" onclick="switchWidth(this, '-');">－</a><a href="javascript:" onclick="switchWidth(this, '+');">＋</a></th>
+                    <th>商品条码</th>
+                    <th>规格</th>
+                    <th>单位</th>
+                    <th>实盘数目</th>
+                    <th>实盘箱数</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+    <div class="table-footer">
+        <div class="group-l" data-step="3" data-intro="备注需要注意的信息" data-position='top'>
+            <div class="form-memo">
+                <div class="item-fields form-inline">
+                    <div class="input-group">
+                        <div class="input-group-addon">备注</div>
+                        <input type="text" class="form-control" style="width: 500px;" id="memo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="group-r" id="div-loadFile" style="display:none;">
+            <div class="form-group form-inline">
+                <input type="file" id="file" data-filename-placement="inside" onchange="loadFile(this.files, frimOfferFile)"/>
+            </div>
+        </div>
+    </div>
+    <!-- 主体 END -->
+
+
+    <!-- 尾部 Start -->
+    <div class="form-footer">
+
+        <div class="group-r" data-step="4" data-intro="完成" data-position='top'>
+            <div id="createFrimOffer">
+                <!--<button class="btn btn-primary" type="submit" onclick="disableBtn(this);createFirmOffer(1);">保存</button>-->
+                <button class="btn btn-primary" id="power-12102" type="submit" onclick="disableBtn(this);createFirmOffer(2);">保存</button>
+                <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+            </div>
+            <!--<div id="checkFrimOffer" style="display: none;">
+                <button class="btn btn-primary" type="submit" onclick="disableBtn(this);checkFirmOffer();">审核</button>
+                <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+            </div>-->
+            <div id="lookup" style="display: none;">
+                <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 尾部 End -->
+
+    <!-- 弹窗 -->
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</div>
+</body>
+</html>

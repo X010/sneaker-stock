@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.timers-1.2.js"></script>
+    <script language="JavaScript">
+        var i = 0;
+
+        $(function () {
+            $('body').everyTime('1s', 'A', function () {
+                $("#msg").html($("#msg").html() + "<br />" + "msg" + i);
+                i++;
+            });
+        })
+    </script>
+</head>
+<body>
+<div id="msg"></div>
+</body>
+</html>

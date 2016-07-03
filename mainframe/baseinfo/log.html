@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>日志查看</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css"/>
+    <script type="text/javascript" src="/js/compents/moment.min.js"></script>
+    <script type="text/javascript" src="/js/compents/daterangepicker.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!--组件部分 End -->
+
+    <!-- 业务处理部分 Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/log-repository.js'></script>
+    <script language="JavaScript" src="/js/logController.js"></script>
+    <!-- 业务处理部分 end -->
+</head>
+<body>
+
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">日志查询</span>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <!-- 条件过滤 Start-->
+    <div class="filter-data form-inline">
+        <div class="filter-data-group clearfix">
+            <div class="group-l">
+                <div class="form-group">
+                    <label for="reservationtime" class="">时间:</label>
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                        <input type="text" class="form-control" name="reservation" id="reservationtime" placeholder="选择时间范围" style="width: 270px;" onchange="refrush();" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="menuType" class="">操作类型:</label>
+                    <select class="form-control input-sm" id="menuType" onchange="refrush();">
+                        <option value="" selected>全部</option>
+                        <option value="1">系统登录</option>
+                        <option value="2">基础资料</option>
+                        <option value="3">系统设置</option>
+                        <option value="4">进销流程</option>
+                        <option value="5">库存管理</option>
+                        <option value="6">退货管理</option>
+                        <option value="7">价格管理</option>
+                        <option value="8">盘点管理</option>
+                        <option value="9">财务管理</option>
+                        <option value="10">仓储管理</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="flag" class="">操作结果:</label>
+                    <select class="form-control input-sm" id="flag" onchange="refrush();">
+                        <option value="" selected>全部</option>
+                        <option value="1">成功</option>
+                        <option value="0">失败</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="uid" class="">操作人:</label>
+                    <div class="input-group">
+                        <input id="uname" type="text" class="form-control input-sm" placeholder="请输入员工姓名或手机号"/><input id="uid" type="hidden" value="" />
+                        <span class="input-group-btn"><button type="button" class="btn btn-info btn-sm" onClick="refrush()">查询</button></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 条件过滤 End-->
+
+    <div class="table-body">
+        <div class="table-body-inner">
+            <table cellpadding="0" cellspacing="0" width="" id="log">
+                <thead>
+                <tr>
+                    <th class="w160">操作时间</th>
+                    <th class="w80">操作类型</th>
+                    <th class="w120">操作模块</th>
+                    <th class="w200">操作内容</th>
+                    <th class="w60">操作结果</th>
+                    <th class="w80">操作人</th>
+                    <th class="w140">IP地址</th>
+                    <th class="w140">标记</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div id="table-empty" style="display:block;">没有记录</div>
+        </div>
+
+    </div>
+    <div class="table-footer">
+        <div class="group-r">
+            <div class="pagination" id="split"></div>
+        </div>
+    </div>
+</div>
+<form class="form-horizontal">
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var obj = new Date();
+        var now = obj.toISOString();
+        var today = now.substr(0, 10);
+
+        $('#reservationtime').daterangepicker({
+            "timePicker": true,
+            "timePicker24Hour": true,
+            "ranges": {
+                "今天 0点~8点": [
+                    today + 'T00:00:00.000Z',
+                    today + 'T08:00:00.000Z'
+                ],
+                "今天 8点~12点": [
+                    today + 'T08:00:00.000Z',
+                    today + 'T12:00:00.000Z'
+                ],
+                "今天 12点~19点": [
+                    today + 'T12:00:00.000Z',
+                    today + 'T19:00:00.000Z'
+                ],
+                "今天 19点~24点": [
+                    today + 'T19:00:00.000Z',
+                    today + 'T23:59:59.999Z'
+                ]
+            },
+            "locale": {
+                "format": "YYYY-MM-DD HH:mm",
+                "separator": " ~ ",
+                "applyLabel": "确 定",
+                "cancelLabel": "取 消",
+                "fromLabel": "从",
+                "toLabel": "到",
+                "customRangeLabel": "自定义",
+                "daysOfWeek": [
+                    "日",
+                    "一",
+                    "二",
+                    "三",
+                    "四",
+                    "五",
+                    "六"
+                ],
+                "monthNames": [
+                    "一月",
+                    "二月",
+                    "三月",
+                    "四月",
+                    "五月",
+                    "六月",
+                    "七月",
+                    "八月",
+                    "九月",
+                    "十月",
+                    "十一月",
+                    "十二月"
+                ],
+                "firstDay": 1
+            },
+            "linkedCalendars": false,
+            //"startDate": "2016-01-01 00:00",
+            //"endDate": "2016-02-01 00:00"
+        }, function(start, end, label) {
+            //console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+        });
+    });
+
+
+
+
+</script>
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

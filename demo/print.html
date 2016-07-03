@@ -1,0 +1,71 @@
+<!-- 各种单据打印页面 -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>智能云仓</title>
+    <link href="/css/compent.css" rel="stylesheet" type="text/css"/>
+    <script language="JavaScript">
+        /**
+         * 打印单据
+         */
+        function printBill(container) {
+            var allPageContent = document.body.innerHTML;
+            document.body.innerHTML = document.getElementById(container).innerHTML;
+            window.print();
+            document.body.innerHTML = allPageContent;
+        }
+    </script>
+    <script language="JavaScript" src="../js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.dialog-0.1.js"></script>
+
+</head>
+<body>
+<div id="ff"></div>
+<table id="test">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>name</td>
+        <td>status</td>
+        <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+<script language="JavaScript">
+    $("#ff").dialog({
+        move: true,
+        width: "auto",
+        height: "auto",
+        title: "错误提示",
+        content: "系统错误",
+        ok: function () {
+            alert("错误了");
+        },
+        buttons: []
+    }).dialog("open");
+
+
+    var data = [
+        {"id": 1, "name": "test", "status": 1},
+        {"id": 1, "name": "test", "status": 1},
+        {"id": 1, "name": "test", "status": 1}];
+
+    var conf = [
+        {"name": "id", "type": 1},
+        {"name": "name", "type": 1},
+        {"name": "status", "type": 1},
+        {
+            "name": null,
+            "type": 2,
+            "template": "<a href='http://www.baidu.com?id={id}'>{name}</a>",
+            "fill": ["id", "name"]
+        }
+    ];
+   // bindTable("test", data, conf);
+</script>
+</body>
+</html>
+

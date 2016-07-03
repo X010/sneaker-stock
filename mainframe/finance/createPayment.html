@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>创建付款单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/customRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/config-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/financeRepository.js"></script>
+    <script language="JavaScript" src="/js/createPaymentController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">付款单</span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">填单时间: </label><span class="text" id="createtime"></span></div>
+                <div class="item"><label class="item-name">付款单号: </label><span class="text" id="setlementId"></span></div>
+                <div class="item" style="display:none;"><label class="item-name">负单单号: </label><span class="text" id="negative_id"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-print" id="btn-print"> 打印</button>
+            <button type="button" class="btn-tool fa fa-book" onclick="startHelpIntro();"> 帮助</button>
+            <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
+        </div>
+    </div>
+    <!-- 头部 End -->
+
+    <!-- 主体 Start-->
+    <div id="printContent">
+        <div class="order-hd container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">填单人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="fullperson"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="cuname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核时间：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="checktime"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" id="div-companyType">
+                    <div class="item" data-step="1" data-intro="选择往来单位类型" data-position='buttom'>
+                        <label class="item-name">单位类型：</label>
+
+                        <div class="item-fields">  <span class="">
+                        <select onchange="changeCompanyType();" class="form-control input-sm" id="companyType">
+                            <option value="1" selected="selected">供应商</option>
+                            <option value="2">客户</option>
+                        </select></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="2" data-intro="选择具体往来单位" data-position='buttom'>
+                        <label class="item-name">往来单位：</label>
+
+                        <div class="item-fields"><span class="">
+                            <!--<select class="form-control input-sm"  id="company"></select>
+                            <input id="supplierName" type="text" class="form-control input-sm" />
+                            <input id="customName" type="text" class="form-control input-sm" style="diaplay:none;"/>-->
+                            <input id="companyName" type="text" class="form-control input-sm" placeholder="请输入单位名称"/>
+                            <input id="company" type="hidden" value="" />
+                        </span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="3" data-intro="付款单的支付方式" data-position='buttom'>
+                        <label class="item-name">支付方式：</label>
+                        <div class="item-fields"><span class="">
+                            <select class="form-control input-sm" id="pay_type"></select>
+                        </span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-container">
+            <div class="table-form" data-step="4" data-intro="填写款项内容" data-position='top'>
+            <table cellpadding="0" cellspacing="0" width="" id="paymentList">
+                <thead>
+                <tr>
+                    <th width="150">会计科目</th>
+                    <th>金额</th>
+                    <th>备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+            <div class="table-empty" style="display: none;">您还没有添加任何单据</div>
+        </div>
+        <div class="table-footer">
+            <div class="group-l">
+            </div>
+            <div class="stamp" id="stamp"></div>
+        </div>
+    </div>
+    <!-- 主体 End -->
+
+    <!-- 尾部 Start -->
+    <div class="form-footer">
+        <!--<div class="group-l">
+            <div class="form-memo">
+                <label class="item-name">单据状态:</label>
+            </div>
+            <div class="form-memo">
+                <label class="item-name" id="statusText"></label>
+            </div>
+        </div>-->
+        <div class="group-l">
+            <div class="form-order-total" id="formOrderTotal" data-step="5" data-intro="核对单据总金额" data-position='top'>
+                <div class="item-name">
+                    <span class="name">总计金额：<strong id="amountReal" ></strong> 元</span>
+                </div>
+            </div>
+        </div>
+        <div class="group-r" data-step="6" data-intro="保存单据" data-position='top'>
+            <div id="createPayment">
+                <button class="btn btn-primary" id="power-12501" type="submit" onclick="disableBtn(this);createPayment();">保存</button>
+                <button class="btn btn-primary" id="power-12502" type="submit" onclick="disableBtn(this);checkPayment(1);">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="chPayment" style="display: none">
+                <button class="btn btn-primary" id="power-12503" type="submit" onclick="disableBtn(this);checkPayment();">审核</button>
+                <button class="btn btn-danger" id="power-12504" type="submit" onclick="disableBtn(this);delPayment();">作废</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="xdPayment" style="display: none">
+                <button class="btn btn-primary" id="power-12505" type="submit" onclick="disableBtn(this);xdPayment();">冲单</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="vwPayment" style="display: none">
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 尾部 End-->
+</div>
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

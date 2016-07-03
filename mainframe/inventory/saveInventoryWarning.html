@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>库存预警管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!--组件部分 End -->
+
+    <!-- 业务处理部分 Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/store-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/goods-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/inventoryRepository.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <script language="JavaScript" src="/js/saveInventoryWarningController.js"></script>
+    <!-- 业务处理部分 end -->
+</head>
+<body>
+
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name" id="pageName">库存预警管理</span>
+            <!--<div class="bill-info">
+                <div class="item"><label class="item-name"></label><span class="text" id="iOrderDate"></span></div>
+            </div>-->
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-book" id="btn-help" onclick="startHelpIntro();"> 帮助</button>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <!-- 单据或订单主体 START -->
+    <div id="printContent">
+        <div class="order-hd container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="1" data-intro="选择要设置库存预警的仓库" data-position='buttom'>
+                        <label class="item-name">预警仓库：</label>
+                        <div class="item-fields"><span class="">
+                            <select id="store"  class="form-control input-sm"></select>
+                        </span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <!--
+                        <label class="item-name">操作人：</label>
+                        <div class="item-fields"><span id="fullperson" disabled class="form-control input-sm"></span></div>
+                        -->
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-container">
+            <div class="table-form">
+            <table cellpadding="0" cellspacing="0" width="" id="goodsListId" data-step="4" data-intro="设置具体商品的预警箱数" data-position='top'>
+                <thead>
+                <tr>
+                    <th class="op">操作</th>
+                    <th>商品编码</th>
+                    <th>商品名称<a href="javascript:" onclick="switchWidth(this, '-');">－</a><a href="javascript:" onclick="switchWidth(this, '+');">＋</a></th>
+                    <th>商品条码</th>
+                    <th>规格</th>
+                    <th>单位</th>
+                    <th>预警数量</th>
+                    <th>预警箱数</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+            <div class="table-empty" style="display: none;">您还没有添加任何商品</div>
+        </div>
+    </div>
+    <!-- 单据或订单主体 END -->
+
+    <!-- 尾部部分 Start -->
+    <div class="table-footer">
+        <!--<div class="group-l" data-step="5" data-intro="备注需要注意的信息" data-position='top'>
+            <div class="form-memo">
+                <div class="item-fields form-inline">
+                    <div class="input-group">
+                        <div class="input-group-addon">备注</div>
+                        <input type="text" class="form-control" style="width: 700px;" id="memo">
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+    <!-- 尾部部分 End -->
+
+    <!-- 操作区域 Start -->
+    <div class="form-footer">
+        <div class="group-l">
+            <!--<div class="form-order-total" id="formOrderTotal" data-step="6" data-intro="核对年度任务指标值" data-position='top'>
+                <div class="item-name">
+                    <span class="name">
+                        年度总计：<strong id="sumTotal" type="text" disabled="disabled">0</strong>
+                        <span id="type_unit">箱</span>
+                    </span>
+                </div>
+            </div>-->
+        </div>
+        <div class="group-r" data-step="7" data-intro="保存设置" data-position='top'>
+            <div id="btn-save">
+                <button class="btn btn-primary" id="power-10506" type="button" onclick="disableBtn(this);saveData();">保存</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 操作区域 END -->
+</div>
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

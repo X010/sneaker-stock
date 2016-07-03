@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/config-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/company-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/customRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/financeRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/returnGoodsRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/picking-cart-repository.js"></script>
+    <script language="JavaScript" src="/js/compents/baiduTemplate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery-barcode.min.js"></script>
+    <script language="JavaScript" src="/js/billPrintController.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/compent.css" type="text/css" media="screen"/>
+    <link href="/css/print.css" rel="stylesheet" media="screen">
+    <link href="/css/print.css" rel="stylesheet" media="print">
+</head>
+<body>
+
+
+
+
+
+
+<!------------------------------------- 采购订单(121) 模板定义 Start ------------------------------------->
+
+<script id="template_121_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">采购订单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_121_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>供应商:<%=out_cname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>订单单号:<%=id%></td>
+        <td>采购单位:<%=in_cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>入库单号:无</td>
+        <td>采购仓库:<%=in_sname%></td>
+        <td>采购员:<%=buname%></td>
+    </tr>
+</script>
+
+<script id="template_121_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>规格</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>单位</th>
+            <th>箱单价</th>
+            <th>箱数</th>
+            <th>税率</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-gname">
+                    <%=data_list[i].gname%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gbarcode%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gspec%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].unit_price%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gunit%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].price_box%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total_box%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gtax_rate%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].amount_price%></strong>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-gname">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total_box%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.amount_price%></strong>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_121_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td>备注:<%=memo%></td>
+            <td class="item-right">
+                <!--<span class="total-item">总数量: <strong></strong></span> -->
+                <span class="total-item">总金额: <strong><%=amount%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>送货方:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 采购订单(121) 模板定义 End ------------------------------------->
+
+
+
+<!------------------------------------- 入库单(161) 模板定义 Start ------------------------------------->
+
+<script id="template_161_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">采购入库单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_161_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>供应商:<%=out_cname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>订单单号:<%=order_id%></td>
+        <td>入库单位:<%=cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>入库单号:<%=id%></td>
+        <td>入库仓库:<%=in_sname%></td>
+        <td>采购员:<%=buname%></td>
+    </tr>
+</script>
+
+<script id="template_161_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>规格</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>单位</th>
+            <th>箱单价</th>
+            <th>箱数</th>
+            <th>税率</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-gname">
+                    <%=data_list[i].gname%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gbarcode%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gspec%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].unit_price%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gunit%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].price_box%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total_box%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gtax_rate%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].amount_price%></strong>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-gname">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total_box%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.amount_price%></strong>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_161_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td>备注:<%=memo%></td>
+            <td class="item-right">
+                <!--<span class="total-item">总数量: <strong></strong></span> -->
+                <span class="total-item">总金额: <strong><%=amount%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>供应商:___________</td>
+            <td>库管:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 入库单(161) 模板定义 End ------------------------------------->
+
+
+
+<!------------------------------------- 采购退货单(181) 模板定义 Start ------------------------------------->
+
+<script id="template_181_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">采购退货单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_181_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>供应商:<%=in_cname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>退货申请单号:<%=order_id%></td>
+        <td>退货单位:<%=cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>采购退货单号:<%=id%></td>
+        <td>退货仓库:<%=sname%></td>
+        <td>责任人:<%=suname%></td>
+    </tr>
+</script>
+
+<script id="template_181_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>规格</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>单位</th>
+            <th>箱数</th>
+            <th>税率</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-gname">
+                    <%=data_list[i].gname%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gbarcode%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gspec%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].unit_price%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gunit%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total_box%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gtax_rate%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].amount_price%></strong>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-gname">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total_box%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.amount_price%></strong>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_181_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td>退货原因:<%=memo%></td>
+            <td class="item-right">
+                <!--<span class="total-item">总数量: <strong></strong></span> -->
+                <span class="total-item">总金额: <strong><%=amount%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>供应商:___________</td>
+            <td>库管:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 采购退货单(181) 模板定义 End ------------------------------------->
+
+
+
+<!------------------------------------- 出库单(261) 模板定义 Start ------------------------------------->
+
+<script id="template_261_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">客户出货单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_261_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>客户:<%=in_cname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>订单单号:<%=order_id%></td>
+        <td>出货单位:<%=cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>出货单号:<%=id%></td>
+        <td>出库仓库:<%=sname%></td>
+        <td>业务员:<%=suname%></td>
+    </tr>
+</script>
+
+<script id="template_261_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>规格</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>单位</th>
+            <th>箱单价</th>
+            <th>箱数</th>
+            <th>税率</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-gname">
+                    <%=data_list[i].gname%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gbarcode%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gspec%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].unit_price%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gunit%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].price_box%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total_box%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gtax_rate%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].amount_price%></strong>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-gname">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total_box%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.amount_price%></strong>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_261_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td>备注:<%=memo%></td>
+            <td class="item-right">
+                <!--<span class="total-item">总数量: <strong></strong></span> -->
+                <span class="total-item"><%=is_cod%>总金额: <strong><%=amount%></strong> 元</span>
+                <!---<span class="total-item">总金额: <strong><%=amount%></strong> 元</span>-->
+            </td>
+        </tr>
+    </table>
+    <div class="print-remark"><%=mall_info%></div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>客户:___________</td>
+            <td>库管:___________</td>
+            <td>司机:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 出库单(261) 模板定义 End ------------------------------------->
+
+
+
+<!------------------------------------- 客户退货单(281) 模板定义 Start ------------------------------------->
+
+<script id="template_281_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">客户退货单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_281_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>退货客户:<%=out_cname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>客户退货申请单号:<%=order_id%></td>
+        <td>退入单位:<%=cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>客户退货单号:<%=id%></td>
+        <td>退回仓库:<%=sname%></td>
+        <td>责任人:<%=buname%></td>
+    </tr>
+</script>
+
+<script id="template_281_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>规格</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>单位</th>
+            <th>箱数</th>
+            <th>税率</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-gname">
+                    <%=data_list[i].gname%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gbarcode%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gspec%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].unit_price%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gunit%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total_box%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gtax_rate%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].amount_price%></strong>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-gname">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total_box%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.amount_price%></strong>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_281_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td>备注:<%=memo%></td>
+            <td class="item-right">
+                <!--<span class="total-item">总数量: <strong></strong></span> -->
+                <span class="total-item">总金额: <strong><%=amount%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>客户:___________</td>
+            <td>库管:___________</td>
+            <td>司机:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 销售退回单(281) 模板定义 End ------------------------------------->
+
+
+
+
+<!------------------------------------- 客户结算单(811) 模板定义 Start ------------------------------------->
+
+<script id="template_811_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">客户结算单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_811_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>客户:<%=ccname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>审核时间:<%=checktime%></td>
+        <td>供货单位:<%=cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>结算单号:<%=id%></td>
+        <td>付款方式:<%=pay_type%></td>
+        <td>填单人:<%=uname%></td>
+    </tr>
+</script>
+
+<script id="template_811_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>单据类型</th>
+            <th>出入库单号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>规格</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>单位</th>
+            <th>箱数</th>
+            <th>税率</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-center">
+                    <%=data_list[i].stock_type%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].stock_id%>
+                </td>
+                <td class="item-gname">
+                    <%=data_list[i].gname%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gbarcode%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gspec%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].unit_price%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gunit%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total_box%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gtax_rate%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].amount_price%></strong>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-center">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-gname"></td>
+            <td class="item-center"></td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total_box%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.amount_price%></strong>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_811_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-subtotal" id="subTotal">
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td class="item-right">
+                <span class="total-item">应结金额：<strong><%=amountTobe%></strong> 元</span>
+                <span class="total-item">优惠金额：<strong><%=amountCut%></strong> 元</span>
+                <span class="total-item">实结金额：<strong><%=amountReal%></strong> 元</span>
+                <span class="total-item">税额：<strong><%=amountTax%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <div class="print-remark">备注:<%=memo%></div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>客户:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 客户结算单(811) 模板定义 End ------------------------------------->
+
+
+
+<!------------------------------------- 供应商结算单(822) 模板定义 Start ------------------------------------->
+
+<script id="template_822_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">供应商结算单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_822_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>供应商:<%=scname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>审核时间:<%=checktime%></td>
+        <td>供应商折扣:<%=discountText%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>结算单号:<%=id%></td>
+        <td>填单人:<%=uname%></td>
+        <td>付款方式:<%=pay_type%></td>
+    </tr>
+    <tr>
+        <td colspan="3">结算仓库:<%=snames%></td>
+    </tr>
+</script>
+
+<script id="template_822_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>单据类型</th>
+            <th>出入库单号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>规格</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>单位</th>
+            <th>箱数</th>
+            <th>税率</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-center">
+                    <%=data_list[i].stock_type%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].stock_id%>
+                </td>
+                <td class="item-gname">
+                    <%=data_list[i].gname%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gbarcode%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gspec%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].unit_price%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gunit%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].total_box%></strong>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gtax_rate%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].amount_price%></strong>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-center">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-gname"></td>
+            <td class="item-center"></td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.total_box%></strong>
+            </td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.amount_price%></strong>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_822_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-subtotal" name="subTotal">
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td class="item-right">
+                <span class="total-item">应结金额：<strong><%=amountTobe%></strong> 元</span>
+                <span class="total-item">优惠金额：<strong><%=amountCut%></strong> 元</span>
+                <span class="total-item">实结金额：<strong><%=amountReal%></strong> 元</span>
+                <span class="total-item">税额：<strong><%=amountTax%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <div class="print-remark">备注:<%=memo%></div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>供应商:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 供应商结算单(822) 模板定义 End ------------------------------------->
+
+
+<!------------------------------------- 收款单(833) 模板定义 Start ------------------------------------->
+
+<script id="template_833_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">收款单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_833_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>往来单位:<%=dcname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>审核时间:<%=checktime%></td>
+        <td>收款单位:<%=cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>收款单号:<%=id%></td>
+        <td>支付方式:<%=pay_type%></td>
+        <td>填单人:<%=uname%></td>
+    </tr>
+</script>
+
+<script id="template_833_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th width="5">序号</th>
+            <th width="120">会计科目</th>
+            <th width="100">金额</th>
+            <th></th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-center">
+                    <%=data_list[i].account_name%>
+                </td>
+                <td class="item-right">
+                    <%=data_list[i].amount_price%>
+                </td>
+                <td class="">
+
+                </td>
+                <td class="">
+                    <%=data_list[i].memo%>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-center">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-right">
+                <%=data_sum.amount_price%>
+            </td>
+            <td class=""></td>
+            <td class=""></td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_833_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td class="item-right">
+                <span class="total-item">总金额: <strong><%=amount_price%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>往来单位:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 收款单(833) 模板定义 End ------------------------------------->
+
+
+
+<!------------------------------------- 付款单(844) 模板定义 Start ------------------------------------->
+
+<script id="template_844_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">付款单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_844_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>往来单位:<%=dcname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>审核时间:<%=checktime%></td>
+        <td>付款单位:<%=cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>付款单号:<%=id%></td>
+        <td>支付方式:<%=pay_type%></td>
+        <td>填单人:<%=uname%></td>
+    </tr>
+</script>
+
+<script id="template_844_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th width="5">序号</th>
+            <th width="100">会计科目</th>
+            <th width="100">金额</th>
+            <th></th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-center">
+                    <%=data_list[i].account_name%>
+                </td>
+                <td class="item-right">
+                    <%=data_list[i].amount_price%>
+                </td>
+                <td class="">
+
+                </td>
+                <td class="">
+                    <%=data_list[i].memo%>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-center">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-right">
+                <%=data_sum.amount_price%>
+            </td>
+            <td class=""></td>
+            <td class=""></td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_844_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td class="item-right">
+                <span class="total-item">总金额: <strong><%=amount_price%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>往来单位:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 付款单(844) 模板定义 End ------------------------------------->
+
+
+<!------------------------------------- 会员收款单(877) 模板定义 Start ------------------------------------->
+
+<script id="template_877_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">会员收款单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_877_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>会员:<%=dcname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>审核时间:<%=checktime%></td>
+        <td>收款单位:<%=cname%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>收款单号:<%=id%></td>
+        <td>支付方式:<%=pay_type%></td>
+        <td>填单人:<%=uname%></td>
+    </tr>
+</script>
+
+<script id="template_877_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th width="5">序号</th>
+            <th width="150">会计科目</th>
+            <th width="100">金额</th>
+            <th></th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+        <tr>
+            <td class="item-no"><%=i+1+i_list%></td>
+            <td class="item-center">
+                <%=data_list[i].account_name%>
+            </td>
+            <td class="item-right">
+                <%=data_list[i].amount_price%>
+            </td>
+            <td class="">
+
+            </td>
+            <td class="">
+                <%=data_list[i].memo%>
+            </td>
+        </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-center">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-right">
+                <%=data_sum.amount_price%>
+            </td>
+            <td class=""></td>
+            <td class=""></td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_877_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td class="item-right">
+                <span class="total-item">总金额: <strong><%=amount_price%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>会员:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 会员收款单(877) 模板定义 End ------------------------------------->
+
+
+
+<!------------------------------------- 拣货派车单(29) 模板定义 Start ------------------------------------->
+
+<script id="template_29_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <!--<div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>-->
+    </div>
+    <h1 class="print-title">拣货派车单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_29_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>送货客户:<%=ccname%></td>
+        <td>送货地区:<%=address%></td>
+    </tr>
+    <tr>
+        <td>拣派单号:<%=id%></td>
+        <td>出库仓库:<%=sname%></td>
+        <td>司机:<%=duname%></td>
+    </tr>
+    <tr>
+        <td>填单人:<%=uname%></td>
+        <td>单据状态:<%=status%></td>
+        <td>车辆:<%=car_license%></td>
+    </tr>
+</script>
+
+<script id="template_29_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>规格</th>
+            <th>数量</th>
+            <th>箱数</th>
+            <th>箱重(Kg)</th>
+            <th>出货单号</th>
+            <th>总数量</th>
+            <th>总箱数</th>
+            <th>总重(Kg)</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <%for(var j=0; j<data_list[i].length; j++){%>
+                <tr>
+                    <td class="item-no"><%=i+1+i_list%></td>
+                    <td class="item-center">
+                        <%=data_list[i][j].gname%>
+                    </td>
+                    <td class="item-center">
+                        <%=data_list[i][j].gbarcode%>
+                    </td>
+                    <td class="item-center">
+                        <%=data_list[i][j].gspec%>
+                    </td>
+                    <td class="item-gname">
+                        <%=data_list[i][j].total%>
+                    </td>
+                    <td class="item-right">
+                        <%=data_list[i][j].volume%>
+                    </td>
+                    <td class="item-right">
+                        <%=data_list[i][j].weight%>
+                    </td>
+                    <td class="item-center">
+                        <strong><%=data_list[i][j].stock_out_id%></strong>
+                    </td>
+
+                    <% if(j == 0){ %>
+                        <td class="item-right" rowspan="<%=data_list[i].length%>">
+                            <%=data_list[i][j].group_total%>
+                        </td>
+                        <td class="item-right" rowspan="<%=data_list[i].length%>">
+                            <strong><%=data_list[i][j].volume_sum%></strong>
+                        </td>
+                        <td class="item-right" rowspan="<%=data_list[i].length%>">
+                            <strong><%=data_list[i][j].weight_sum%></strong>
+                        </td>
+                    <% } %>
+                </tr>
+            <%}%>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-center">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-gname"></td>
+            <td class="item-center"></td>
+            <td class="item-right"></td>
+            <td class="item-right"></td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <%=data_sum.group_total%>
+            </td>
+            <td class="item-right">
+                <%=data_sum.volume_sum%>
+            </td>
+            <td class="item-right">
+                <%=data_sum.weight_sum%>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_29_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-subtotal" name="subTotal">
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td>备注:<%=memo%></td>
+            <td class="item-right">
+                <span class="total-item">货物总重：<strong><%=weightSum%></strong> Kg</span>
+            </td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 拣货派车单(29) 模板定义 End ------------------------------------->
+
+
+
+
+<!------------------------------------- 代销结算单(855) 模板定义 Start ------------------------------------->
+
+<script id="template_855_title" type="text/html">
+    <div class="print-addon">
+        <div class="print-datetime">打印时间:<%=now%></div>
+        <div class="print-page"> 页数:<%=page_current%> / <%=page_sum%></div>
+        <div class="print-type">(白:结账 / 红:客户 / 绿:仓存 / 蓝:对账 / 黄:财务)</div>
+    </div>
+    <h1 class="print-title">代销结算单</h1>
+    <div class="order-no">
+        <span class="order-barcode-text">单据号:</span>
+        <span class="order-barcode"></span>
+    </div>
+</script>
+
+<script id="template_855_header" type="text/html">
+    <tr>
+        <td>填单时间:<%=createtime%></td>
+        <td>供应商:<%=scname%></td>
+        <td>单据状态:<%=status%></td>
+    </tr>
+    <tr>
+        <td>审核时间:<%=checktime%></td>
+        <td>供应商折扣:<%=discountText%></td>
+        <td>审核人:<%=cuname%></td>
+    </tr>
+    <tr>
+        <td>结算单号:<%=id%></td>
+        <td>结算仓库:<%=sname%></td>
+        <td>填单人:<%=uname%></td>
+    </tr>
+    <tr>
+        <td>结算日期:<%=settle_date%></td>
+        <td>付款方式:<%=pay_type%></td>
+    </tr>
+</script>
+
+<script id="template_855_list" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0"  width="100%" class="print-list">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>商品条码</th>
+            <th>单位</th>
+            <th>销售数量</th>
+            <th>销售金额</th>
+            <th>实结数量</th>
+            <th>实结金额</th>
+            <th>折后实结金额</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%for(var i=0; i<data_list.length; i++){%>
+            <tr>
+                <td class="item-no"><%=i+1+i_list%></td>
+                <td class="item-gname">
+                    <%=data_list[i].gname%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gbarcode%>
+                </td>
+                <td class="item-center">
+                    <%=data_list[i].gunit%>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].current_sell_total%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].current_sell_amount%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].current_real_total%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].current_real_amount%></strong>
+                </td>
+                <td class="item-right">
+                    <strong><%=data_list[i].current_after_discount_amount%></strong>
+                </td>
+            </tr>
+        <%}%>
+
+        <tr>
+            <td class="item-no"></td>
+            <td class="item-gname">单据总计(共<%=page_sum%>页)</td>
+            <td class="item-center"></td>
+            <td class="item-center"></td>
+            <td class="item-right">
+                <strong><%=data_sum.current_sell_total%></strong>
+            </td>
+            <td class="item-right">
+                <strong><%=data_sum.current_sell_amount%></strong>
+            </td>
+            <td class="item-right">
+                <strong><%=data_sum.current_real_total%></strong>
+            </td>
+            <td class="item-right">
+                <strong><%=data_sum.current_real_amount%></strong>
+            </td>
+            <td class="item-right">
+                <strong><%=data_sum.current_after_discount_amount%></strong>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</script>
+
+<script id="template_855_footer" type="text/html">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-subtotal" name="subTotal">
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-list-total">
+        <tr>
+            <td class="item-right">
+                <span class="total-item">应结金额：<strong><%=current_expect_amount%></strong> 元</span>
+                <span class="total-item">实结金额：<strong><%=current_real_amount%></strong> 元</span>
+                <span class="total-item">折后实结金额：<strong><%=current_after_discount_amount%></strong> 元</span>
+            </td>
+        </tr>
+    </table>
+    <div class="print-remark">备注:<%=memo%></div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="print-sign">
+        <tr>
+            <td>供应商:___________</td>
+            <td>财务:___________</td>
+        </tr>
+    </table>
+</script>
+
+<!------------------------------------- 代销结算单(855) 模板定义 End ------------------------------------->
+
+
+
+
+
+
+
+
+
+<div class="framepage" id="mainpage">
+    <!-- 内容主体  Start-->
+    <div id="print_area" class="print_content">
+        <!-- 这里会循环嵌入分页内容(#print_content) -->
+    </div>
+    <!-- 内容主体  End -->
+
+    <!-- 操作区域 Start -->
+    <div class="form-footer">
+        <div class="group-l">
+
+        </div>
+        <div class="group-r">
+            <div id="newOrder">
+                <button class="btn btn-primary" onclick="printPage('print_area');" type="button">开始打印</button>
+                <button class="btn btn-default" id="btn-back" type="button">返回</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- 操作区域 END -->
+</div>
+
+<!-- 用于循环的内容主体 Start -->
+<div id="print_content" class="print_content" style="display:none;">
+    <div name="com_content_title">
+
+    </div>
+
+    <table cellpadding="0" cellspacing="0" border="0" class="print-header" name="com_content_header">
+    </table>
+
+    <div class="print-body">
+        <div name="com_content_list">
+
+        </div>
+
+        <div name="com_content_footer">
+
+        </div>
+    </div>
+</div>
+<!-- 用于循环的内容主体 End -->
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+
+</body>
+</html>

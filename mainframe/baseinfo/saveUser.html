@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>用户详情</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/repository/role-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="JavaScript" src="/js/saveUserController.js"></script>
+    <script language="JavaScript" src="/js/compent.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/metroStyle/metroStyle.css"/>
+    <script language="JavaScript" src="/js/compents/jquery.ztree.all-3.5.min.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertreeuser.js"></script>
+    <!-- 业务JS End -->
+</head>
+<body>
+<form id="userForm" method="get" action="">
+    <div class="framepage">
+        <div class="page-title clearfix">
+            <div class="group-l">
+                <span class="name">员工信息</span>
+            </div>
+        </div>
+        <ul class="form-body">
+            <li class="item">
+                <label class="item-name" for="username"><span class="name">登录账号</span></label>
+
+                <div class="item-fields">
+                    <input id="username" name="username" class="form-control w2" type="text" placeholder="建议填写手机号码">
+                    <span style="display:none;" id="tips_username"></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="password"><span class="name">登录密码</span></label>
+
+                <div class="item-fields"><input id="password" name="password" class="form-control w2" type="password" placeholder="员工的登录密码" autocomplete="off"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="name"><span class="name">真实姓名</span></label>
+
+                <div class="item-fields">
+                    <input id="name" name="name" class="form-control w2" type="text" placeholder="员工的真实姓名" autocomplete="off">
+                    <span style="display:none;" id="tips_name"></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="phone"><span class="name">手机号码</span></label>
+
+                <div class="item-fields"><input id="phone" name="phone" class="form-control w2" type="text" placeholder="例如：13888888888"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="idcard"><span class="name">身份证号码</span></label>
+
+                <div class="item-fields"><input id="idcard" name="idcard" class="form-control w2" type="text" placeholder="15或18位的身份证号码"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="email"><span class="name">邮箱地址</span></label>
+
+                <div class="item-fields"><input id="email" name="email" class="form-control w2" type="text" placeholder="例如：admin@ms9d.com"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="belong"><span class="name">隶属关系</span></label>
+
+                <div class="item-fields">
+                <span class="">
+                <select class="form-control w2" id="belong">
+                    <option value="1" selected>自有</option>
+                    <option value="2">外借</option>
+                </select>
+                </span>
+                    <label class="error"></label>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="worktype"><span class="name">职务</span></label>
+
+                <div class="item-fields">
+                <span class="">
+                <select class="form-control w2" id="worktype">
+                    <option value="1">董事</option>
+                    <option value="2">总经理</option>
+                    <option value="3">经理</option>
+                    <option value="4">主管</option>
+                    <option value="5">组长</option>
+                    <option value="6" selected>普通员工</option>
+                </select>
+                </span>
+                    <label class="error"></label>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="group_name"><span class="name">分组</span></label>
+                <div class="item-fields form-inline">
+                    <input disabled id="group_name" class="form-control w2" type="text">
+                    <input disabled id="group_id" class="form-control w2" type="hidden" value="">
+                    <ul id="userCateTree" class="ztree"></ul>
+                </div>
+            </li>
+            <!--<li class="item">
+                <label class="item-name" for="discount"><span class="name">最低折扣</span></label>
+
+                <div class="item-fields"><input id="discount" name="discount" class="form-control w1" type="text"></div>
+            </li>-->
+            <li class="item-separator"></li>
+            <li class="item" id="li_stores">
+                <label class="item-name" for="stores"><span class="name">仓库</span></label>
+
+                <div class="item-fields">
+                    <ul class="f-checkbox clearfix" id="stores">
+
+                    </ul>
+                    <span class="error" id="storeError"></span>
+                </div>
+            </li>
+            <li class="item" id="li_roles">
+                <label class="item-name" for="roles"><span class="name">角色</span></label>
+
+                <div class="item-fields">
+                    <div id="roles" class="clearfix">
+
+                    </div>
+                    <span class="error" id="roleError"></span>
+                </div>
+            </li>
+            <li class="item-separator"></li>
+            <li class="item">
+                <label class="item-name" for="memo"><span class="name">备注</span></label>
+
+                <div class="item-fields">
+                    <textarea class="form-control w4" id="memo" name="memo" rows="6" cols="60"></textarea>
+                    <label class="error" id=""></label>
+                </div>
+            </li>
+        </ul>
+        <div class="form-footer">
+            <div class="group-l" id="btndiv-Off" style="display:none;">
+                <button type="button" onClick="disableUser();" class="btn btn-danger">删除</button>
+            </div>
+            <!--<div class="group-l" id="btndiv-On" style="display:none;">
+                <button type="button" onClick="enableUser();" class="btn btn-danger">启用</button>
+            </div>-->
+            <div class="group-r">
+                <button type="submit" class="btn btn-primary" id="btn-save">保存</button>
+                <!--<a href="user.html" class="btn btn-default">关闭</a></div>-->
+                <button id="btn-cancel" class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

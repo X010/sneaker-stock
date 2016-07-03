@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>商品管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/smartMenu.css" />
+    <script type="text/javascript" src="/js/compents/jquery.smartMenu.js"></script>
+    <!-- 组件JS End -->
+    
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/repository/goods-type-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language='JavaScript' src='/js/repository/goods-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <script language="JavaScript" src="/js/goodsController.js"></script>
+    <script language="JavaScript" src="/js/compent.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/metroStyle/metroStyle.css"/>
+    <script language="JavaScript" src="/js/compents/jquery.ztree.all-3.5.min.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertreegoods.js"></script>
+    <!-- 业务JS End -->
+    <!-- 表格中横向滚动条
+        <script language="JavaScript">
+            $().ready(function () {
+
+                $("#tableDivArea > table").fixedTable({
+                    tableId: "goods",
+                    fixedColumns: [2, 7],
+                    tblWidth: $(this).width()
+                });
+                window.onload = function () {
+                    window.onresize = adjust;
+                    adjust();
+                };
+                function adjust(obj) {
+                    var w = document.body.clientWidth;
+                    $("#tableDivArea .fixedArea").resizeTable(w);
+                }
+                fixTableHover();
+            });
+        </script>
+        -->
+    </head>
+    <body>
+    <div class="framepage">
+
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">商品管理</span>
+        </div>
+    </div>
+
+    <div class="goods-container">
+        <div class="goods-container-menu">
+            <div class="panel panel-default goods-cate-tree">
+                <div class="panel-heading">
+                    <span>商品分类</span>
+                    <span style="float:right;"><a id="power-10505" href="javascript:flushType();">清空分类</a></span>
+                </div>
+                <div class="panel-body">
+                    <div id="initGoodsType"></div>
+                    <!-- 商品分类树 BEGIN -->
+                    <ul id="goodsCateTree" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="goods-container-content">
+            <div class="filter-data form-inline">
+                <div class="filter-data-group clearfix">
+                    <div class="group-l">
+                        <div class="form-group form-group-sm">
+                            <label>状态:</label>
+                            <select id="statusNumber" class="form-control" onchange="refrush();">
+                                <option value="">全部</option>
+                                <option value="1">正常</option>
+                                <option value="2">停止采购</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="search" placeholder="请输入商品信息" value=""/>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-info" onClick="refrush();">查询</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-r">
+                        <button type="button" id="btn-addGoods" title="只可在最小分类添加商品" class="btn btn-default btn-sm" data-toggle="modal" data-backdrop="static" data-target="#modalImport">添加商品到此分类</button>
+                        <button type="button" id="power-10608" class="btn btn-default btn-sm">新建商品</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-body" id="tableDivArea">
+                <div class="table-body-inner">
+                <table cellpadding="0" cellspacing="0" width="" id="goods">
+                    <thead>
+                    <tr>
+                        <th class="w100">商品编码</th>
+                        <th class="w280">商品名称</th>
+                        <th class="w120">商品条码</th>
+                        <th class="w50">规格</th>
+                        <th class="w50">单位</th>
+                        <th class="w80">类型</th>
+                        <th class="w50">税率</th>
+                        <th class="w100">品牌</th>
+                        <th class="w60">状态</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div id="table-empty"></div>
+                </div>
+            </div>
+            <div class="table-footer">
+                <div class="group-l"></div>
+                <div class="group-r">
+                    <div class="pagination" id="split"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 导入商品 -->
+<div class="modal fade" id="modalImport">
+    <div class="modal-dialog">
+        <!--第一步-->
+        <div class="modal-content" id="modalStep1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">查找并选择要导入的商品</h4>
+            </div>
+            <div class="modal-body">
+                <div class="goods-container-menu">
+                    <div class="panel panel-default goods-cate-tree">
+                        <div class="panel-heading">
+                            <span>系统商品分类</span>
+                        </div>
+                        <div class="panel-body" style="height:230px; overflow-y:auto;">
+                            <!-- 系统商品分类树 -->
+                            <ul id="sysgoodsCateTree" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="goods-container-content">
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                        <div class="search form-inline">
+                            <!--<select class="form-control input-sm" id="goodTypeSelect">
+                                <option value="" selected>- 全部 -</option>
+                            </select>-->
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="esSearch" placeholder="输入商品名称或编码" value=""/>
+                                <input type="hidden" id="gtid" value=""/>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-info" id="searchButton" onClick="searchAndFull('pupupContent')">查询</button>
+                                </div>
+                            </div>
+                            <div class="input-group" id="msg" style="font-size: 12px;color: #F00;"></div>
+                        </div>
+                        <div class="search-list">
+                            <table style="display:none;" cellpadding="0" class="table table-condensed table-hover" cellspacing="0" width="100%" id="pupupContent">
+                                <thead>
+                                <tr>
+                                    <th width="30"></th>
+                                    <th>商品编码</th>
+                                    <th>商品名称</th>
+                                    <th>商品条码</th>
+                                    <th>规格</th>
+                                    <th>单位</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " style="display: none;">
+                        <div class="selected-list">
+                            <ul id="selectedList"></ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="saveSelected();openPupupNext('modalStep1','modalStep2',true,'请选择相应的商品!');loadGoodsTwo();">下一步</button>
+            </div>
+        </div>
+        <!--第一步 结束-->
+        <!--第二步-->
+        <div class="modal-content"  id="modalStep2" style="display: none;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">完善商品资料</h4>
+            </div>
+            <div class="modal-body">
+                <div class="detail-list table-form">
+                    <table cellpadding="0"  cellspacing="0" width="100%" id="goods2">
+                        <thead>
+                        <tr name="tr-b2b">
+                            <!--<th>商品编码</th>-->
+                            <th>商品名称</th>
+                            <th width="150">供应商</th>
+                            <th>进货价</th>
+                            <th>经销商价</th>
+                            <th>酒店价</th>
+                            <th>商超价</th>
+                            <th>便利店价</th>
+                            <th>箱重(Kg)</th>
+                            <th>经营方式</th>
+                        </tr>
+                        <tr name="tr-b2c" style="display:none;">
+                            <th>商品名称</th>
+                            <th width="150">供应商</th>
+                            <th>进货价</th>
+                            <th>非会员价</th>
+                            <th>计价会员价</th>
+                            <th>包年会员价</th>
+                            <th>合伙会员价</th>
+                            <th>箱重(Kg)</th>
+                            <th>经营方式</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="PopWinTwoErr"></span>
+                <button type="button" class="btn btn-default" onclick="preSetup('modalStep1','modalStep2')">上一步</button>
+                <button type="button" class="btn btn-primary" title="保存后只能通过调价单修改价格" onclick="saveGoodsSelected('pupupContent')">保存</button>
+            </div>
+        </div>
+        <!--第二步 结束-->
+    </div>
+</div>
+
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

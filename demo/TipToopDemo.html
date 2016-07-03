@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.poshytip.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css"/>
+    <script language="JavaScript">
+        $(function () {
+            $('#demo-tip-green').poshytip({
+                className: 'tip-green',
+                offsetX: -7,
+                offsetY: 16,
+                allowTipHover: false
+            });
+        });
+    </script>
+</head>
+<body>
+
+<!-- #demo-tip-green -->
+<p><a id="demo-tip-green" title="Hey, there! This is a tooltip." href="#">.tip-green</a></p>
+
+<div class="code-block">
+			<pre class="sh_javascript">$('#demo-tip-green').poshytip({
+	className: 'tip-green',
+	offsetX: -7,
+	offsetY: 16,
+	allowTipHover: false
+});</pre>
+</div>
+</body>
+</html>

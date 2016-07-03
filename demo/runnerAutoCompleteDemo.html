@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+    <!-- 组件JS Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.autocomplete.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <script language="javascript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/goods-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+
+    <!-- 组件JS End -->
+</head>
+<body>
+<input type="text" index="1" id="bindID" value=""/>
+<input type="text" index="2" id="bindID2" value=""/><br/>
+<input type="text" index="3" id="bindID3" value=""/>
+<script language="JavaScript">
+
+    var tempData = null;
+    var onsearch = function (val, parent, divID) {
+        var list = [];
+        var searchVal = val;
+        if (searchVal != null && searchVal != "undefined" && searchVal != "" && searchVal.length > 0) {
+            var params = {
+                "in_sid": storein,
+                "search": searchVal
+            };
+            var res = stockRes.readStockInGoodsByField(1, autoCompletePageNum, params);
+            //var res = stockRes.readStockInGoods(1, autoCompletePageNum, storein, searchVal);
+            if (res != null && res.data != null && res.data.length > 0) {
+                tempData = res.data;
+                var index = parent.attr("index");
+                //console.log(index);
+                for (var i = 0; i < tempData.length; i++) {
+                    list[i] = "<li sid='" + tempData[i].gid + "'  onclick='selectLiItem(" + index + "," + i + ",\"" + divID + "\")' >" + "[" + tempData[i].barcode + "]" + tempData[i].gname + "<li>";
+                }
+            }
+        }
+        return list;
+    };
+
+    /**
+     * 选择UL LI ITEM 并填充数据
+     */
+    function selectLiItem(index, tempIndex, divID) {
+        console.log(index);
+        console.log(tempIndex);
+        if (tempData != null && tempData.length > 0) {
+            console.log(tempData[tempIndex]);
+            //填充数据到列表
+
+        }
+        $("#" + divID).toggle();
+    }
+
+    var stockRes = new stockRepository();
+    var storein = 58;
+    $(function () {
+        $("#bindID").runnerAutoComplete({
+            onSearch: onsearch
+        });
+        $("#bindID2").runnerAutoComplete({
+            onSearch: onsearch
+        });
+        $("#bindID3").runnerAutoComplete({
+            onSearch: onsearch
+        })
+    });
+</script>
+</body>
+
+</html>

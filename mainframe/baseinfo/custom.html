@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>客户管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.cxselect.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/smartMenu.css" />
+    <script type="text/javascript" src="/js/compents/jquery.smartMenu.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/jquery.tablesorter.js"></script>
+    <script language="JavaScript" src="/js/repository/company-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/customRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/customController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">客户管理</span>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-plus" id="btn-create"> 新建</button>
+            <!--<button type="button" id="power-10401" class="btn-tool fa fa-sign-in" data-toggle="modal" data-backdrop="static" data-target="#modalImport"> 导入</button>-->
+            <button type="button" class="btn-tool fa fa-refresh" onClick="refrush();"> 刷新</button>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <!-- 条件过滤 Start-->
+    <div class="filter-data form-inline">
+        <div class="filter-data-group clearfix">
+            <div class="group-l">
+                <div class="form-group">
+                    <label for="suid" class="">业务员:</label>
+                    <input id="suname" type="text" class="form-control input-sm" placeholder="请输入员工姓名或手机号"/><input id="suid" type="hidden" value="" />
+                </div>
+                <div class="form-group">
+                    <label for="cctype" class="">客户类型:</label>
+                    <div class="input-group input-group-sm">
+                        <select id="cctype" class="form-control" onchange="refrush();">
+                            <option value="">- 全部 -</option>
+                            <option value="1">经销商</option>
+                            <option value="2">酒店饭店</option>
+                            <option value="3">商场超市</option>
+                            <option value="4">便利店</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cctype" class="">客户:</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" id="search" placeholder="请输入客户名称或手机号" />
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-info" onClick="refrush();">查询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 条件过滤 End-->
+
+    <div class="table-body">
+        <div class="table-body-inner">
+        <table cellpadding="0" cellspacing="0" width="" id="custom">
+            <thead>
+            <tr>
+                <th class="w200">客户名称</th>
+                <th class="w80">客户类型</th>
+                <th class="w80">客户账期</th>
+                <th class="w100">出货仓库</th>
+                <th class="w100">联系人</th>
+                <th class="w120">联系电话</th>
+                <th class="w100">默认业务员</th>
+                <th class="w120">默认业务员电话</th>
+                <th class="w140">创建时间</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="table-empty"></div>
+        </div>
+    </div>
+    <div class="table-footer">
+        <div class="group-l"></div>
+        <div class="group-r">
+            <div class="pagination" id="split"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 导入客户 -->
+<div class="modal fade" id="modalImport">
+    <div class="modal-dialog">
+        <!--第一步-->
+        <div class="modal-content" id="modalStep1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">查找并选择要导入的客户</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="search form-inline">客户地域:
+                            <div class="input-group" id="region" data-url="/js/compents/city.json">
+                                <span class="area-item"><select class="form-control input-sm province" id="areapro"></select></span>
+                                <span class="area-item"><select class="form-control input-sm city" id="areacity"></select></span>
+                                <span class="area-item"><select class="form-control input-sm area" id="areazone"></select></span>
+                            </div>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="esSearch" placeholder="输入公司名称或编码" value=""/>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-info" id="searchButton">查询</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                        <div class="search-list">
+                            <table style="display:none;" cellpadding="0" class="table table-condensed table-hover" cellspacing="0" width="100%" id="pupupContent">
+                                <thead>
+                                <tr>
+                                    <th width="30"></th>
+                                    <th width="80">客户编码</th>
+                                    <th>客户公司名称</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                        <div class="selected-list">
+                            <ul id="selectedList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="saveSelected();openPupupNext('modalStep1','modalStep2',true,'请选择相应客户!');loadCompanyTwo();">下一步</button>
+            </div>
+        </div>
+        <!--第一步 结束-->
+        <!--第二步-->
+        <div class="modal-content"  id="modalStep2" style="display: none;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">完善客户信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="detail-list table-form">
+                    <table cellpadding="0"  cellspacing="0" width="100%" id="custom2">
+                        <thead>
+                        <tr>
+                            <th width="200">客户公司名称</th>
+                            <th width="100">联系人</th>
+                            <th width="100">联系人电话</th>
+                            <th width="100">客户类型</th>
+                            <th width="100">客户账期（天）</th>
+                            <th width="100">出库仓库</th>
+                            <th width="150">业务员</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="preSetup('modalStep1','modalStep2')">上一步</button>
+                <button type="button" class="btn btn-primary" onclick="saveCompanySelected()">保存</button>
+            </div>
+        </div>
+        <!--第二步 结束-->
+    </div>
+</div>
+
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

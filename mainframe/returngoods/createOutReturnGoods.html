@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>采购退货单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!--组件部分 End -->
+
+    <!-- 业务部分 Start-->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/customRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/returnGoodsRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/inventoryRepository.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <script language="JavaScript" src="/js/createOutReturnGoods.js"></script>
+    <!-- 业务部分 End-->
+</head>
+<body>
+
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">采购退货单</span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">填单时间: </label><span class="text" id="iOrderDate"></span></div>
+                <div class="item"><label class="item-name">退货申请单号: </label><span class="text" id="iOrderId"></span></div>
+                <div class="item"><label class="item-name">采购退货单号: </label><span class="text" id="billId"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-print" id="btn-print"> 打印</button>
+            <button type="button" class="btn-tool fa fa-book" id="btn-help" onclick="startHelpIntro();"> 帮助</button>
+            <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
+        </div>
+    </div>
+    <!-- 头部 End-->
+
+    <!-- 主题定义 Start -->
+    <div id="printContent">
+        <div class="order-hd container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">填单人：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="fullperson"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="cuname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="1" data-intro="商品要退给的供应商" data-position='bottom'>
+                        <label class="item-name" id="supplierText" for="supplier">供应商：</label>
+
+                        <div id="supplierDiv" class="item-fields">
+                        <span class="">
+                            <!--<select class="form-control input-sm" id="supplier"></select>-->
+                            <input id="supplierName" type="text" class="form-control input-sm" placeholder="请输入供应商信息"/><input id="supplier" type="hidden" value="" />
+</span>
+                        </div>
+                        <label id="customText" style="display: none;"></label>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="2" data-intro="商品从该仓库退出" data-position='bottom'>
+                        <label class="item-name" id="storeShow">出货仓库：</label>
+
+                        <div class="item-fields"><span class="">
+                            <select class="form-control input-sm" id="stockInStore"></select>
+                        </span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="3" data-intro="退货负责人" data-position='bottom'>
+                        <label class="item-name">责任人：</label>
+                        <div class="item-fields"><span class="">
+                            <!--<select class="form-control input-sm" id="brokerageman"></select>-->
+                            <input id="brokerageman_name" type="text" class="form-control input-sm" placeholder="请输入员工姓名或手机号"/><input id="brokerageman" type="hidden" value="" />
+</span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="4" data-intro="商品的经营方式" data-position='bottom'>
+                        <label class="item-name">经营方式：</label>
+                        <div class="item-fields"><span class="">
+                        <select id="business" class="form-control input-sm"></select>
+                    </span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-form">
+            <table data-step="5" data-intro="选择需要退货的商品" data-position='top' cellpadding="0" cellspacing="0" width="" id="goodsListId">
+                <thead>
+                <tr>
+                    <th class="op">操作</th>
+                    <th>商品编码</th>
+                    <th>商品名称<a href="javascript:" onclick="switchWidth(this, '-');">－</a><a href="javascript:" onclick="switchWidth(this, '+');">＋</a></th>
+                    <th>商品条码</th>
+                    <th>规格</th>
+                    <th id="th_batch">指定批次号</th>
+                    <th>含税单价</th>
+                    <th>数量</th>
+                    <th>单位</th>
+                    <th>箱单价</th>
+                    <th>箱数</th>
+                    <th>含税金额</th>
+                    <th>税率(％)</th>
+                    <th>去税金额</th>
+                    <th>税额</th>
+                    <th id="th_reserve">当前库存</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+            <div class="table-empty" style="display: none;">您还没有添加任何商品</div>
+        </div>
+    </div>
+    <!-- 头部定义 end -->
+
+    <!-- 尾部 Start -->
+    <div class="table-footer">
+        <div class="group-l" data-step="7" data-intro="备注退货的原因" data-position='top'>
+            <div class="form-memo">
+                <div class="item-fields form-inline">
+                    <div class="input-group">
+                        <div class="input-group-addon">退货原因</div>
+                        <input type="text" class="form-control" style="width: 600px;" id="memo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stamp" id="stamp"></div>
+    </div>
+    <!-- 尾部 End -->
+
+    <!-- 操作区域 Start -->
+    <div class="form-footer">
+        <div class="group-l">
+            <div class="form-order-total" data-step="6" data-intro="核对单据总金额" data-position='top' id="formOrderTotal">
+                <div class="item-name">
+                    <span class="name">合计数量：<strong id="sumTotal"  disabled="disabled"></strong></span>
+                    <span class="name">税额：<strong id="sumTaxPrice"  disabled="disabled"></strong> 元</span>
+                    <span class="name">含税金额：<strong id="sumAmountPrice" disabled="disabled"></strong> 元</span>
+                </div>
+            </div>
+        </div>
+        <!--<div class="group-l">
+            <div class="form-memo">
+                <label class="item-name" for="memo">状态:</label>
+                <label class="item-name" for="memo" id="statusText"></label>
+            </div>
+        </div>-->
+        <div class="group-r" data-step="8" data-intro="保存信息" data-position='top'>
+            <div id="createReturnIn">
+                <button type="button" id="power-11201" class="btn btn-primary" onclick="disableBtn(this);cAddReturnOutBill();">保存</button>
+                <button type="button" id="power-11202" class="btn btn-primary" onclick="disableBtn(this);cAddAndCheckReturnOutBill();">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="checkReturnIn" style="display: none;">
+                <button type="button" id="power-11204" class="btn btn-danger" onclick="disableBtn(this);cDeleteReturnOutBill();">作废</button>
+                <button type="button" id="power-11207" class="btn btn-primary" onclick="disableBtn(this);cAddReturnOutBill(1);">保存</button>
+                <button type="button" id="power-11203" class="btn btn-primary" onclick="disableBtn(this);cCheckReturnOutBill();">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="xcdReturnIn" style="display: none;">
+                <button class="btn btn-primary" id="power-11205" type="button" onclick="disableBtn(this);xdReturnOutBill();">修正</button>
+                <button class="btn btn-primary" id="power-11206" type="button" onclick="disableBtn(this);cdReturnOutBill();">冲单</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="btndiv-cancel" style="display: none;">
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- 操作区域 END -->
+</div>
+
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+</body>
+</html>

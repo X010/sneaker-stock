@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>帐盘单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.hdw.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/checkRepository.js"></script>
+    <script language="JavaScript" src="/js/accountSetReportsDetailController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <script language="JavaScript" src="/js/repository/goods-repository.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start -->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name" id="pageName"></span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">帐盘单号: </label><span class="text" id="checkId"></span></div>
+                <div class="item"><label class="item-name">单据状态: </label><span class="text" id="statusText"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <!--<button type="button" class="btn-tool" onclick="printBill('printContent')">打印</button>-->
+            <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
+        </div>
+    </div>
+    <!-- 头部 END -->
+
+    <!-- 主体 Start -->
+    <div id="printContent">
+
+        <div class="order-hd container-fluid" data-step="1" data-intro="帐盘单已创建,可以点击[实盘单(新建)]菜单,开始进行实盘录入" data-position='buttom'>
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">盘点仓库：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="sname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">帐盘人：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="fullperson"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">记账人：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="cuname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">开始时间：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="createtime"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">记账时间：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="checktime"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="table-container">
+            <div class="table-body" data-step="2" data-intro="实盘单审核完成后,将会影响这里的实盘数目" data-position='top'>
+            <div class="table-body-inner">
+            <table cellpadding="0" cellspacing="0" width="" id="accountSetList">
+                <thead>
+                <tr>
+                    <th class="w100">商品编码</th>
+                    <th class="w280">商品名称</th>
+                    <th class="w120">商品条码</th>
+                    <th class="w50">单位</th>
+                    <th class="w50">规格</th>
+                    <th class="w80">帐盘数目</th>
+                    <th class="w80">帐盘箱数</th>
+                    <th class="w80">实盘数目</th>
+                    <th class="w80">实盘箱数</th>
+                    <th class="w80" id="totalDiff">盈亏数目</th>
+                    <th class="w80">盈亏箱数</th>
+                    <th class="w100" id="amountDiff">盈亏金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div id="table-empty"></div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="table-footer">
+        <div class="group-l" data-step="4" data-intro="该次盘点备注信息" data-position='top'>
+            <div class="form-memo">
+                <div class="item-fields form-inline">
+                    <div class="input-group">
+                        <div class="input-group-addon">备注</div>
+                        <input type="text" class="form-control" style="width: 700px;" id="memo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体 End -->
+
+    <!-- 尾部 Start -->
+    <div class="form-footer">
+        <div class="group-l">
+            <div class="form-order-total" id="formOrderTotal" data-step="3" data-intro="核对单据总金额" data-position='top'>
+                <div class="item-name">
+                    <span class="name"><span id="amountReal_title">总盈亏金额</span>：<strong id="amountReal" type="text" disabled="disabled"></strong> 元</span>
+                </div>
+            </div>
+        </div>
+        <div class="group-r" data-step="5" data-intro="完成" data-position='top'>
+            <div id="lookup">
+                <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 尾部 End -->
+
+
+
+    <!-- 弹窗 -->
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</div>
+</body>
+</html>

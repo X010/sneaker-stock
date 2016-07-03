@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css"/>
+    <script type="text/javascript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="javascript">
+        function a() {
+            $("#ddd").jqprint();
+        }
+    </script>
+</head>
+<body>
+<button onclick="a();"> 打印</button>
+<div id="ddd">
+    <table>
+        <tr>
+            <td>test</td>
+            <td>test</td>
+            <td>test</td>
+            <td>test</td>
+            <td>test</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

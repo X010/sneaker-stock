@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>仓库信息</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.cxselect.min.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language='JavaScript' src='/js/repository/store-repository.js'></script>
+    <script language="JavaScript" src="/js/saveStoreController.js"></script>
+    <script language="JavaScript" src="/js/compent.js"></script>
+    <!-- 业务JS End -->
+
+
+</head>
+<body>
+<form id="storeForm" method="get" action="">
+    <div class="framepage">
+        <div class="page-title clearfix">
+            <div class="group-l">
+                <span class="name">仓库信息</span>
+            </div>
+        </div>
+        <ul class="form-body">
+            <li class="item">
+                <label class="item-name" for="code"><span class="name">仓库编码</span><em class="help" data-help="系统自动生成的内部编码"></em></label>
+
+                <div class="item-fields"><input disabled id="code" name="code" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="name"><span class="name">仓库名称</span></label>
+
+                <div class="item-fields"><input id="name" name="name" class="form-control w2" type="text" data-rule-required="true" placeholder="例如:某某区仓库"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="address"><span class="name">仓库地址</span></label>
+
+                <div class="item-fields"><input id="address" name="address" class="form-control w4" type="text" placeholder="例如:某某市某某区某某路XX号"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="contactor"><span class="name">联系人</span></label>
+
+                <div class="item-fields"><input id="contactor" name="contactor" class="form-control w1" type="text" placeholder="例如:某某某"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="phone"><span class="name">联系电话</span></label>
+
+                <div class="item-fields"><input id="phone" name="phone" class="form-control w2" type="text" placeholder="例如:13888888888"></div>
+            </li>
+            <li class="item-separator"></li>
+            <li class="item">
+                <label class="item-name"><span class="name">出货地域级别</span><em class="help" data-help="本仓库的出货地域范围"></em></label>
+                <div class="item-fields" id="region0">
+                    <div class="f-checkbox">
+                        <ul>
+                            <li class="item-checkbox"><label for="out_area1"><input id="out_area1" name="out_area" type="radio" value="1"> 省级</label></li>
+                            <li class="item-checkbox"><label for="out_area2"><input id="out_area2" name="out_area" type="radio" value="1"> 市级</label></li>
+                            <li class="item-checkbox"><label for="out_area3"><input id="out_area3" name="out_area" type="radio" value="1"> 区级</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item" id="li_region1" style="display:none;">
+                <label class="item-name"><span class="name">出货地域设置</span></label>
+                <div class="item-fields" id="region1" data-url="/js/compents/city.json">
+                    <!--<span class="normal"><input id="out_area1" name="out_area" type="radio" value="1"> 省级</span>-->
+                    <span class="item-inline"><select class="form-control province" id="areapro1" data-first-title="全部省份"></select></span>
+                    <button type="button" id="btn-add1" class="btn btn-default" href="javascript:">添加</button>
+                </div>
+            </li>
+            <li class="item" id="li_region2" style="display:none;">
+                <label class="item-name"><span class="name">出货地域设置</span></label>
+                <div class="item-fields" id="region2" data-url="/js/compents/city.json">
+                    <!--<span class="normal"><input id="out_area2" name="out_area" type="radio" value="1"> 市级</span>-->
+                    <span class="item-inline"><select class="form-control province" id="areapro2" data-first-title="全部省份"></select></span>
+                    <span class="item-inline"><select class="form-control city" id="areacity2" data-first-title="全部城市"></select></span>
+                    <button type="button" id="btn-add2" class="btn btn-default" href="javascript:">添加</button>
+                </div>
+            </li>
+            <li class="item" id="li_region3" style="display:none;">
+                <label class="item-name"><span class="name">出货地域设置</span></label>
+                <div class="item-fields" id="region3" data-url="/js/compents/city.json">
+                    <!--<span class="normal"><input id="out_area3" name="out_area" type="radio" value="1"> 区级</span>-->
+                    <span class="item-inline"><select class="form-control province" id="areapro3" data-first-title="全部省份"></select></span>
+                    <span class="item-inline"><select class="form-control city" id="areacity3" data-first-title="全部城市"></select></span>
+                    <span class="item-inline"><select class="form-control area" id="areazone3" data-first-title="全部区县"></select></span>
+                    <button type="button" id="btn-add3" class="btn btn-default" href="javascript:">添加</button>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name"><span class="name">已选出货地域</span></label>
+                <div class="item-fields" id="area" style="height:32px;">
+
+                </div>
+            </li>
+            <li class="item-separator"></li>
+            <li class="item">
+                <label class="item-name"><span class="name">库存管理</span><em class="help" data-help="如果关闭则系统只走单据流程，不会使用库存等功能"></em></label>
+                <div class="item-fields">
+                    <div class="f-checkbox" id="storeReserve">
+                        <ul>
+                            <li class="item-checkbox"><label for="isreserve1"><input name="isreserve" id="isreserve1" type="radio" value="1" checked="checked"> 开启</label></li>
+                            <li class="item-checkbox"><label for="isreserve0"><input name="isreserve" id="isreserve0" type="radio" value="0"> 关闭</label></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name"><span class="name">仓库状态</span><em class="help" data-help="停用后则无法使用该仓库"></em></label>
+                <div class="item-fields">
+                    <div class="f-checkbox" id="storeStatus">
+                        <ul>
+                            <li class="item-checkbox"><label for="status1"><input id="status1" name="status" type="radio" value="1" checked="checked"> 正常</label></li>
+                            <li class="item-checkbox"><label for="status0"><input id="status0" name="status" type="radio" value="0"> 停用</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+        <div class="form-footer">
+            <div id="addSelfPage">
+                <div class="group-r">
+                    <button class="btn btn-primary" type="submit">保存</button>
+                    <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+                </div>
+            </div>
+            <div id="editSelfPage" style="display:none;">
+                <div class="group-r">
+                    <button class="btn btn-primary" type="submit" id="power-10201">确认修改</button>
+                    <!--<button class="btn btn-default" onclick="history.back(-1);" type="button">返回</button>-->
+                    <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="wg-tooltip">
+        <div class="inner"></div>
+    </div>
+
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</form>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.poshytip.min.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.poshytip.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css"/>
+    <script type="text/javascript" src="/js/compent.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/app.css"/>
+    <script language="JavaScript">
+        $(function () {
+            $("#tableDivArea > table").fixedTable({
+                tableId: "goods",
+                fixedColumns: [2, 6],
+                tblWidth: $(this).width()
+            });
+            window.onload = function () {
+                window.onresize = adjust;
+                adjust();
+            }
+            function adjust(obj) {
+                var w = document.body.clientWidth;
+                $("#tableDivArea .fixedArea").resizeTable(w);
+            }
+        });
+    </script>
+    <style type="text/css">
+        pre{ background-color: #f6f6f6;
+            color: #333;
+            display: block;
+            font-size: 12px;
+            overflow-y: auto;
+            padding: 0.3em;}
+        h1{ background: #f1f1f1 none repeat scroll 0 0;
+            padding: 10px;
+            font-size:18px;
+            font-weight: bold;}
+        p{padding:10px;font-size:14px;}
+        textarea{
+            border-color: #cccccc;
+            border-style: solid;
+            border-width: 1px;
+            margin: 0 0 5px;
+            width:100%;
+            padding:10px;
+            margin:10px;
+            height:300px;
+        }
+        input{  border: 1px solid #e1e6eb;
+            color: #585b69;
+            font-size: 13px;
+            height: 30px;
+            margin-right: 5px;
+            outline: medium none;
+            text-indent: 5px;}
+
+
+        .fixedColumnsFst {
+            float: left;
+        }
+
+        .fixedContainer {
+            float: left;
+            overflow: auto;
+        }
+
+        .fixedColumnsScd {
+            float: left;
+        }
+
+    </style>
+</head>
+<body>
+
+<p>
+
+
+<h1>CODE</h1>
+<p>带滚动条的表格。注意原始表格格式的 thead tbody 标签的规范书写。查看效果请缩小浏览器大小。</p>
+<textarea  class="sh_javascript">
+     $(function () {
+            $("#tableDivArea > table").fixedTable({
+                tableId: "goods",
+                fixedColumns: [2, 6],
+                tblWidth: $(this).width()
+            });
+            window.onload = function () {
+                window.onresize = adjust;
+                adjust();
+            }
+            function adjust(obj) {
+                var w = document.body.clientWidth;
+                $("#tableDivArea .fixedArea").resizeTable(w);
+            }
+        });
+</textarea >
+
+<h1>DEMO</h1>
+<div class="table-body" id="tableDivArea" >
+
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" id="goods">
+            <thead>
+            <tr>
+                <th width="200px">项目</td>
+                <th width="200px">金额</td>
+                <th width="100px">数量</td>
+                <th width="100px">经手人</td>
+                <th width="100px">税率</td>
+                <th width="200px">产地</td>
+                <th width="200px">供应商</td>
+                <th width="200px">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>葡萄酒</td>
+                <td>11.00</td>
+                <td>50</td>
+                <td>老张</td>
+                <td>0.2</td>
+                <td>河北</td>
+                <td>河北酒厂</td>
+                <td>删除</td>
+            </tr>
+            <tr>
+                <td>五粮液</td>
+                <td>998.00</td>
+                <td>100</td>
+                <td>老刘</td>
+                <td>0.3</td>
+                <td>湖北</td>
+                <td>宜宾酒厂</td>
+                <td>删除</td>
+            </tr>
+            <tr>
+                <td>双沟</td>
+                <td>328.00</td>
+                <td>500</td>
+                <td>老李</td>
+                <td>0.2</td>
+                <td>江苏</td>
+                <td>南京酒厂</td>
+                <td>删除</td>
+            </tr>
+            <tr>
+                <td>洋河</td>
+                <td>555.00</td>
+                <td>1000</td>
+                <td>老季</td>
+                <td>0.1</td>
+                <td>江苏</td>
+                <td>江苏酒厂</td>
+                <td>删除</td>
+            </tr>
+            </tbody>
+        </table>
+        </body>
+        </html>
+
+    </div>
+ <p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

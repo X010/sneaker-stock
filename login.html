@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>99云仓</title>
+    <link rel="stylesheet" href="css/login.css" type="text/css" media="screen"/>
+    <script language="javascript" src="/js/config.js"></script>
+    <script language="javascript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.stat-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/SyncAjax.js"></script>
+    <script language="JavaScript" src="/js/UrlList.js"></script>
+    <script language="JavaScript" src="/js/CookieUtil.js"></script>
+    <script language="JavaScript" src="/js/compents/rsa/BigInt.js"></script>
+    <script language="JavaScript" src="/js/compents/rsa/Barrett.js"></script>
+    <script language="JavaScript" src="/js/compents/rsa/RSA_Stripped.js"></script>
+    <script language="JavaScript" src="/js/compents/mcrypt.js"></script>
+</head>
+<body>
+<form id="loginForm" method="post" action="" autocomplete="off">
+    <div class="bg"><img src="images/login_bg.jpg" width="100%" height="100%"></div>
+    <div class="login-page">
+        <div class="login-header">
+            <div class="logo"><img src="images/login_logo2x.png"></div>
+            <div class="nav">
+                <a class="joinus" href="http://www.99yuncang.com/">关于我们</a>
+            </div>
+        </div>
+        <div class="login-body">
+            <div class="login-theme"><img src="images/login_welcome2x.png"></div>
+            <div class="panel-login clearfix">
+                <div class="panel-wrap">
+                    <h1>登录</h1>
+                    <ul class="login-form">
+                        <li class="item">
+                            <label class="item-name icon-user"></label>
+                            <input type="text" class="f-input" id="username" name="username" placeholder="登录账号" value="" autocomplete="off">
+                        </li>
+                        <li class="item">
+                            <label class="item-name icon-password"></label>
+                            <input type="password" class="f-input" id="password" name="password" placeholder="登录密码" value="">
+                        </li>
+                        <li class="item-ext" id="li-vcode">
+                            <label class="item-name icon-vcode"></label>
+                            <span class="f-vcode"><input type="text" class="f-input" id="verify" placeholder="短信验证码"></span>
+                            <button type="button" class="f-btn" id="btn-vcode">发送短信验证码</button>
+                        </li>
+                    </ul>
+                    <div class="login-tool">
+                        <div class="group-l" title="在公共电脑上请取消该选项"><input type="checkbox" name="remember" id="remember"> 记住我</div>
+                        <div class="group-r"><a href="javascript:alert('暂未开放找回密码功能，请先联系管理员修改密码');">忘记密码?</a></div>
+                    </div>
+                    <div class="login-btn">
+                        <button class="btn-login" id="loginButton" type="button">登 录</button>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <div class="group-l login-error" id="errorMsg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login-footer">
+            <div class="copyright">
+            <script>
+                var domain =  window.location.host || document.domain;
+                //var cp = {"99yuncang":['99yuncang.com','苏ICP备15010324号-3'], "99yc":["99yc.net",'苏ICP备15010324号-4'], "ms9d":["ms9d.com","湘ICP备13001863号-2"]};
+                var cp = {"99yuncang":['南京盛世酩徳网络科技有限公司','苏ICP备15010324号-3'], "99yc":["北京亚信通科技有限公司",'苏ICP备15010324号-4'], "ms9d":["ms9d.com","湘ICP备13001863号-2"]};
+                var len = 0;
+                if(domain){var md = domain.split('.');len = md.length;}
+                if(len && cp[md[len-2]]){
+                    document.write("<strong>Copyright &copy; 2016 " +cp[md[len-2]][0]+ "</strong> All rights reserved. <div><a href='http://www.miitbeian.gov.cn' target='_blank'>"+cp[md[len-2]][1]+"</a></div>");
+                    //document.write("<strong>Copyright &copy; 2016 南京盛世酩徳网络科技有限公司</strong> All rights reserved. <div><a href='http://www.miitbeian.gov.cn' target='_blank'>"+cp[md[len-2]][1]+"</a> 版本号:1.0</div>");
+                } else {
+                    document.write("<strong>Copyright &copy; 2016 南京盛世酩徳网络科技有限公司</strong> All rights reserved. <div>版本号:1.0</div>");
+                }
+            </script>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var success = false;
+    var seconds; //发送短信验证码的间隔秒数
+    var vcode = false; //是否启用短信验证码(无需修改此变量,html中直接注释掉li元素即可)
+
+    $().ready(function () {
+        checkBrowser();
+
+        var li_vcode = $('#li-vcode');
+        if (li_vcode.length){
+            vcode = true;
+            $('#btn-vcode').on('click',function(){
+                verify();
+            });
+            countDown();
+        }
+
+        var obj_username = $('#username');
+        var obj_password = $('#password');
+        var obj_remember = $('#remember');
+        var obj_verify = $('#verify');
+        //记住账号
+        if (parseInt(cookieUtil("remember"))){
+            var msg = cookieUtil("username");
+            obj_username.val(msg);
+            obj_remember.attr('checked', 'checked');
+        } else {
+            obj_username.val('');
+            obj_remember.removeAttr('checked');
+        }
+
+        //自动获取焦点
+        if ($.trim(obj_username.val()) != ''){
+            obj_password.focus();
+        } else {
+            obj_username.focus();
+        }
+
+        //回车登录
+        obj_verify.on("keyup", function (e) {
+            if (e.keyCode == 13) {
+                success = $("#password").val().length > 5;
+                login();
+            } else {
+                showMsg('');
+            }
+        });
+
+        $('#loginButton').on('click',function(){
+            login();
+        });
+
+        //表单验证
+        var msg_err = '';
+        var validator = $("#loginForm").validate({
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 15,
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 32,
+                }
+            },
+            messages: {
+                username: {
+                    required: "请输入登录账号",
+                    minlength: "账号最少需要5个字符",
+                    maxlength: "账号不能超过15个字符",
+                },
+                password: {
+                    required: "请输入登录密码",
+                    minlength: "密码至少需要6个字符",
+                    maxlength: "密码不能超过32个字符",
+                }
+            },
+            success: function () {
+                showMsg(msg_err);
+                success = true;
+            },
+            errorPlacement: function (error) {
+                //每次都会触发
+                success = false;
+                showMsg(error.text());
+            }
+        });
+    });
+
+
+
+    /**
+     * 发送短信验证码
+     */
+    function verify(){
+        if (!checkBrowser(1)) return false;
+        var minScreenWidth = 1000;
+        var username = $.trim($("#username").val());
+        var pwd = $("#password").val();
+
+        if (!username || username.length < 5){
+            showMsg('请填写正确的登录账号');
+            $("#username").focus();
+            return;
+        }
+        if (!pwd || pwd.length < 6){
+            $("#password").focus();
+            return;
+        }
+
+        if ($(this).width() < minScreenWidth) {
+            alert("请在全屏状态下使用，或更换更大分辨率的显示器。");
+            return;
+        }
+
+        var password = encryptWithRSA(pwd);
+        var postUrl = urlDefault("LOGIN_VERIFY");
+        var postData = {
+            "username": username,
+            "password": password,
+            "platform": 'erp'
+        };
+
+        //禁用发送按钮1分钟
+        $('#btn-vcode').attr('disabled', 'disabled');
+
+        //验证账号+密码,发送验证码
+        if (success){
+            var msg = asyncAjax(postUrl, postData);
+            if (msg && typeof(msg.phone) != 'undefined'){
+                showMsg('验证码已发送到尾号' + msg.phone.substr(7) + '的手机，请注意查收', true);
+                seconds = 60; //发送成功则间隔长一些
+                $('#verify').focus();
+            } else {
+                showMsg(msg);
+                seconds = 5; //发送失败则间隔短一些
+            }
+            setCookieExpires('seconds', seconds, seconds+2);
+            countDown();
+        }
+    }
+
+
+
+    /**
+     * 登录
+     */
+    function login() {
+        if (!checkBrowser(1)) return false;
+        var username = $.trim($("#username").val());
+        var pwd = $("#password").val();
+
+        if (!username || username.length < 5){
+            showMsg('请填写正确的登录账号');
+            $("#username").focus();
+            return;
+        }
+        if (!pwd || pwd.length < 6){
+            $("#password").focus();
+            return;
+        }
+
+        var password = encryptWithRSA(pwd);
+        var postUrl = urlDefault("LOGIN_IN");
+        var postData = {
+            "username": username,
+            "password": password,
+            "platform": 'erp'
+        };
+        if (vcode){
+            var verify = $.trim($("#verify").val());
+            if (!verify || verify.length < 4){
+                showMsg('请输入短信验证码');
+                $("#verify").focus();
+                return;
+            } else {
+                postData['verify'] = verify;
+            }
+        }
+        if (success){
+            var msg = asyncAjax(postUrl, postData);
+            if (msg != null && !msg.ticket) {
+                //登陆失败
+                showMsg(msg);
+            } else if (msg != null && msg.ticket != null && msg.ticket.length > 0) {
+                var getData = {"app":"erp","module": "user", "function": "login"};
+                $("body").stat(getData);
+                //console.log(msg);
+                saveLoginCookie(msg);
+                window.location.href = "console.html";
+            }
+
+
+        }
+
+    }
+
+    /* Now, utils  */
+
+    /**
+     * 再次发送倒计时
+     */
+    function countDown(){
+        var sec = cookieUtil("seconds");
+        //console.log(sec);
+        if (sec > 0){
+            seconds = sec;
+            var txt = --seconds + '秒后重新发送';
+            setCookieExpires('seconds', seconds, seconds+2);
+            $('#btn-vcode').text(txt);
+            var timeId = setTimeout("countDown()",1000);
+            if(seconds == 0){
+                clearTimeout(timeId);
+                $('#btn-vcode').removeAttr('disabled').text('发送短信验证码');
+            } else {
+                $('#btn-vcode').attr('disabled', 'disabled');
+            }
+        }
+    }
+
+
+    /**
+     * 显示提示
+     */
+    function showMsg(msg, ok){
+        if (!ok) ok = false;
+        if (ok){
+            $("#errorMsg").text(msg).css('color', '#408BDA').show();
+        } else {
+            $("#errorMsg").text(msg).css('color', '').show();
+        }
+    }
+
+
+    /**
+     * 浏览器兼容性提示
+     * @param off 关闭强制提示(ie除外)
+     */
+    function checkBrowser(off){
+        var url = 'http://yun.baidu.com/share/link?shareid=717086027&uk=1477831797';
+        if(navigator.userAgent.indexOf("MSIE")>0) {
+            if (confirm('本系统不支持IE内核浏览器，推荐使用Chrome(谷歌浏览器)进行登录！\n\n是否前往下载？')){
+                window.location.href = url;
+            }
+        } else if(!off && navigator.userAgent.indexOf("Safari")<0) {
+            if (confirm('使用不兼容的浏览器可能导致浏览异常，推荐使用Chrome(谷歌浏览器)登录本系统！\n\n是否前往下载？')){
+                window.location.href = url;
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+
+</script>
+</body>
+</html>

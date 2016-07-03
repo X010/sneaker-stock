@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>99云仓</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/console.css" type="text/css" media="screen"/>
+
+    <!-- 工具引用 Start-->
+    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/smartMenu.css" />
+    <script type="text/javascript" src="/js/compents/jquery.smartMenu.js"></script>
+    <!-- 工具引用 END -->
+
+    <!-- 业务引用 Start-->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language="JavaScript" src="/js/SyncAjax.js"></script>
+    <script language="JavaScript" src="/js/UrlList.js"></script>
+    <script language="JavaScript" src="/js/CookieUtil.js"></script>
+
+    <script language='JavaScript' src='/js/repository/config-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/reports-common-repository.js'></script>
+    <script language="JavaScript" src="/js/TabPanel.js"></script>
+    <script language="JavaScript" src="/js/console.js"></script>
+    <script language="JavaScript" src="/js/mainframeController.js"></script>
+    <!-- 业务引用 End-->
+</head>
+<body>
+<div class="layout">
+    <div class="layout-topbar">
+        <div class="topbar-nav">
+            <div class="logo"><img src="/images/logo.svg" alt="99云商"></div>
+            <div class="console" style="display: none;"><a href="javascript:addTab(98, '我的工作台', '/mainframe/workspace.html');">我的工作台</a></div>
+
+            <div class="product" id="navProductWrap">
+                <a class="navname" href="javascript:" id="navProduct">报表中心</a>
+                <span class="dm-arrow"></span>
+                <div class="dm dm-product dm-shadow" id="dmProduct">
+                    <div class="list">
+                        <dl>
+                            <dt>业务员报表</dt>
+                            <dd><hr style="border-top:1px solid #eee;" /></dd>
+                            <dd><a id="9401" href="javascript:addTab('9401','业务员单品订量','/mainframe/reports/salesmanReportsAboutGoods.html?iframeid=9401&iframename=业务员单品订量');">业务员单品订量</a></dd>
+                            <dd><a id="9407" href="javascript:addTab('9407','业务员单品销量','/mainframe/reports/salesmanReportsAboutGoodsReal.html?iframeid=9407&iframename=业务员单品销量');">业务员单品销量</a></dd>
+                            <dd><a id="9403" href="javascript:addTab('9403','业务员单品铺货','/mainframe/reports/salesmanSingleGoodsSaleByOrder.html?iframeid=9403&iframename=业务员单品铺货');">业务员单品铺货</a></dd>
+                            <dd><a id="9402" href="javascript:addTab('9402','业务员订单达成率','/mainframe/reports/salesmanOrderReach.html?iframeid=9402&iframename=业务员订单达成率');">业务员订单达成率</a></dd>
+                            <dd><a id="9404" href="javascript:addTab('9404','业务员业绩查询','/mainframe/reports/salesmanAchievement.html?iframeid=9404&iframename=业务员业绩查询');">业务员业绩查询</a></dd>
+                            <dd><a id="9405" href="javascript:addTab('9405','业务员箱数销售任务','/mainframe/reports/salesmanTask.html?iframeid=9405&iframename=业务员箱数销售任务');">业务员箱数销售任务</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9406" href="javascript:addTab('9406','业务员客户维护记录','/mainframe/reports/salesmanCRMRecord.html?iframeid=9406&iframename=业务员客户维护记录');">业务员客户维护记录</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>库存报表</dt>
+                            <dd><hr style="border-top:1px solid #eee;" /></dd>
+                            <dd><a id="9104" href="javascript:addTab('9104','进销存日报表','/mainframe/reports/erpReportsDay.html?iframeid=9104&iframename=进销存日报表');">进销存日报表</a></dd>
+                            <dd><a id="9101" href="javascript:addTab('9101','库存日报表','/mainframe/reports/inventoryReportsDay.html?iframeid=9101&iframename=库存日报表');">库存日报表</a></dd>
+                            <dd><a id="9102" href="javascript:addTab('9102','实时库存查询','/mainframe/reports/inventoryReports.html?iframeid=9102&iframename=实时库存查询');">实时库存查询</a></dd>
+                            <dd><a id="9103" href="javascript:addTab('9103','台帐查询','/mainframe/reports/bookReports.html?iframeid=9103&iframename=台帐查询');">台帐查询</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9108" href="javascript:addTab('9108','出货单汇总','/mainframe/reports/stockOutReports.html?iframeid=9108&iframename=出货单汇总');">出货单汇总</a></dd>
+                            <dd><a id="9109" href="javascript:addTab('9109','入库单汇总','/mainframe/reports/stockInReports.html?iframeid=9109&iframename=入库单汇总');">入库单汇总</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9105" href="javascript:addTab('9105','盘点预盈亏查询','/mainframe/reports/accountSetReports.html?action=pre&iframeid=9105&iframename=盘点预盈亏查询');">盘点预盈亏查询</a></dd>
+                            <dd><a id="9106" href="javascript:addTab('9106','盘点实盈亏查询','/mainframe/reports/accountSetReports.html?action=real&iframeid=9106&iframename=盘点实盈亏查询');">盘点实盈亏查询</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9110" href="javascript:addTab('9110','库存预警','/mainframe/reports/inventoryWarning.html?iframeid=9110&iframename=库存预警');">库存预警</a></dd>
+                            <dd><a id="9107" href="javascript:addTab('9107','保质期预警','/mainframe/reports/inventoryWarningExp.html?iframeid=9107&iframename=保质期预警');">保质期预警</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>销售报表</dt>
+                            <dd><hr style="border-top:1px solid #eee;" /></dd>
+                            <dd><a id="9201" href="javascript:addTab('9201','日对账报表','/mainframe/reports/balanceReportsDay.html?iframeid=9201&iframename=日对账报表');">日对账报表</a></dd>
+                            <dd><a id="9202" href="javascript:addTab('9202','业绩查询','/mainframe/reports/salesmanTopReports.html?iframeid=9202&iframename=业绩查询');">业绩查询</a></dd>
+                            <dd><a id="9210" href="javascript:addTab('9210','单品铺货查询','/mainframe/reports/salesmanSingleGoodsSale.html?iframeid=9210&iframename=单品铺货查询');">单品铺货查询</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9205" href="javascript:addTab('9205','商品销量报表','/mainframe/reports/goodsTopFormReports.html?iframeid=9205&iframename=商品销量报表');">商品销量报表</a></dd>
+                            <dd><a id="9208" href="javascript:addTab('9208','供应商商品销量报表','/mainframe/reports/goodsTopSupplierFormReports.html?iframeid=9208&iframename=供应商商品销量报表');">供应商商品销量报表</a></dd>
+                            <dd><a id="9209" href="javascript:addTab('9209','客户商品销量报表','/mainframe/reports/goodsTopCustomFormReports.html?iframeid=9209&iframename=客户商品销量报表');">客户商品销量报表</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9206" href="javascript:addTab('9206','客户销量报表','/mainframe/reports/customTopFormReports.html?iframeid=9206&iframename=客户销量报表');">客户销量报表</a></dd>
+                            <dd><a id="9207" href="javascript:addTab('9207','供应商销量报表','/mainframe/reports/supplierTopFormReports.html?iframeid=9207&iframename=供应商销量报表');">供应商销量报表</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>财务报表</dt>
+                            <dd><hr style="border-top:1px solid #eee;" /></dd>
+                            <dd><a id="9301" href="javascript:addTab('9301','应付款查询','/mainframe/reports/financePaymentReports.html?iframeid=9301&iframename=应付款查询');">应付款查询</a></dd>
+                            <dd><a id="9302" href="javascript:addTab('9302','应收款查询','/mainframe/reports/financeDebitReports.html?iframeid=9302&iframename=应收款查询');">应收款查询</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9305" href="javascript:addTab('9305','日收款对账查询','/mainframe/reports/financeSettlementReconciliation.html?iframeid=9305&iframename=日收款对账查询');">日收款对账查询</a></dd>
+                            <dd><a id="9306" href="javascript:addTab('9306','出货单结算状态查询','/mainframe/reports/stockOutSettlementStatus.html?iframeid=9306&iframename=出货单结算状态查询');">出货单结算状态查询</a></dd>
+                            <dd><a id="9309" href="javascript:addTab('9309','实际回款明细报表','/mainframe/reports/financeRealDebitBack.html?iframeid=9309&iframename=实际回款明细报表');">实际回款明细报表</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9307" href="javascript:addTab('9307','提成结算报表','/mainframe/reports/commissionReport.html?iframeid=9307&iframename=提成结算报表');">提成结算报表</a></dd>
+                            <dd><a id="9308" href="javascript:addTab('9308','提成结算商品报表','/mainframe/reports/commissionGoodsReport.html?iframeid=9308&iframename=提成结算商品报表');">提成结算商品报表</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>资料档案</dt>
+                            <dd><hr style="border-top:1px solid #eee;" /></dd>
+                            <dd><a id="9001" href="javascript:addTab('9001','商品档案','/mainframe/reports/goodsReports.html?iframeid=9001&iframename=商品档案');">商品档案</a></dd>
+                            <dd><a id="9006" href="javascript:addTab('9006','商品价格','/mainframe/reports/viewPrice.html?iframeid=9006&iframename=商品价格');">商品价格</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9002" href="javascript:addTab('9002','客户档案','/mainframe/reports/customReports.html?iframeid=9002&iframename=客户档案');">客户档案</a></dd>
+                            <dd><a id="9007" href="javascript:addTab('9007','客户业务员排行','/mainframe/reports/salesmanTopCustom.html?iframeid=9007&iframename=客户业务员排行');">客户业务员排行</a></dd>
+                            <dd><hr /></dd>
+                            <dd><a id="9003" href="javascript:addTab('9003','供应商档案','/mainframe/reports/supplierReports.html?iframeid=9003&iframename=供应商档案');">供应商档案</a></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="topbar-tool">
+            <!--<div class="search"><a href="javascript:void(0);" class="search-icon"></a></div>-->
+            <div class="notice" id="navNoticeWrap">
+                <a href="javascript:" id="navNotice" class="notice-icon"></a>
+                <span class="notice-new-msg" id="numNotice" style="display:none;"></span>
+                <!-- 下拉框:消息 -->
+                <div class="dm dm-notice dm-shadow" id="dmNotice">
+                    <div class="list">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile" id="navProfileWrap">
+                <a class="navname" id="navProfile" href="javascript:"></a>
+                <span class="dm-arrow"></span>
+                <!-- 下拉框:个人设置 -->
+                <div class="dm dm-profile dm-shadow" id="dmProfile">
+                    <div class="list">
+                        <ul>
+                            <li class="item-setting"><a href="javascript:addTab(99,'个人设置','/mainframe/baseinfo/userprofile.html?iframeid=99&iframename=个人设置');">个人设置</a></li>
+                            <li class="item-pwd"><a href="javascript:addTab(97,'修改密码','/mainframe/baseinfo/editPassword.html?iframeid=97&iframename=修改密码');">修改密码</a></li>
+                            <!--<li class="item-help"><a target="_blank" href="http://115.28.8.173:8070/pages/viewpage.action?pageId=1015887">帮助中心</a></li>-->
+                            <li class="item-logout"><a href="javascript:logout()">退出系统</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layout-body">
+        <div class="layout-side">
+            <div class="handle" id="menuHandle">&#xe2020;</div>
+            <div class="panel-menu">
+                <div class="list">
+                    <ul id="oneMenu">
+                    </ul>
+                    <div class="loading" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+                </div>
+            </div>
+            <div class="group-b">
+                <!--<div class="feedback">
+                    <a class="item-icon" href="http://115.28.8.173:8070/pages/viewpage.action?pageId=1015973" target="_blank">&#xe1000;</a>
+                    <a class="item-name" href="http://115.28.8.173:8070/pages/viewpage.action?pageId=1015973" target="_blank">反馈建议</a>
+                </div>-->
+                <div class="backend" onclick="enterOtherPlatform('pb');">
+                    <a class="item-icon" href="javascript:" target="_blank">&#xe901;</a>
+                    <a class="item-name" href="javascript:" target="_blank">网购后台</a>
+                </div>
+                <div class="version">版本 1.15.5</div>
+            </div>
+
+        </div>
+        <div class="layout-main">
+            <div class="tabbar">
+                <div class="list">
+                    <ul id="addtitles">
+
+                    </ul>
+                </div>
+                <div class="morelist" id="downTitle" style="display:none;">
+                    <span id="countTabList" class="count font-icon icon-tab-more"  onclick="toggleOverFlowTitleDiv('overflowTitle')">0</span>
+                    <ul id="overflowTitle" class="dm-shadow">
+                        <!--<li class="closeall"><a href="#" onclick="closeAllTab()">关闭所有标签页</a></li>-->
+                    </ul>
+                </div>
+            </div>
+            <div class="tabbody" id="tabContents">
+                <div class="frameTab" id="frameTab0"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 弹窗 -->
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</div>
+<script>
+    var resUser = new restUserRepository();
+    //心跳检测(每分钟)
+    window.setInterval(checkOnline, 60000*2);
+    function checkOnline(){
+        resUser.checkOnLine();
+    }
+
+    //获取消息通知
+    checkMessage();
+    window.setInterval(checkMessage, 1000*60*1);
+    var box; //消息盒
+    function checkMessage(){
+        var res = resUser.getMessageOfNotice();
+        var msg_num = 0; //消息总数
+        $.each(res, function(k, v){
+            msg_num += parseInt(v);
+        });
+        if (msg_num){ //有消息
+            box = [];
+            //整理拼装li所需的数据
+            if (res.customer_count){
+                var item = {
+                    'msg': '有 ' + res.customer_count + ' 个待审核的客户申请',
+                    'page_id': 48,
+                    'page_name': '客户审核',
+                    'page_url': '/mainframe/baseinfo/customCheck.html?iframeid=48&iframename=客户审核',
+                };
+                box.push(item);
+            }
+            if (res.sell_order_count){
+                var item = {
+                    'msg': '有 ' + res.sell_order_count + ' 个待处理的客户订单',
+                    'page_id': 22,
+                    'page_name': '客户订单',
+                    'page_url': '/mainframe/sale/outOrderThelibrary.html?days_begin=2016-01-01',
+                };
+                box.push(item);
+            }
+            if (res.buy_order_count){
+                var item = {
+                    'msg': '有 ' + res.buy_order_count + ' 个待处理的采购订单',
+                    'page_id': 121,
+                    'page_name': '采购订单',
+                    'page_url': '/mainframe/stock/checkOrder.html?days_begin=2016-01-01',
+                };
+                box.push(item);
+            }
+            if (res.forcheck_stockout_count){
+                var item = {
+                    'msg': '有 ' + res.forcheck_stockout_count + ' 个待审核的客户出货单',
+                    'page_id': 261,
+                    'page_name': '客户出货单',
+                    'page_url': '/mainframe/sale/checkThelibrary.html?days_begin=2016-01-01&option=2',
+                };
+                box.push(item);
+            }
+            if (res.forout_stockout_count){
+                var item = {
+                    'msg': '有 ' + res.forout_stockout_count + ' 个缺货待配的客户出货单',
+                    'page_id': 261,
+                    'page_name': '客户出货单',
+                    'page_url': '/mainframe/sale/checkThelibrary.html?days_begin=2016-01-01&option=3',
+                };
+                box.push(item);
+            }
+            if (res.forsettle_stockout_count){
+                var item = {
+                    'msg': '有 ' + res.forsettle_stockout_count + ' 个待结算的客户出货单',
+                    'page_id': 9306,
+                    'page_name': '出货单结算状态查询',
+                    //'page_url': '/mainframe/sale/checkThelibrary.html?days_begin=2016-01-01&option=4&settle_status=0',
+                    'page_url': '/mainframe/reports/stockOutSettlementStatus.html?iframeid=9306&iframename=出货单结算状态查询&begin_date=2016-01-01&status=4&settle_status=0',
+                };
+                box.push(item);
+            }
+
+            //拼装li
+            var html_li = '';
+            for (var i=0; i<box.length; i++){
+                html_li += '<li class="item-setting"><a href="javascript:clickMessage(' + i + ');">' + box[i].msg + '</a></li>\n';
+            }
+            $('#dmNotice ul').html(html_li);
+            //msg_num = msg_num > 99 ? '99+' : msg_num;
+            $('#numNotice').text(box.length).show();
+        } else {
+            $('#numNotice').text(0).hide();
+        }
+    }
+
+    /**
+     * 点击一条消息
+     * @param i
+     */
+    function clickMessage(i){
+        var item = typeof(box[i]) == 'undefined' ? false : box[i];
+        if (item){
+            removeTab(item.page_id, item.page_name, item.page_url);
+            addTab(item.page_id, item.page_name, item.page_url);
+            $("#dmNotice").slideUp('fast');
+            //$('#dmNotice ul li').eq(i).fadeOut('fast', 'linear');
+        }
+    }
+
+
+    /* ------------------------------------------ 库存预警 BEGIN ------------------------------------------ */
+    $().ready(function () {
+        checkInventoryWarning();
+    });
+
+    /**
+     * 检查库存预警
+     */
+    function checkInventoryWarning(){
+        var goods = {}; //key:gid  value:gname
+        var total_sid = 0;
+        var msg = cookieUtil("userprofile");
+        if (msg != null) {
+            msg = JSON.parse(msg);
+            if (!power[9110]){ return false; }
+            $.each(msg.sids, function(k, v){
+                var res = getWarningGoods(v); //每个仓库取一个
+                if (res.length){
+                    var g = res[0];
+                    goods[g.gid] = g.gname;
+                    ++total_sid;
+                }
+            });
+        }
+        var message = '请注意，当前部分商品库存紧张！<br />';
+        $.each(goods, function(gid, gname){
+            message += gname + '<br />';
+        });
+        message += '更多商品请点击<a href="javascript:viewWarningDetail();">［查看详情］</a>';
+        if (total_sid){
+            runnerAlert("库存预警", message);
+        }
+    }
+
+    /**
+     * 跳转到库存预警报表
+     */
+    function viewWarningDetail(){
+        addTab('9110','库存预警','/mainframe/reports/inventoryWarning.html?iframeid=9110&iframename=库存预警');
+        $("#confireInfoLayer").hide();
+        $("#confrom").dialog("close");
+        $("body").append("<div id='confrom' class='confrom'></div>");
+    }
+
+    /**
+     * 获取报警的商品
+     * @param sid
+     */
+    function getWarningGoods(sid){
+        var resRCR = new reportsCommonRepository();
+        var params = {'sid': sid};
+        var data = resRCR.query('RESERVE_WARNING_READ', params, 1, 1);
+        var ret = false;
+        if (data && data.data){
+            ret = data.data;
+        }
+        return ret;
+    }
+
+    /* ------------------------------------------ 库存预警 BEGIN ------------------------------------------ */
+
+
+
+</script>
+</body>
+</html>

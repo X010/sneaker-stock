@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>公司信息</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.cxselect.min.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/goods-repository.js"></script>
+    <script language='JavaScript' src='/js/repository/company-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/store-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/customRepository.js'></script>
+    <script language='JavaScript' src='/js/repository/supplierRepository.js'></script>
+    <script language="JavaScript" src="/js/companyController.js"></script>
+    <script language="JavaScript" src="/js/compent.js"></script>
+    <!-- 业务JS End -->
+
+
+</head>
+<body>
+<form id="companyForm" method="get" action="">
+    <div class="framepage">
+        <div class="page-title clearfix">
+            <div class="group-l">
+                <span class="name">公司信息</span>
+                <span class="subname">请如实填写公司信息，以便于我们为您服务</span>
+            </div>
+        </div>
+        <ul class="form-body">
+            <!-- 供应商设置 BEGIN -->
+            <li class="item" name="li_supplier" style="display:none;">
+                <label class="item-name" for="period_sup"><span class="name">供应商账期</span><em class="help" data-help="该供应商的结算账期"></em></label>
+                <div class="item-fields form-inline">
+                    <div class="input-group w2">
+                        <input maxlength="3" id="period_sup" name="period" class="form-control w1" type="text" value="">
+                        <div class="input-group-addon">天</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item" name="li_supplier" style="display:none;">
+                <label class="item-name" for="discount"><span class="name">供应商折扣</span><em class="help" data-help="该供应商的结算折扣"></em></label>
+                <div class="item-fields form-inline">
+                    <div class="input-group w2">
+                        <input maxlength="5" id="discount" name="discount" class="form-control w1" type="text" value="">
+                        <div class="input-group-addon">%</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item" name="li_supplier" style="display:none;">
+                <label class="item-name" for="auto_delete"><span class="name">订单有效期</span><em class="help" data-help="超过该天数未审核的采购订单自动作废"></em></label>
+                <div class="item-fields form-inline">
+                    <div class="input-group w2">
+                        <input maxlength="3" id="auto_delete" name="auto_delete" class="form-control w1" type="text" value="">
+                        <div class="input-group-addon">天</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item" name="li_supplier" style="display:none;">
+                <label class="item-name" for="contactor_sup"><span class="name">联系人姓名</span><em class="help" data-help="必填"></em></label>
+
+                <div class="item-fields"><input id="contactor_sup" name="contactor_sup" class="form-control w1" type="text" placeholder="例如:某某某"></div>
+            </li>
+            <li class="item" name="li_supplier" style="display:none;">
+                <label class="item-name" for="contactor_phone_sup"><span class="name">联系人电话</span><em class="help" data-help="必填"></em></label>
+
+                <div class="item-fields"><input id="contactor_phone_sup" name="contactor_phone_sup" class="form-control w2" type="text" placeholder="例如:13888888888"></div>
+            </li>
+            <li class="item-separator" name="li_supplier" style="display:none;"></li>
+            <!-- 供应商设置 END -->
+
+
+            <!-- 客户设置 BEGIN -->
+            <li class="item" name="li_custom" style="display:none;">
+                <label class="item-name"><span class="name">客户类型</span><em class="help" data-help="该客户针对本公司的类型"></em></label>
+                <div class="item-fields">
+                    <span class=""><select class="form-control w2" id="cctype" name="cctype" data-rule-required="true">
+                        <option value="1">经销商</option>
+                        <option value="2">酒店饭店</option>
+                        <option value="3">商场超市</option>
+                        <option value="4">便利店</option>
+                    </select></span>
+                </div>
+            </li>
+            <li class="item" name="li_custom" style="display:none;">
+                <label class="item-name" for="period"><span class="name">客户账期</span><em class="help" data-help="该客户的结算账期"></em></label>
+                <div class="item-fields form-inline">
+                    <div class="input-group w2">
+                        <input maxlength="3" id="period" name="period" class="form-control w1" type="text" value="0">
+                        <div class="input-group-addon">天</div>
+                    </div>
+                </div>
+            </li>
+            <li class="item" style="display:none;" name="li_custom">
+                <label class="item-name" for="sid"><span class="name">我方出货仓库</span><em class="help" data-help="该客户的供货仓库"></em></label>
+                <div class="item-fields">
+                    <span class=""><select class="form-control w2" id="sid" data-rule-required="true">
+                    </select></span>
+                </div>
+            </li>
+            <li class="item" style="display:none;" name="li_custom">
+                <label class="item-name"><span class="name">默认业务员</span><em class="help" data-help="负责该客户的我方业务员"></em></label>
+                <div class="item-fields" id="salesman">
+                    <div class="f-checkbox">
+                        <ul>
+                            <li class="item-checkbox" id="power-10407">
+                                <button type="button" class="btn btn-primary" onclick="defalutSalesman();">保存业务员</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li class="item" style="display:none;" name="li_custom" id="power-10405">
+                <label class="item-name" for="code"></label>
+                <div class="item-fields" id="salesman_add">
+                    <span class="item-inline">
+                        <input id="suname" type="text" class="form-control w2" placeholder="请输入员工姓名或手机号"/>
+                        <input id="suid" type="hidden" value="" />
+                    </span>
+                    <span class="item-inline"><input type="button" class="btn btn-primary" value="添加业务员" onclick="addSalesman();"></span>
+                </div>
+            </li>
+            <li class="item" name="li_custom" style="display:none;">
+                <label class="item-name" for="contactor_cus"><span class="name">客户联系人姓名</span><em class="help" data-help="必填"></em></label>
+
+                <div class="item-fields"><input id="contactor_cus" name="contactor_cus" class="form-control w1" type="text" placeholder="例如:某某某"></div>
+            </li>
+            <li class="item" name="li_custom" style="display:none;">
+                <label class="item-name" for="contactor_phone_cus"><span class="name">客户联系人电话</span><em class="help" data-help="必填"></em></label>
+
+                <div class="item-fields"><input id="contactor_phone_cus" name="contactor_phone_cus" class="form-control w2" type="text" placeholder="例如:13888888888"></div>
+            </li>
+            <li class="item-separator" name="li_custom" style="display:none;"></li>
+            <!-- 客户设置 END -->
+
+
+
+
+
+
+
+
+
+            <li class="item">
+                <label class="item-name" for="code"><span class="name">公司编码</span><em class="help" data-help="系统自动生成的内部编码"></em></label>
+
+                <div class="item-fields"><input disabled id="code" name="code" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="name"><span class="name">公司名称</span><em class="help" data-help="创建后不可更改"></em></label>
+
+                <div class="item-fields">
+                    <input id="name" name="name" class="form-control w4" type="text" data-rule-required="true" disabled="disabled">
+                    <span style="display:none;" id="tips_name"></span>
+                </div>
+            </li>
+            <!--<li class="item">
+                <label class="item-name" for="simple_name"><span class="name">公司简称</span></label>
+
+                <div class="item-fields"><input id="simple_name" name="simple_name" class="form-control w4" type="text"></div>
+            </li>-->
+            <li class="item">
+                <label class="item-name"><span class="name">公司地址</span><em class="help" data-help="修改后下方[经营地域]会自动默认成该地址"></em></label>
+                <div class="item-fields" id="addr" data-url="/js/compents/city.json">
+                    <span class="item-inline"><select class="form-control province" id="addrpro"></select></span>
+                    <span class="item-inline"><select class="form-control city" id="addrcity"></select></span>
+                    <span class="item-inline"><select class="form-control area" id="addrzone"></select></span>
+                    <span class="item-inline"><select class="form-control streat" id="addrstreat"></select></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="address"><span class="name"></span></label>
+
+                <div class="item-fields"><input id="address" name="address" class="form-control w4" type="text"></div>
+            </li>
+            <li class="item" name="li_contactor">
+                <label class="item-name" for="contactor"><span class="name">联系人姓名</span><em class="help" data-help="必填"></em></label>
+
+                <div class="item-fields"><input id="contactor" name="contactor" class="form-control w1" type="text" placeholder="例如:某某某"></div>
+            </li>
+            <li class="item" name="li_contactor">
+                <label class="item-name" for="contactor_phone"><span class="name">联系人电话</span><em class="help" data-help="必填"></em></label>
+
+                <div class="item-fields"><input id="contactor_phone" name="contactor_phone" class="form-control w2" type="text" placeholder="例如:13888888888"></div>
+            </li>
+            <li class="item-separator"></li>
+            <li class="item" id="item_phone">
+                <label class="item-name" for="phone"><span class="name">预留手机</span><em class="help" data-help="用于接收系统短信"></em></label>
+
+                <div class="item-fields"><input id="phone" name="phone" class="form-control w2" data-rule-required="true" type="text" placeholder="例如:13888888888"></div>
+            </li>
+            <li class="item" id="item_username" style="display:none;">
+                <label class="item-name" for="code"><span class="name">登录账号</span><em class="help" data-help="可用于登录采购平台"></em></label>
+
+                <div class="item-fields">
+                    <span class="item-inline">
+                        <input id="username" name="username" class="form-control w2" type="text" placeholder="建议填写客户电话" autocomplete="off">
+                        <span style="display:none;" id="tips_username"></span>
+                    </span>
+                    <span class="item-inline"><input type="button" id="resetPassword" class="btn btn-danger" value="重置密码"></span>
+                </div>
+            </li>
+            <!--
+            <li class="item">
+                <label class="item-name"><span class="name">公司类型</span><em class="help" data-help="该客户公司本身的类型"></em></label>
+                <div class="item-fields">
+                    <span class=""><select class="form-control w2" id="type" name="type" data-rule-required="true">
+                        <option value="1">经销商</option>
+                        <option value="2">酒店饭店</option>
+                        <option value="3">商场超市</option>
+                        <option value="4">便利店</option>
+                    </select></span>
+                </div>
+            </li>
+            -->
+            <li class="item">
+                <label class="item-name"><span class="name">经营地域</span><em class="help" data-help="本公司经营的地域范围"></em></label>
+                <div class="item-fields" id="region" data-url="/js/compents/city.json">
+                    <span class="item-inline"><select class="form-control province" id="areapro" data-first-title="全部省份"></select></span>
+                    <span class="item-inline"><select class="form-control city" id="areacity" data-first-title="全部城市"></select></span>
+                    <span class="item-inline"><select class="form-control area" id="areazone" data-first-title="全部区县"></select></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name"><span class="name">经营范围</span><em class="help" data-help="便于供应商添加本公司为客户"></em></label>
+                <div class="item-fields">
+                    <ul class="f-checkbox" id="goods_type">
+
+                    </ul>
+                    <span class="error" id="gtError"></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="basedate"><span class="name">结算基准日</span><em class="help" data-help="公司默认结算基准日：每月1～28号"></em></label>
+
+                <div class="item-fields form-inline">
+                    <div class="input-group w2">
+                        <span class="item-inline">
+                            <select class="form-control" id="basedate">
+                            </select>
+                        </span>
+                    </div>
+                </div>
+
+
+            </li>
+            <li class="item" id="li_financedate" style="display:none;">
+                <label class="item-name" for="basedate"><span class="name">财务结账日</span><em class="help" data-help="公司默认财务结账日：每月20～28号或自然月月末"></em></label>
+
+                <div class="item-fields form-inline">
+                    <div class="input-group w2">
+                        <span class="item-inline">
+                            <select class="form-control" id="financedate">
+                                <option value="0" selected>自然月月末</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+
+            </li>
+            <li class="item-separator"></li>
+            <li class="item">
+                <label class="item-name" for="fax"><span class="name">传真</span></label>
+
+                <div class="item-fields"><input id="fax" name="fax" class="form-control w2" type="text" placeholder="例如:0123-77777777"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="lawrep"><span class="name">企业法人</span></label>
+
+                <div class="item-fields"><input id="lawrep" name="lawrep" class="form-control w1" type="text" placeholder="例如:某某某"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="tax_no"><span class="name">企业税号</span></label>
+
+                <div class="item-fields"><input id="tax_no" name="tax_no" class="form-control w2" type="text" maxlength="15" placeholder="15位数字"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="license"><span class="name">营业执照</span></label>
+
+                <div class="item-fields"><input id="license" name="license" class="form-control w2" type="text" maxlength="15" placeholder="13或15位数字"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="email"><span class="name">邮件地址</span></label>
+
+                <div class="item-fields"><input id="email" name="email" class="form-control w2" type="text" placeholder="例如:admin@ms9d.com"></div>
+            </li>
+            <!--
+            <li class="item-separator"></li>
+            <li class="item">
+                <label class="item-name" for="pay_team_in"><span class="name">进货款天数</span><em class="help" data-help="向供应商付款的最迟天数"></em></label>
+
+                <div class="item-fields"><input maxlength="3" id="pay_team_in" name="pay_team_in" class="f-input w1" type="text"><span class="name"> 天</span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="pay_team_out"><span class="name">出货款天数</span><em class="help" data-help="向客户收款的最迟天数"></em></label>
+
+                <div class="item-fields"><input maxlength="3" id="pay_team_out" name="pay_team_out" class="f-input w1" type="text"><span class="name"> 天</span>
+                </div>
+            </li>
+            -->
+            <li class="item">
+                <label class="item-name" for="memo"><span class="name">备注</span></label>
+
+                <div class="item-fields">
+                    <textarea class="form-control w4" id="memo" name="memo" rows="6" cols="60"></textarea>
+                    <label class="error"></label>
+                </div>
+            </li>
+        </ul>
+        <div class="form-footer">
+            <div id="btndiv-save">
+                <div class="group-r">
+                    <button class="btn btn-primary" type="submit" id="power-10101">保存</button>
+                    <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+                </div>
+            </div>
+            <div id="btndiv-modify-supplier" style="display: none">
+                <div class="group-r">
+                    <button class="btn btn-primary" type="button" id="power-10302" onclick="saveModifySupplier();">保存修改</button>
+                    <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+                </div>
+            </div>
+            <div id="btndiv-modify-custom" style="display: none">
+                <div class="group-r">
+                    <button class="btn btn-primary" type="button" id="power-10402" onclick="saveModifyCustom();">保存修改</button>
+                    <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+                </div>
+            </div>
+            <div id="btndiv-cancel" style="display: none">
+                <div class="group-r">
+                    <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="wg-tooltip">
+        <div class="inner"></div>
+    </div>
+
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</form>
+</body>
+</html>

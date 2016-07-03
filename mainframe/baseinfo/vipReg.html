@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>注册/审核会员</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language='JavaScript' src='/js/repository/company-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/customRepository.js'></script>
+    <script language="JavaScript" src="/js/vipRegController.js"></script>
+    <script language="JavaScript" src="/js/compent.js"></script>
+    <!-- 业务JS End -->
+
+
+</head>
+<body>
+<form id="companyForm" method="get" action="">
+    <div class="framepage">
+        <div class="page-title clearfix">
+            <div class="group-l">
+                <span class="name">会员档案</span>
+            </div>
+        </div>
+        <ul class="form-body">
+            <li class="item">
+                <label class="item-name" for="name"><span class="name">手机号</span><em class="help" data-help="该会员的真实手机号"></em></label>
+
+                <div class="item-fields">
+                    <input id="username" name="username" class="form-control w2" type="text" data-rule-required="true" placeholder="例如:13866668888" autocomplete="off">
+                    <input id="username_old" name="username_old" type="hidden" value="">
+                    <span style="display:none;" id="tips_username"></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="name"><span class="name">会员昵称</span><em class="help" data-help="昵称不能重复"></em></label>
+
+                <div class="item-fields">
+                    <input id="name" name="name" class="form-control w2" type="text" data-rule-required="true" placeholder="例如:13866668888" value="">
+                    <input id="name_old" name="name_old" type="hidden" value="">
+                    <span style="display:none;" id="tips_name"></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="contactor"><span class="name">真实姓名</span><em class="help" data-help="会员真实姓名"></em></label>
+
+                <div class="item-fields"><input id="contactor" name="contactor" class="form-control w2" type="text" placeholder="例如:某某某"></div>
+            </li>
+            <!--<li class="item">
+                <label class="item-name"><span class="name">客户公司地址</span><em class="help" data-help="修改后下方[客户经营地域]会自动默认成该地址"></em></label>
+                <div class="item-fields" id="addr" data-url="/js/compents/city.json">
+                    <span class="item-inline"><select class="form-control province" id="addrpro"></select></span>
+                    <span class="item-inline"><select class="form-control city" id="addrcity"></select></span>
+                    <span class="item-inline"><select class="form-control area" id="addrzone"></select></span>
+                    <span class="item-inline"><select class="form-control streat" id="addrstreat"></select></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="name"><span class="name">客户登录密码</span><em class="help" data-help="本客户可使用该密码登录采购平台下单"></em></label>
+
+                <div class="item-fields"><input id="password" name="password" class="form-control w2" type="text" data-rule-required="true" placeholder="长度不得少于6位"></div>
+            </li>-->
+            <li class="item">
+                <label class="item-name" for="name"><span class="name">送货仓库</span><em class="help" data-help="送货的仓库"></em></label>
+
+                <div class="item-fields">
+                    <span class="">
+                        <select class="form-control w2" id="my_sid"></select>
+                    </span>
+                </div>
+            </li>
+
+            <!--<li class="item">
+                <label class="item-name" for="contactor_phone"><span class="name">电话</span><em class="help" data-help="本客户常用联系人电话"></em></label>
+
+                <div class="item-fields"><input id="contactor_phone" name="contactor_phone" class="form-control w2" type="text" data-rule-required="true"  placeholder="例如:13888888888"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="phone"><span class="name">手机号</span><em class="help" data-help="用于接收系统短信"></em></label>
+
+                <div class="item-fields"><input id="phone" name="phone" class="form-control w2" type="text" placeholder="例如:13888888888" autocomplete="off"></div>
+            </li>-->
+
+
+            <li class="item-separator"></li>
+            <li class="item">
+                <label class="item-name"><span class="name">会员等级</span><em class="help" data-help="不同费用对应不同级别"></em></label>
+                <div class="item-fields">
+                    <span class="">
+                        <select class="form-control w2" id="type" name="type" data-rule-required="true">
+                            <option value="1" selected>非会员</option>
+                            <option value="2">计价会员</option>
+                            <option value="3">包年会员</option>
+                            <option value="4">合伙会员</option>
+                        </select>
+                    </span>
+                </div>
+            </li>
+            <li class="item">
+                <script src="/js/compents/jquery.datepicker.js"></script>
+                <label class="item-name" for="vip_end_date"><span class="name">到期时间</span><em class="help" data-help="会员到期时间"></em></label>
+
+                <div class="item-fields">
+                    <div class="input-group w2">
+                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                        <input class="form-control" name="vip_end_date" type="text" id="vip_end_date" disabled="disabled">
+                    </div>
+                </div>
+                <script>
+                    $("#vip_end_date").datepicker();
+                </script>
+            </li>
+            <!--<li class="item">
+                <label class="item-name" for="vip_balance"><span class="name">会费余额</span><em class="help" data-help="余额不足时将不可享有该会员服务"></em></label>
+
+                <div class="item-fields">
+                    <div class="input-group w2">
+                        <input id="vip_balance" name="vip_balance" class="form-control" type="text" maxlength="5" data-rule-required="true" value="0">
+                        <div class="input-group-addon">元</div>
+                    </div>
+                    <span class="error" id="vip_balanceError"></span>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="vip_daily_reduce"><span class="name">每日扣费</span><em class="help" data-help="每天从余额中扣除的金额"></em></label>
+
+                <div class="item-fields">
+                    <div class="input-group w2">
+                        <input id="vip_daily_reduce" name="vip_daily_reduce" disabled="disabled" class="form-control" type="text" maxlength="5" data-rule-required="true" value="0">
+                        <div class="input-group-addon">元</div>
+                    </div>
+                    <span class="error" id="vip_daily_reduceError"></span>
+                </div>
+            </li>-->
+            <li class="item">
+                <label class="item-name" for="vip_logistics"><span class="name">物流余额</span><em class="help" data-help="用于抵扣物流配送费用的金额"></em></label>
+
+                <div class="item-fields">
+                    <div class="input-group w2">
+                        <input id="vip_logistics" name="vip_logistics" class="form-control" type="text" maxlength="5" data-rule-required="true" value="0">
+                        <div class="input-group-addon">元</div>
+                    </div>
+                    <span class="error" id="vip_logisticsError"></span>
+                </div>
+            </li>
+
+            <li class="item-separator"></li>
+            <li class="item">
+                <label class="item-name" for="memo"><span class="name">备注</span></label>
+
+                <div class="item-fields">
+                    <textarea class="form-control w4" id="memo" name="memo" rows="6" cols="60"></textarea>
+                    <label class="error"></label>
+                </div>
+            </li>
+
+        </ul>
+        <div class="form-footer">
+            <div id="saveSelfPage">
+                <div class="group-l" id="div-delete" style="display:none;">
+                    <button class="btn btn-danger" id="power-10410" type="button" onclick="deleteVIP();">停用该账号</button>
+                </div>
+                <div class="group-l" id="div-recover" style="display:none;">
+                    <button class="btn btn-danger" id="power-10411" type="button" onclick="recoverVIP();">启用该账号</button>
+                </div>
+                <div class="group-r" id="btnDiv-save">
+                    <button class="btn btn-primary" id="btn-submit" type="button">保存</button>
+                    <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="wg-tooltip">
+        <div class="inner"></div>
+    </div>
+
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</form>
+</body>
+</html>

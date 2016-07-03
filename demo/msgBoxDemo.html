@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css"/>
+    <script type="text/javascript" src="/js/compents/jquery.msgbox.js"></script>
+    <script type="text/javascript">
+        function presourcecode(method) {
+            $("#pre_code_" + method).slideToggle();
+        }
+
+        $(function() {
+            $("body").jalert("xxxx",{
+                title : '自定义标题',
+                width : 400,
+                height : 300,
+                maskcolor : 'teal'
+
+            });
+            $("#jmask_Demo").bind("click", function() {
+                var _bgcolor = $("#_bgcolor").val();
+                if (_bgcolor) {
+                    $("#jmaskDemo").jmask({
+                        bgcolor : _bgcolor
+                    });
+                } else {
+                    $("#jmaskDemo").jmask();
+                }
+            });
+            $("#jmaskDemo").bind("click", function() {
+                $("#jmaskDemo").junmask();
+            });
+            $("#jalertDemo").bind("click", function() {
+                $(this).jalert('jalert demo 测试');
+            });
+            $("#jalertDemo1").bind("click", function() {
+                $(this).jalert("jalert demo 测试", {
+                    title : '自定义标题',
+                    width : 300,
+                    height : 250,
+                    mask : false
+                });
+            });
+            $("#jconfirmDemo").bind("click", function() {
+                $(this).jconfirm('jconfirm demo 测试', 'http://www.163.com');
+            });
+            $("#jconfirmDemo1").bind('click', function() {
+                $(this).jconfirm('jcomfirm demo 测试', null, {
+                    title : '自定义标题',
+                    width : 400,
+                    height : 300,
+                    maskcolor : 'teal',
+                    maskopactity : 0.9
+                });
+            });
+        });
+
+    </script>
+    <style type="text/css">
+        td {
+            line-height: 30px;
+        }
+
+        .table2 {
+            border-width: 1px solid #000;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .table2 th, .table2 td {
+            border: 1px solid #000;
+            padding: 2px 10px;
+        }
+
+        .method {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .demo {
+            font-size: 18px;
+            line-height: 30px;
+        }
+
+        .pre_code {
+            display: none;
+        }
+
+        code {
+            color: teal;
+            font-size: 20px;
+        }
+
+        blockquote {
+            background-color: #eeeeee;
+        }
+
+        pre {
+            margin: 0px 0px;
+            padding: 0px 0px;
+        }
+
+        dt {
+            padding: 5px 5px;
+            line-height: 40px;
+        }
+
+        blockquote {
+            border: 1px dotted red;
+        }
+
+        .s_code label {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #jmaskDemo {
+            width: 300px;
+            height: 60px;
+            border: 2px solid red;
+            line-height: 60px;
+            background-color: white;
+            display: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<p>
+    <strong>Demo</strong>:
+    <button id="jconfirmDemo">
+        JConfirm Demo
+    </button>
+    <button id="jconfirmDemo1">
+        JConfirm Demo Use Options
+    </button>
+
+</p>
+<p class='s_code'>
+    <label title="click me" onclick="presourcecode('confirm');">SourceCode:</label>
+</p>
+</body>
+</html>

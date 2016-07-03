@@ -1,0 +1,420 @@
+.confrom {
+    z-index: 10003;
+}
+
+.green-ui-dialog {
+    position: fixed;
+    display: none;
+    border: 1px solid #3A3F51;
+    width: 360px;
+    font-size: 12px;
+    left: 50%;
+    top: 50%;
+    margin-left: -180px;
+    margin-top: -100px;
+    font-family: \5FAE\8F6F\96C5\9ED1;
+    background-color: #FFFFFF;
+}
+
+.green-ui-dialog-titleBox {
+    height: 40px;
+    line-height: 40px;
+    margin-top: 0px;
+    background-color: #4264B1;
+    font-size: 13px;
+    color: #FFFFFF;
+}
+
+.green-ui-dialog-titleBox h3 {
+    margin: 0;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 8px;
+    float: left;
+    font-size: 14px;
+}
+
+.green-ui-dialog-titleBox p {
+    margin-left: 30px;
+    margin-right: 8px;
+    float: right;
+}
+
+.green-ui-dialog-titleBox p span {
+    text-align: right;
+}
+
+.green-ui-dialog-close {
+    cursor: pointer;
+    color: red;
+}
+
+.green-ui-dialog-contentBox {
+    margin-left: auto;
+    margin-right: auto;
+    right: 0;
+    left: 0;
+    display: table;
+    text-align: center;
+    /*border: 1px solid red;*/
+}
+
+.green-ui-dialog-contentBox span {
+    /*border: 1px solid red;*/
+    padding: 40px 10px;
+    vertical-align: middle;
+    font-size: 14px;
+    display: table-cell;
+}
+
+.green-ui-dialog-contentBox iframe {
+    /*border-style: none;*/
+    border: 1px solid green;
+    padding: 1px 1px;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.green-ui-dialog-buttonBox {
+    height: 37px;
+    line-height: 35px;
+    padding-right: 8px;
+    background-color: #D8DADE;
+    color: #FFFFFF;
+}
+
+.green-ui-dialog-buttonBox p {
+    margin: 0;
+    margin-left: 8px;
+    float: right;
+}
+
+.green-ui-dialog-button {
+    padding: 2px 14px;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    color: #FFFFFF;
+}
+
+.green-ui-dialog-button:hover {
+    padding: 2px 14px;
+    cursor: pointer;
+    background-color: #286090;
+    border-color: #204d74;
+    color: #FFFFFF;
+}
+
+/*自动提示框*/
+.xdsoft_autocomplete,
+.xdsoft_autocomplete div,
+.xdsoft_autocomplete span {
+    /*	-moz-box-sizing: border-box !important;
+        box-sizing: border-box !important;*/
+}
+
+.xdsoft_autocomplete {
+    display: inline;
+    position: relative;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    text-align: start;
+}
+
+.xdsoft_autocomplete .xdsoft_input {
+    position: relative;
+    z-index: 2;
+}
+
+.xdsoft_autocomplete .xdsoft_autocomplete_dropdown {
+    position: absolute;
+    border: 1px solid #ccc;
+    border-top-color: #d9d9d9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: default;
+    display: none;
+    z-index: 1001;
+    margin-top: -1px;
+    background-color: #fff;
+    min-width: 100%;
+    overflow: auto;
+}
+
+.xdsoft_autocomplete .xdsoft_autocomplete_hint {
+    position: absolute;
+    z-index: 1;
+    color: #ccc !important;
+    -webkit-text-fill-color: #ccc !important;
+    text-fill-color: #ccc !important;
+    overflow: hidden !important;
+    white-space: pre !important;
+}
+
+.xdsoft_autocomplete .xdsoft_autocomplete_hint span {
+    color: transparent;
+    opacity: 0.0;
+}
+
+.xdsoft_autocomplete .xdsoft_autocomplete_dropdown > .xdsoft_autocomplete_copyright {
+    color: #ddd;
+    font-size: 10px;
+    text-decoration: none;
+    right: 5px;
+    position: absolute;
+    margin-top: -15px;
+    z-index: 1002;
+}
+
+.xdsoft_autocomplete .xdsoft_autocomplete_dropdown > div {
+    background: #fff;
+    white-space: nowrap;
+    cursor: pointer;
+    line-height: 1.5em;
+    padding: 2px 0px 2px 0px;
+}
+
+.xdsoft_autocomplete .xdsoft_autocomplete_dropdown > div.active {
+    background: #0097CF;
+    color: #FFFFFF;
+}
+
+.tip-green {
+    z-index: 1000;
+    text-align: left;
+    border: 1px solid #bdde98;
+    padding: 7px 10px;
+    min-width: 50px;
+    max-width: 300px;
+    color: #860404;
+    background-color: #dff6c6;
+    /**
+     * - If you set a background-image, border/padding/background-color will be ingnored.
+     *   You can set any padding to .tip-inner instead if you need.
+     * - If you want a tiled background-image and border/padding for the tip,
+     *   set the background-image to .tip-inner instead.
+     */
+}
+
+.tip-green .tip-inner {
+    font: bold 12px/14px arial, helvetica, sans-serif;
+}
+
+/*帮助提示*/
+/* Configure an arrow image - the script will automatically position it on the correct side of the tip */
+.tip-green .tip-arrow-top {
+    margin-top: -10px;
+    margin-left: 6px;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background: url(tip-green_arrows.gif) no-repeat;
+}
+
+.tip-green .tip-arrow-right {
+    margin-top: 6px;
+    margin-left: 0;
+    top: 0;
+    left: 100%;
+    width: 10px;
+    height: 10px;
+    background: url(tip-green_arrows.gif) no-repeat -10px 0;
+}
+
+.tip-green .tip-arrow-bottom {
+    margin-top: 0;
+    margin-left: 6px;
+    top: 100%;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background: url(tip-green_arrows.gif) no-repeat -20px 0;
+}
+
+.tip-green .tip-arrow-left {
+    margin-top: 6px;
+    margin-left: -10px;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background: url(tip-green_arrows.gif) no-repeat -30px 0;
+}
+
+/*日历样式*/
+.datepicker * {
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.datepicker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 280px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    z-index: 100;
+}
+
+.datepicker .top {
+    text-align: center;
+}
+
+.datepicker .body {
+    width: 100%;
+}
+
+.datepicker .bottom {
+    padding-top: 5px;
+    text-align: center;
+}
+
+.datepicker .cell {
+    width: 1%;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #eee;
+    cursor: pointer;
+}
+
+.datepicker .cell.selected {
+    border: 1px solid #ff7f00;
+    background: #ff7f00;
+    color: #fff;
+}
+
+.datepicker .week-cell {
+    border: 0;
+    color: #888;
+}
+
+.datepicker .prev-month,
+.datepicker .next-month {
+    color: #ccc;
+    border: 1px solid #f2f2f2;
+}
+
+.datepicker .curr-month {
+    background: #f6f6f6;
+}
+
+.datepicker .prev-month:hover,
+.datepicker .curr-month:hover,
+.datepicker .next-month:hover {
+    position: relative;
+    border: 1px solid #ff7f00;
+    z-index: 2;
+}
+
+.datepicker .btn-clear {
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    margin: 0 5px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    background: #ff7f00;
+    cursor: pointer;
+}
+
+.datepicker-select {
+    position: relative;
+    float: left;
+    width: 50%;
+}
+
+.datepicker-select:after {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 0;
+    height: 0;
+    margin-top: -2.5px;
+    border-top: 5px solid #aaa;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    content: '';
+}
+
+.datepicker-select-selected {
+    position: relative;
+    width: 100%;
+    height: 36px;
+    padding-right: 20px;
+    line-height: 36px;
+    text-align: center;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.datepicker-select-option {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    display: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ddd;
+    background: #fff;
+    z-index: 9;
+}
+
+.datepicker-select-option li {
+    float: left;
+    width: 50%;
+    height: 30px;
+    line-height: 30px;
+    color: #666;
+    font-size: 13px;
+    text-align: center;
+    list-style: none;
+    cursor: pointer;
+}
+
+.datepicker-select-option li:hover {
+    background: #eee;
+}
+
+.datepicker-select-month {
+    margin-left: -1px;
+}
+
+/* 对选框样式*/
+
+.rightLeftSelect {
+}
+
+.rightLeftSelect_l {
+    display: block;
+    width: 100%;
+}
+
+.rightLeftSelect_m {
+    display: block;
+    padding-top: 55px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.rightLeftSelect_m_span {
+    display: block;
+    background: #eee;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 5px 0;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.rightLeftSelect_m_span:hover {
+    background: #FFFFFF;
+}
+
+

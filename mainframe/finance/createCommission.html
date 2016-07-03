@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>创建提成结算单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!-- 组件JS部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/commission-repository.js"></script>
+    <script language="JavaScript" src="/js/createCommissionController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start-->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">提成结算单</span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">填单时间: </label><span class="text" id="iOrderDate"></span></div>
+                <div class="item"><label class="item-name">提成结算单号: </label><span class="text" id="com_id"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <!--<button type="button" class="btn-tool fa fa-print" id="btn-print">打印</button>-->
+            <button type="button" class="btn-tool fa fa-book" id="btn-help" onclick="startHelpIntro();"> 帮助</button>
+            <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
+        </div>
+    </div>
+    <!-- 头部 End -->
+
+    <div id="printContent">
+        <!-- 表头部头 Start -->
+        <div class="order-hd container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">填单人：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="fullperson"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">审核人：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="cuname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="1" data-intro="需要结算的业务员" data-position='bottom'>
+                        <label class="item-name">业务员：</label>
+                        <div class="item-fields">
+                            <div>
+                                <input id="suname" type="text" class="form-control input-sm" placeholder="请输入员工姓名或手机号"/><input id="suid" type="hidden" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="2" data-intro="指定结算该仓库的单据" data-position='bottom'>
+                        <label class="item-name">所属仓库：</label>
+                        <div class="item-fields">
+                            <span class="">
+                                <select class="form-control input-sm" id="sid"></select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">客户数量：</label>
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="customer_count"></span></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item" data-step="3" data-intro="勾选此项后无需再选择日期" data-position="bottom">
+                        <label class="item-name">全部未提：</label>
+                        <div class="item-fields">
+                            <span class="store-check-list"><label><input type="checkbox" id="all" value="1"> 全部已结算且未提成的出货单</label></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" id="divCreate1" data-step="4" data-intro="在这一天之后结算的出货单" data-position='buttom'>
+                    <div class="item">
+                        <label class="item-name">开始日期：</label>
+                        <script src="/js/compents/jquery.datepicker.js"></script>
+                        <div class="item-fields">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <input class="form-control"  type="text" id="begin_date"/>
+                            </div>
+
+                        </div>
+                        <script>
+                            $("#begin_date").datepicker();
+                        </script>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3" id="divCreate2" data-step="5" data-intro="在这一天之前结算的出货单" data-position='buttom'>
+                    <div class="item">
+                        <label class="item-name">结束日期：</label>
+                        <div class="item-fields">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <input class="form-control input-sm"  type="text" id="end_date"/></div>
+                        </div>
+
+                        <script>
+                            $("#end_date").datepicker();
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 表头部分  End -->
+
+        <!--  主体部分 Start -->
+        <div class="table-container" data-step="6" data-intro="选择需要结算的单据" data-position='top'>
+            <div class="table-form">
+            <table cellpadding="0" cellspacing="0" width="" id="mainList">
+                <thead>
+                <tr>
+                    <th class="op"><input type="checkbox" id="checkAll" /></th>
+                    <th>客户出货单</th>
+                    <th>商品条码</th>
+                    <th>商品名称<a href="javascript:" onclick="switchWidth(this, '-');">－</a><a href="javascript:" onclick="switchWidth(this, '+');">＋</a></th>
+                    <th>活动</th>
+                    <th>箱数</th>
+                    <th>金额</th>
+
+                    <th>结算箱数</th>
+                    <th>实收金额</th>
+                    <th>提成(%)</th>
+                    <th>提成(元/箱)</th>
+                    <th>应提金额</th>
+                    <th>实提金额</th>
+                    <th>说明</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            </div>
+        </div>
+        <!-- 主体部分 END -->
+
+
+    </div>
+    <div class="table-footer">
+        <div class="group-l" data-step="7" data-intro="备注需要注意的信息" data-position='top'>
+            <div class="form-memo">
+                <div class="item-fields form-inline">
+                    <div class="input-group">
+                        <div class="input-group-addon">备注</div>
+                        <input type="text" class="form-control" style="width: 700px;" id="memo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stamp" id="stamp"></div>
+    </div>
+    <!-- 表尾部分 Start -->
+    <div class="form-footer">
+        <div class="group-l">
+            <div class="form-order-total" data-step="8" data-intro="核对单据总金额" data-position='top'>
+                <div class="item-name">
+                    <span class="name">应提金额：<strong id="amountTobe" >0.00</strong> 元</span>
+                    <span class="name">实提金额：<strong id="amountReal" >0.00</strong> 元</span>
+                </div>
+            </div>
+        </div>
+        <div class="group-r" data-step="9" data-intro="保存信息" data-position='top'>
+            <div id="divbtn-save">
+                <button class="btn btn-primary" id="power-12801" type="button" onclick="disableBtn(this);saveData('create');">保存</button>
+                <button class="btn btn-primary" id="power-12802" type="button" onclick="disableBtn(this);saveData('create_check');">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="divbtn-check" style="display: none;">
+                <button class="btn btn-danger" id="power-12804" type="button" onclick="disableBtn(this);saveData('delete');">作废</button>
+                <button class="btn btn-primary" id="power-12803" type="button" onclick="disableBtn(this);saveData('check');">审核</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="divbtn-flush" style="display: none;">
+                <button class="btn btn-primary" id="power-12805" type="button" onclick="disableBtn(this);saveData('flush');">冲单</button>
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+            <div id="divbtn-cancel" style="display: none;">
+                <button class="btn btn-default" onclick="closeParentForFrame();" type="button">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 表尾结整 End -->
+
+    <!-- 弹窗 -->
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+
+</div>
+</body>
+</html>

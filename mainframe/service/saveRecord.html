@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>回访记录</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.cxselect.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/raty/jquery.raty.css"/>
+    <script language="JavaScript" src="/js/compents/jquery.raty.js"></script>
+
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/repository/user-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/customRepository.js"></script>
+    <script language='JavaScript' src='/js/repository/record-repository.js'></script>
+    <script language="JavaScript" src="/js/saveRecord.js"></script>
+    <script language="JavaScript" src="/js/compent.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!-- 业务JS End -->
+
+
+</head>
+<body>
+<img type="hidden" id="data-cancelOff" src="/css/raty/images/cancel-off.png" style="display:none;" />
+<img type="hidden" id="data-cancelOn" src="/css/raty/images/cancel-on.png" style="display:none;" />
+<img type="hidden" id="data-starHalf" src="/css/raty/images/star-half.png" style="display:none;" />
+<img type="hidden" id="data-starOff" src="/css/raty/images/star-off.png" style="display:none;" />
+<img type="hidden" id="data-starOn" src="/css/raty/images/star-on.png" style="display:none;" />
+<form id="mainForm" method="get" action="">
+    <div class="framepage">
+        <div class="page-title clearfix">
+            <div class="group-l">
+                <span class="name">回访记录</span>
+            </div>
+        </div>
+        <ul class="form-body">
+            <li class="item">
+                <label class="item-name" for="uname"><span class="name">当前客服</span></label>
+
+                <div class="item-fields"><input disabled id="uname" name="uname" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="type"><span class="name">回访类型</span></label>
+
+                <div class="item-fields">
+                <span class="">
+                <select class="form-control w2" id="type">
+                    <option value="1">客户回访</option>
+                    <option value="2">订单回访</option>
+                </select>
+                </span>
+                    <label class="error"></label>
+                </div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="ccname"><span class="name">客户名称</span></label>
+
+                <div class="item-fields">
+                    <input id="ccname" name="ccname" class="form-control w2" type="text" data-rule-required="true" placeholder="">
+                    <input id="ccid" name="ccid" type="hidden" value="">
+                </div>
+            </li>
+            <li class="item" id="order_id_wrap">
+                <label class="item-name" for="order_id"><span class="name">客户订单号</span></label>
+                <div class="item-fields"><input disabled id="order_id" name="orderid" class="form-control w2" type="text"></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="score_service"><span class="name">服务态度</span></label>
+
+                <div class="item-fields"><div id="score_service" class="f-star"></div></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="score_deliver"><span class="name">送货及时性</span></label>
+
+                <div class="item-fields"><div id="score_deliver" class="f-star"></div></div>
+            </li>
+            <li class="item">
+                <label class="item-name" for="score_goods"><span class="name">货品完整性</span></label>
+
+                <div class="item-fields"><div id="score_goods" class="f-star"></div></div>
+            </li>
+
+            <li class="item">
+                <label class="item-name"><span class="name">业务员到店</span></label>
+                <div class="item-fields">
+                    <div class="f-checkbox" id="score_salesman">
+                        <ul>
+                            <li class="item-checkbox"><label for="score_salesman2"><input id="score_salesman2" name="score_salesman" type="radio" value="2" checked="checked"> 是</label></li>
+                            <li class="item-checkbox"><label for="score_salesman1"><input id="score_salesman1" name="score_salesman" type="radio" value="1"> 否</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="item">
+                <label class="item-name"><span class="name">告知活动内容</span></label>
+                <div class="item-fields">
+                    <div class="f-checkbox" id="score_activity">
+                        <ul>
+                            <li class="item-checkbox"><label for="score_activity2"><input id="score_activity2" name="score_activity" type="radio" value="2" checked="checked"> 是</label></li>
+                            <li class="item-checkbox"><label for="score_activity1"><input id="score_activity1" name="score_activity" type="radio" value="1"> 否</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="item">
+                <label class="item-name" for="memo"><span class="name">客户意见</span></label>
+
+                <div class="item-fields">
+                    <textarea class="form-control w4" id="memo" name="memo" rows="6" cols="60"></textarea>
+                    <label class="error"></label>
+                </div>
+            </li>
+            <!--<li class="item-separator"></li>-->
+
+
+
+        </ul>
+        <div class="form-footer">
+            <div id="addSelfPage">
+                <div class="group-r">
+                    <button class="btn btn-primary" type="submit" id="power-103001">保存</button>
+                    <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+                </div>
+            </div>
+            <div id="editSelfPage" style="display:none;">
+                <div class="group-r">
+                    <button class="btn btn-primary" type="submit" id="power-103002">确认修改</button>
+                    <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="wg-tooltip">
+        <div class="inner"></div>
+    </div>
+
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</form>
+</body>
+</html>

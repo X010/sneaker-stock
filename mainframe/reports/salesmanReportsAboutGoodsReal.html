@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>业务员单品销量</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- --业务 js start-->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language="JavaScript" src="/js/jquery.tablesorter.js"></script>
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/goods-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/store-repository.js'></script>
+    <script language='JavaScript' src='/js/repository/reports-common-repository.js'></script>
+    <script language="JavaScript" src="/js/salesmanReportsAboutGoodsRealController.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnersearchbox-reports.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/metroStyle/metroStyle.css"/>
+    <script language="JavaScript" src="/js/compents/jquery.ztree.all-3.5.min.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertreeuser.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<script language="JavaScript" src="/js/compents/jquery.datepicker.js"></script>
+<div class="framepage">
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name" id="pageName"></span>
+            <span class="subname">该报表销售数据来源于已审核的客户出货单</span>
+        </div>
+    </div>
+
+    <!-- 头部 Start-->
+    <div class="report-filter" id="searchBox"></div>
+    <!-- 头部 End-->
+
+    <div class="table-body">
+        <div class="table-body-inner">
+        <table cellpadding="0" cellspacing="0" width="" id="mainList">
+		<thead>
+            <tr>
+                <th class="w280">商品名称</th>
+                <th class="w60">规格</th>
+                <th class="w80">业务员</th>
+                <th class="w100">销售额</th>
+                <th class="w100">销售数量</th>
+                <th class="w100">销售箱数</th>
+                <!--<th class="w100">任务箱数</th>
+                <th class="w100">任务完成率</th>-->
+                <th class="w100">赠品数量</th>
+                <th class="w100">赠品箱数</th>
+                <th class="w100">退货额</th>
+                <th class="w100">退货数量</th>
+                <th class="w100">退货箱数</th>
+                <th class="w100">赠品退货数量</th>
+                <th class="w100">赠品退货箱数</th>
+            </tr>
+		</thead>
+		<tbody></tbody>
+        </table>
+        <div id="table-empty"></div>
+        </div>
+    </div>
+    <div class="table-footer">
+        <div class="group-l">
+            <button type="button" class="btn btn-default" onclick="saveExcel();">导出Excel文件</button>
+        </div>
+        <div class="group-r">
+            <div class="pagination" id="split"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="confireInfoLayer"></div>
+<div id="confrom" class="confrom"></div>
+
+</body>
+</html>

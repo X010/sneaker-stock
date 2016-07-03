@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <title>新建帐盘单</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/app.css" type="text/css" media="screen"/>
+
+    <!--组件部分 Start -->
+    <script language="JavaScript" src="/js/jquery-1.11.3.min.js"></script>
+    <script language="JavaScript" src="/js/bootstrap.min.js"></script>
+    <script language="javascript" src="/js/compents/jquery-migrate-1.1.0.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.jqprint-0.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/compent.css">
+    <link rel="stylesheet" type="text/css" href="/css/introjs.css"/>
+    <script type="text/javascript" src="/js/compents/intro.js"></script>
+    <script type="text/javascript" src="/js/compents/jquery.dialog-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validate.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.validator.ext.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.runnertable-0.1.js"></script>
+    <script language="javascript" src="/js/compents/jquery.runnerautocomplete-0.1.js"></script>
+    <script language="JavaScript" src="/js/compents/jquery.hdw.js"></script>
+    <!-- 组件JS End -->
+
+    <!-- 业务JS Start -->
+    <script language="JavaScript" src="/js/config.js"></script>
+    <script language="JavaScript" src="/js/configURL.js"></script>
+    <script language="JavaScript" src="/js/util.js"></script>
+    <script language="JavaScript" src="/js/tools.js"></script>
+    <script language='JavaScript' src='/js/SyncAjax.js'></script>
+    <script language='JavaScript' src='/js/UrlList.js'></script>
+    <script language='JavaScript' src='/js/CookieUtil.js'></script>
+
+    <script language='JavaScript' src='/js/repository/user-repository.js'></script>
+    <script language="JavaScript" src="/js/repository/stockRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/supplierRepository.js"></script>
+    <script language="JavaScript" src="/js/repository/store-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/goods-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/goods-type-repository.js"></script>
+    <script language="JavaScript" src="/js/repository/checkRepository.js"></script>
+    <script language="JavaScript" src="/js/createAccountSetController.js"></script>
+    <script language="JavaScript" src="/js/searchController.js"></script>
+    <!-- 业务JS END -->
+</head>
+<body>
+<div class="framepage">
+    <!-- 头部 Start -->
+    <div class="page-title clearfix">
+        <div class="group-l">
+            <span class="name">帐盘单</span>
+            <div class="bill-info">
+                <div class="item"><label class="item-name">帐盘单号: </label><span class="text" id="checkId"></span></div>
+                <div class="item"><label class="item-name">单据状态: </label><span class="text" id="statusText"></span></div>
+            </div>
+        </div>
+        <div class="group-r">
+            <button type="button" class="btn-tool fa fa-refresh" onclick="window.location.reload();"> 刷新</button>
+            <!--<button type="button" class="btn-tool fa fa-print" id="btn-print" onclick="printBill('printContent')">打印</button>-->
+            <button type="button" class="btn-tool fa fa-book" onclick="startHelpIntro();"> 帮助</button>
+            <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
+        </div>
+    </div>
+    <!-- 头部 END -->
+
+    <!-- 主体 Start -->
+    <div id="printContent">
+        <div class="order-hd container-fluid" data-step="1" data-intro="帐盘单已创建,可以点击[实盘单(新建)]菜单,开始进行实盘录入" data-position='buttom'>
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">盘点仓库：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="sname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">帐盘人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="fullperson"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">记账人：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="cuname"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">开始时间：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="createtime"></span></div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+                    <div class="item">
+                        <label class="item-name">记账时间：</label>
+
+                        <div class="item-fields"><span class="form-control input-sm" disabled id="checktime"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+        <div class="table-body" data-step="2" data-intro="实盘单审核完成后,将会影响这里的实盘数目" data-position='top'>
+            <div class="table-body-inner">
+            <table cellpadding="0" cellspacing="0" width="" id="accountSetList">
+                <thead>
+                <tr>
+                    <th class="w100">商品编码</th>
+                    <th class="w280">商品名称</th>
+                    <th class="w120">商品条码</th>
+                    <th class="w60">规格</th>
+                    <th class="w60">单位</th>
+                    <th class="w100">帐盘数目</th>
+                    <th class="w100">实盘数目</th>
+                    <th class="w100" id="totalDiff">盈亏数目</th>
+                    <th class="w100" id="amountDiff">盈亏金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div id="table-empty"></div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+    <div class="table-footer">
+        <div class="group-l" data-step="4" data-intro="该次盘点备注信息" data-position='top'>
+            <div class="form-memo">
+                <label class="item-name" for="memo">备注</label>
+                <div class="item-fields">
+                    <input type="text" class="form-control" style="width: 400px;" id="memo">
+                </div>
+            </div>
+        </div>
+        <div class="group-r">
+            <div class="form-memo">
+                <label class="item-name" for="memo">盘点分类：<span id="tnames"></span></label>
+            </div>
+        </div>
+    </div>
+    <!-- 主体 End -->
+
+    <!-- 尾部 Start -->
+    <div class="form-footer">
+        <div class="group-l">
+            <div class="form-order-total" id="formOrderTotal" data-step="3" data-intro="核对单据总金额" data-position='top'>
+                <div class="item-name">
+                    <span class="name"><span id="amountReal_title">总盈亏金额</span>：<strong id="amountReal"></strong> 元</span>
+                </div>
+            </div>
+        </div>
+        <div class="group-r" data-step="5" data-intro="完成" data-position='top'>
+            <div id="chalkitup" style="display:none;">
+                <button class="btn btn-primary" id="power-12104" type="submit" onclick="disableBtn(this);chalkItUpForAccountSet();">记帐</button>
+                <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+            </div>
+            <div id="lookup">
+                <button class="btn btn-default" type="button" onclick="closeParentForFrame();">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 尾部 End -->
+
+
+    <!-- 新建账盘 -->
+    <div class="modal" id="modalCAS">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeParentForFrame();"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">新建帐盘</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row condition">
+                        <div class="col-sm-12 col-md-12 col-md-12 form-inline ">
+                            <div class="form-group">
+                                <label>盘点仓库:</label>
+                                <select class="form-control input-sm" id="store"></select>
+                            </div>
+                            <div class="form-group" style="margin-left:10px;">
+                                <label>商品来源:</label>
+                                <label class="radio"><input type="radio" name="fromType" value="1" id="fromType" checked /> 库存商品</label>
+                                <label class="radio"><input type="radio" name="fromType" value="2" id="fromType1"/> 基础资料</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
+                            <div>所有商品分类:</div>
+                            <div class="select-box">
+                                <select multiple="multiple" class="form-control" id="select1">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            <div class="select-btn">
+                                <span class="btn btn-default btn-block" id="add">添加选中 »</span>
+                                <span class="btn btn-default btn-block" id="add_all">添加全部 »</span>
+                                <hr />
+                                <span class="btn btn-default btn-block" id="remove">« 移除选中</span>
+                                <span class="btn btn-default btn-block" id="remove_all">« 移除全部</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 col-md-5 col-lg-5">
+                            <div>盘点商品分类:</div>
+                            <div class="select-box">
+                                <select multiple="multiple" class="form-control" id="select2">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="group-l">
+                        <div class="des">
+                            <p>说明：请先选择要盘点的仓库和商品来源，以及商品分类（默认全部分类）。</p>
+                            <p class="text-danger">注意：新建帐盘后会清空该仓库当前正在盘点的帐盘单据，以及所有未审核的实盘单据！</p>
+                        </div>
+                    </div>
+                    <div class="group-r">
+                        <button type="button" class="btn btn-primary" onclick="createAccountSet();">新建</button>
+                        <button type="button" class="btn btn-default" onclick="closeParentForFrame();">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 弹窗 -->
+    <div id="confireInfoLayer"></div>
+    <div id="confrom" class="confrom"></div>
+</div>
+</body>
+</html>
