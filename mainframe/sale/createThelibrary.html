@@ -2,7 +2,7 @@
 <html lang='zh-cn'>
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="max-age=7200" />
+    <meta http-equiv="Cache-Control" content="max-age=7200"/>
     <title>客户订单和客户出货单</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" media="screen"/>
@@ -57,8 +57,12 @@
             </div>
         </div>
         <div class="group-r">
-            <button type="button" class="btn-tool fa fa-sign-in" id="importBill" style="display: none;" data-toggle="modal" data-backdrop="static" data-target="#modalImportOrder"> 导入</button>
-            <button type="button" class="btn-tool fa fa-files-o" id="power-11313" style="display: none;" data-toggle="modal" data-backdrop="static" data-target="#divideOrder"> 拆单</button>
+            <button type="button" class="btn-tool fa fa-sign-in" id="importBill" style="display: none;" data-toggle="modal" data-backdrop="static"
+                    data-target="#modalImportOrder"> 导入
+            </button>
+            <button type="button" class="btn-tool fa fa-files-o" id="power-11313" style="display: none;" data-toggle="modal" data-backdrop="static"
+                    data-target="#divideOrder"> 拆单
+            </button>
             <button type="button" class="btn-tool fa fa-print" id="btn-print"> 打印</button>
             <button type="button" class="btn-tool fa fa-book" id="btn-help" onclick="startHelpIntro();"> 帮助</button>
             <button type="button" class="btn-tool fa fa-bars" id="btn-list"> 历史</button>
@@ -98,7 +102,7 @@
                             <span id="sCustom" class="">
                                 <select class="form-control input-sm" style="width: 130px;" onchange="changeCustomerId();" id="customLists"></select>
                                 <input id="customName" style="display: none;" type="text" class="form-control input-sm" placeholder="请输入客户名称或手机号"/>
-                                <input id="customId"  type="hidden" value="" />
+                                <input id="customId" type="hidden" value=""/>
                                 <button type="button" class="btn-small btn-default" style="float: none;" id="inputHand" onclick="inputForHand();">输入</button>
                             </span>
                         </div>
@@ -120,9 +124,10 @@
                         <div class="item-fields">
                             <div class="input-group input-group-sm">
                                 <!--<select id="buid" class="form-control"></select>-->
-                                <input id="suname" type="text" class="form-control input-sm" placeholder="请输入员工姓名或手机号"/><input id="suid" type="hidden" value="" />
+                                <input id="suname" type="text" class="form-control input-sm" placeholder="请输入员工姓名或手机号"/><input id="suid" type="hidden"
+                                                                                                                               value=""/>
                                 <div class="input-group-btn">
-                                    <button type="button" disabled class="btn btn-sm btn-primary" id="btnMdySaler"  onclick="modifySaler();">保存修改</button>
+                                    <button type="button" disabled class="btn btn-sm btn-primary" id="btnMdySaler" onclick="modifySaler();">保存修改</button>
                                 </div>
                             </div>
                         </div>
@@ -146,29 +151,29 @@
 
         <div class="table-container">
             <div class="table-form">
-            <table cellpadding="0" data-step="4" data-intro="需要发货的商品清单" data-position='top' cellspacing="0" width="" id="goodsListId">
-                <thead>
-                <tr>
-                    <th class="op">操作</th>
-                    <th>商品编码</th>
-                    <th>商品名称<a href="javascript:" onclick="switchWidth(this, '-');">－</a><a href="javascript:" onclick="switchWidth(this, '+');">＋</a></th>
-                    <th>商品条码</th>
-                    <th>规格</th>
-                    <th>单价</th>
-                    <th>数量</th>
-                    <th>单位</th>
-                    <th>箱单价</th>
-                    <th>箱数</th>
-                    <th>含税金额</th>
-                    <th>税率(％)</th>
-                    <th>去税金额</th>
-                    <th>税额</th>
-                    <th>当前库存</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+                <table cellpadding="0" data-step="4" data-intro="需要发货的商品清单" data-position='top' cellspacing="0" width="" id="goodsListId">
+                    <thead>
+                    <tr>
+                        <th class="op">操作</th>
+                        <th>商品编码</th>
+                        <th>商品名称<a href="javascript:" onclick="switchWidth(this, '-');">－</a><a href="javascript:" onclick="switchWidth(this, '+');">＋</a></th>
+                        <th>商品条码</th>
+                        <th>规格</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>单位</th>
+                        <th>箱单价</th>
+                        <th>箱数</th>
+                        <th>含税金额</th>
+                        <th>税率(％)</th>
+                        <th>去税金额</th>
+                        <th>税额</th>
+                        <th>当前库存</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
             <div class="table-empty" style="display: none;">您还没有添加任何商品</div>
             <div class="form-order-ext" id="mall_info" style="display:none;padding-top:18px;">
@@ -193,6 +198,14 @@
             </div>
         </div>
         <div class="group-r form-inline">
+            <div class="input-group" style="max-width: 250px;">
+                <div class="input-group-addon">
+                    <input type="checkbox" class="" id="express" checked="checked" onclick="agreeDiscount();"/>
+                    物流费用：
+                </div>
+                <input id="express_amount" type="text" class="form-control" disabled="disabled" value="0.00"/>
+                <div class="input-group-addon">元</div>
+            </div>
             <div class="input-group" style="max-width: 250px;">
                 <div class="input-group-addon">
                     <input type="checkbox" class="" id="agree_discount" checked="checked" onclick="agreeDiscount();"/>
