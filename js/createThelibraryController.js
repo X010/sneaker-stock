@@ -955,6 +955,7 @@ $(function () {
         var data = stockRes.findStockOutById(orderId);
         $('#pageName').text("客户出货单");
         if (data != null) {
+            $("#express_amount").attr("disabled","disabled");
             $("#iOrderDate").html(formatDatetime(data.createtime));
             $("#fullperson").html(fieldNull(data.uname, '(空)'));
             $("#cuname").html(fieldNull(data.cuname, '(空)'));
@@ -1031,6 +1032,7 @@ $(function () {
         var data = stockRes.findStockOutById(orderId);
         $('#pageName').text("客户出货单");
         if (data != null) {
+            $("#express_amount").attr("disabled","disabled");
             $("#iOrderDate").html(formatDatetime(data.createtime));
             $("#fullperson").html(fieldNull(data.uname, '(空)'));
             $("#cuname").html(fieldNull(data.cuname, '(空)'));
@@ -1108,6 +1110,7 @@ $(function () {
         var data = stockRes.findStockOutById(orderId);
         $('#pageName').text("客户出货单");
         if (data != null) {
+            $("#express_amount").attr("disabled","disabled");
             $("#iOrderDate").html(formatDatetime(data.createtime));
             $("#fullperson").html(fieldNull(data.uname, '(空)'));
             $("#cuname").html(fieldNull(data.cuname, '(空)'));
@@ -1186,6 +1189,7 @@ $(function () {
         $('#pageName').text("客户出货单");
         if (data != null) {
             if (data.negative_id) $("#negative_id").html(data.negative_id).parent().show();
+            $("#express_amount").attr("disabled","disabled");
             $("#iOrderDate").html(formatDatetime(data.createtime));
             $("#fullperson").html(fieldNull(data.uname, '(空)'));
             $("#cuname").html(fieldNull(data.cuname, '(空)'));
