@@ -1829,7 +1829,7 @@ function tipsTableTr() {
  * @param subdomain
  */
 function enterOtherPlatform(subdomain){
-    if (typeof(subdomain) == 'string'){
+   /* if (typeof(subdomain) == 'string'){
         var hosts = window.location.host.split('.');
         var url = 'http://';
         for (var i=0; i<hosts.length; i++){
@@ -1852,6 +1852,8 @@ function enterOtherPlatform(subdomain){
             }
         }
     }
+    */
+    window.location.href="http://admin.zsg.99yunshang.com"
 }
 
 
