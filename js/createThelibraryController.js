@@ -1356,12 +1356,24 @@ function createStockOutBill(status) {
         var goodList = getTableData();
         if (goodList.length > 0) {
             var memo = $.trim($("#memo").val());
+            var express = $("#express_amount").val();
+            if (express != null && express.length > 0) {
+                try {
+                    express = parseFloat(express);
+                } catch (e) {
+
+                }
+            }
+            else {
+                express = 0;
+            }
             //console.log(out_sid);
             var postData = {
                 "memo": memo,
                 "in_cid": in_cid,
                 "out_sid": out_sid,
                 "suid": suid,
+                "express": express,
                 "goods_list": JSON.stringify(goodList)
             };
             postData['agree_discount'] = $('#agree_discount').prop('checked') ? 1 : 0;
@@ -1433,10 +1445,19 @@ function checkStockOut() {
     if (goodList.length > 0) {
         var memo = $("#memo").val() + " ";
         var out_sid = $("#outStore").val();
+        var express = $("#express_amount").val();
+        if (express != null && express.length > 0) {
+            try {
+                express = parseFloat(express);
+            } catch (e) {
+
+            }
+        }
         var postData = {
             "memo": memo,
             "suid": suid,
             "out_sid": out_sid,
+            "express":express,
             "goods_list": JSON.stringify(goodList)
         };
         var order_id = $('#iOrderId').text();
@@ -1492,11 +1513,20 @@ function checkAndPassStockOut(build) {
             return false;
         }
         var out_sid = $("#outStore").val();
+        var express = $("#express_amount").val();
+        if (express != null && express.length > 0) {
+            try {
+                express = parseFloat(express);
+            } catch (e) {
+
+            }
+        }
         var postData = {
             "memo": memo,
             "suid": suid,
             "in_cid": in_cid,
             "out_sid": out_sid,
+            "express":express,
             "goods_list": JSON.stringify(goodList)
         };
         postData['agree_discount'] = $('#agree_discount').prop('checked') ? 1 : 0;
