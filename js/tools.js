@@ -1853,7 +1853,7 @@ function enterOtherPlatform(subdomain){
         }
     }
     */
-    window.location.href="http://admin.zsg.99yunshang.com"
+    window.location.href="http://admin.zsg.99yuncang.com/admin.php"
 }
 
 
