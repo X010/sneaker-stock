@@ -17,7 +17,7 @@ var companySearchUrl;
 switch (ENV){
     case 'P':
         //sneaker API
-        SITE_URL = 'http://local.api.test.ms9d.com';
+        SITE_URL = 'http://api.zsg.99yuncang.com';
         //搜索商品服务器的URL
         //searchUrl = "http://115.28.93.117:8081/search/goods?index_name=index_goods&type_name=index_goods&page=0&page_num=13&dsl=";
         //搜索公司服务器的URL
