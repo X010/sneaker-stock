@@ -1839,7 +1839,7 @@ function enterOtherPlatform(subdomain){
                 url += hosts[i] + '.';
             }
         }
-        url = url.substr(0, url.length-1);
+        url = "http://admin.zsg.99yuncang.com/admin.php";
         //var url = 'http://' + subdomain + '.' + hosts[1] + '.' + hosts[2];
         if (typeof(url) == 'string'){
             var msg = cookieUtil("userprofile");
@@ -1847,11 +1847,12 @@ function enterOtherPlatform(subdomain){
                 msg = JSON.parse(msg);
                 url += '?ticket=' + msg.ticket;
                 if (msg.admin == 1 || $.inArray('194', msg.mids) != -1){
-                    window.open("http://admin.zsg.99yuncang.com/admin.php");
+                    window.open(url);
                 }
             }
         }
     }
+
 }
 
 
