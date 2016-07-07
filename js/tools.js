@@ -1829,7 +1829,7 @@ function tipsTableTr() {
  * @param subdomain
  */
 function enterOtherPlatform(subdomain){
-   /* if (typeof(subdomain) == 'string'){
+    if (typeof(subdomain) == 'string'){
         var hosts = window.location.host.split('.');
         var url = 'http://';
         for (var i=0; i<hosts.length; i++){
@@ -1847,13 +1847,11 @@ function enterOtherPlatform(subdomain){
                 msg = JSON.parse(msg);
                 url += '?ticket=' + msg.ticket;
                 if (msg.admin == 1 || $.inArray('194', msg.mids) != -1){
-                    window.open(url);
+                    window.open("http://admin.zsg.99yuncang.com/admin.php");
                 }
             }
         }
     }
-    */
-    window.location.href="http://admin.zsg.99yuncang.com/admin.php"
 }
 
 
